@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Force", "Force\Force.xproj", "{A0481FEE-FE52-40D8-B9A6-323B466E57B7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Force.AutoMapper", "Force.AutoMapper\Force.AutoMapper.xproj", "{EE9B12DC-F5CB-4674-99AF-428BFCEED36E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Force.Components", "Force.Components\Force.Components.xproj", "{F348DA75-B126-430F-9985-2477086BAE46}"
+EndProject
+
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0481FEE-FE52-40D8-B9A6-323B466E57B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0481FEE-FE52-40D8-B9A6-323B466E57B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0481FEE-FE52-40D8-B9A6-323B466E57B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0481FEE-FE52-40D8-B9A6-323B466E57B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE9B12DC-F5CB-4674-99AF-428BFCEED36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9B12DC-F5CB-4674-99AF-428BFCEED36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9B12DC-F5CB-4674-99AF-428BFCEED36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9B12DC-F5CB-4674-99AF-428BFCEED36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F348DA75-B126-430F-9985-2477086BAE46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F348DA75-B126-430F-9985-2477086BAE46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F348DA75-B126-430F-9985-2477086BAE46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F348DA75-B126-430F-9985-2477086BAE46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F803E3D8-0770-454D-B922-7E2671B86CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F803E3D8-0770-454D-B922-7E2671B86CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F803E3D8-0770-454D-B922-7E2671B86CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F803E3D8-0770-454D-B922-7E2671B86CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

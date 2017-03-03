@@ -1,0 +1,37 @@
+{
+    "version": "1.0.0-alpha1",
+    "copyright": "HighTech",
+    "title": "Force",
+    "description": "General-purpose .NET framework powered with CQRS, DDD and EventSourcing patterns",
+    "authors": ["HighTech"],
+    "packOptions": {
+        "projectUrl": "http://github.com/hightechtoday/force"
+    },
+    "dependencies": {
+        "JetBrains.Annotations": "10.1.5"
+    },
+
+    "frameworks": {
+        "net45": {
+            "frameworkAssemblies": {
+                "System.ComponentModel.DataAnnotations": "4.0.0.0"
+            }
+        },
+        "netstandard1.6": {
+            "imports": "dnxcore50",
+            "dependencies": {
+                "System.ComponentModel.Annotations": "4.3.0",
+                "NETStandard.Library": "1.6.0",
+                "System.Linq.Queryable": "4.0.1",
+                "System.Reflection": "4.1.0",
+                "System.Reflection.Extensions": "4.0.1"
+            }
+        }
+    },
+
+    "scripts": {
+        "postcompile": [
+            "dotnet pack --no-build --configuration %compile:Configuration%"
+        ]
+    }
+}
