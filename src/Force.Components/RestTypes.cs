@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Force.Cqrs;
+using Force.Cqrs.Queries;
+using Force.Ddd.Entities;
+using Force.Ddd.Pagination;
 
 namespace Force.Components
 {

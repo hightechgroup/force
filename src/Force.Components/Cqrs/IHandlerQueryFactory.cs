@@ -1,4 +1,6 @@
-﻿namespace Force.Components.Cqrs
+﻿using Force.Cqrs;
+
+namespace Force.Components.Cqrs
 {
     public interface IHandlerQueryFactory
     {

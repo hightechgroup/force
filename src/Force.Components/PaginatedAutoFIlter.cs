@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Force.Cqrs;
+using Force.Ddd.Entities;
+using Force.Ddd.Pagination;
 using JetBrains.Annotations;
 
 namespace Force.Components

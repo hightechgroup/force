@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Force.Components.Cqrs;
+using Force.Cqrs;
+using Force.Cqrs.Commands;
+using Force.Cqrs.Queries;
+using Force.Ddd.Pagination;
 using JetBrains.Annotations;
 
 namespace Force.Components
