@@ -10,58 +10,55 @@ using Force.Extensions;
 
 namespace Force.Cqrs.Queries
 {
-    public class ProjectionQuery<TSource, TDest>
-        : IQuery<ILinqSpecification<TDest>, IEnumerable<TDest>>
-        , IQuery<ILinqSpecification<TDest>, int>
+    /// <summary>
+    /// Query for fetching list entity projections by specification.
+    /// Support ILinqSpecification&lt;TEntity&gt;, Expression&lt;Func&lt;TEntity,bool&gt;&gt;, ExpressionSpecification&lt;TEntity&gt; as specification
+    /// </summary>
+    /// <typeparam name="TEntity">Entity type</typeparam>
+    /// <typeparam name="TProjection">Projection type</typeparam>
+    public class ProjectionQuery<TEntity, TProjection>
+        : ListQuery<TEntity>
+        , IQuery<ILinqSpecification<TProjection>, IEnumerable<TProjection>>
+        , IQuery<ILinqSpecification<TProjection>, int>
 
-        , IQuery<Expression<Func<TDest,bool>>, IEnumerable<TDest>>
-        , IQuery<Expression<Func<TDest,bool>>, int>
+        , IQuery<Expression<Func<TProjection,bool>>, IEnumerable<TProjection>>
+        , IQuery<Expression<Func<TProjection,bool>>, int>
 
-        , IQuery<ExpressionSpecification<TDest>, IEnumerable<TDest>>
-        , IQuery<ExpressionSpecification<TDest>, int>
+        , IQuery<ExpressionSpecification<TProjection>, IEnumerable<TProjection>>
+        , IQuery<ExpressionSpecification<TProjection>, int>
 
-        where TSource : class, IHasId
-        where TDest : class
+        where TEntity : class, IHasId
+        where TProjection : class
     {
-        protected readonly ILinqProvider LinqProvider;
         protected readonly IProjector Projector;
         protected readonly IMapper Mapper;
 
-        public ProjectionQuery(ILinqProvider linqProvider, IProjector projector)
+        public ProjectionQuery(ILinqProvider linqProvider, IProjector projector) : base(linqProvider)
         {
-            if (linqProvider == null) throw new ArgumentNullException(nameof(linqProvider));
             if (projector == null) throw new ArgumentNullException(nameof(projector));
 
-            LinqProvider = linqProvider;
             Projector = projector;
         }
 
-        protected virtual IQueryable<TDest> Query(object spec)
-            => LinqProvider
-                .Query<TSource>()
-                .ApplyProjectApplyAgain<TSource, TDest>(Projector, spec);
+        protected virtual IQueryable<TProjection> ProjectQuery(object spec)
+            => Query(spec).Project<TProjection>(Projector).Apply(spec);
 
-        protected virtual IQueryable<TDest> CountQuery(object spec)
-            => LinqProvider
-                .Query<TSource>()
-                .ApplyProjectApplyAgainWithoutOrderBy<TSource, TDest>(Projector, spec);
+        IEnumerable<TProjection> IQuery<ILinqSpecification<TProjection>, IEnumerable<TProjection>>.Ask(ILinqSpecification<TProjection> spec)
+            => ProjectQuery(spec).ToArray();
 
-        IEnumerable<TDest> IQuery<ILinqSpecification<TDest>, IEnumerable<TDest>>.Ask(ILinqSpecification<TDest> spec)
-            => Query(spec).ToArray();
-
-        int IQuery<ILinqSpecification<TDest>,int>.Ask(ILinqSpecification<TDest> spec)
+        int IQuery<ILinqSpecification<TProjection>,int>.Ask(ILinqSpecification<TProjection> spec)
             => CountQuery(spec).Count();
 
-        IEnumerable<TDest> IQuery<Expression<Func<TDest,bool>>, IEnumerable<TDest>>.Ask(Expression<Func<TDest, bool>> spec)
-            => Query(spec).ToArray();
+        IEnumerable<TProjection> IQuery<Expression<Func<TProjection,bool>>, IEnumerable<TProjection>>.Ask(Expression<Func<TProjection, bool>> spec)
+            => ProjectQuery(spec).ToArray();
 
-        int IQuery<Expression<Func<TDest, bool>>, int>.Ask(Expression<Func<TDest, bool>> spec)
+        int IQuery<Expression<Func<TProjection, bool>>, int>.Ask(Expression<Func<TProjection, bool>> spec)
             => CountQuery(spec).Count();
 
-        IEnumerable<TDest> IQuery<ExpressionSpecification<TDest>, IEnumerable<TDest>>.Ask(ExpressionSpecification<TDest> spec)
-            => Query(spec).ToArray();
+        IEnumerable<TProjection> IQuery<ExpressionSpecification<TProjection>, IEnumerable<TProjection>>.Ask(ExpressionSpecification<TProjection> spec)
+            => ProjectQuery(spec).ToArray();
 
-        int IQuery<ExpressionSpecification<TDest>, int>.Ask(ExpressionSpecification<TDest> spec)
+        int IQuery<ExpressionSpecification<TProjection>, int>.Ask(ExpressionSpecification<TProjection> spec)
             => CountQuery(spec).Count();
 
     }

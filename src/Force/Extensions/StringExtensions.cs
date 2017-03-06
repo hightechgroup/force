@@ -11,6 +11,16 @@ namespace Force.Extensions
     [PublicAPI]
     public static class StringExtensions
     {
+        /// <summary>
+        /// Indicates whether the specified string not null or an empty string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool HasValue(this string value)
+        {
+            return !string.IsNullOrEmpty(value);
+        }
+
         ///<summary>
         /// Объединяет коллекцию строк в одну строку использую разделитель
         ///</summary>

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Force.Cqrs
+namespace Force.Ddd.Specifications
 {
     public interface ILinqSpecification<T>
         where T: class 

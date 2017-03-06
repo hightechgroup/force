@@ -11,14 +11,14 @@ namespace Force.Ddd.Pagination
     }
 
     [PublicAPI]
-    public class Sorting<TEntity, TKey>
+    public class OrderBy<TEntity, TKey>
         where TEntity: class
     {
         public Expression<Func<TEntity, TKey>> Expression { get; private set; }
 
         public SortOrder SortOrder { get; private set; }
 
-        public Sorting(
+        public OrderBy(
             Expression<Func<TEntity, TKey>> expression,
             SortOrder sortOrder = SortOrder.Asc)
         {

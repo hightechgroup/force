@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Force
+namespace Force.Ddd.Pagination
 {
     public interface ILinqOrderBy<T>
     {

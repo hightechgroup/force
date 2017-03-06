@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Force.Cqrs
+namespace Force.Meta
 {
     public class SpecificationAttribute : Attribute, ITypeAssociation
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Force.Cqrs
+namespace Force.Meta
 {
     public interface ITypeAssociation
     {

@@ -6,6 +6,7 @@ using Force.Common;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Entities;
+using Force.Ddd.Pagination;
 using Force.Ddd.Specifications;
 
 namespace Force.Extensions
@@ -73,6 +74,12 @@ namespace Force.Extensions
                 ? srt.Apply(source)
                 : source;
         }
+
+        public static IQueryable<TSource> Apply<TSource>(this IQueryable<TSource> queryable, object spec)
+            where TSource : class
+            => queryable
+            .MaybeWhere(spec)
+            .MaybeOrderBy(spec);
 
         public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(this IQueryable<TSource> queryable, IProjector projector, object spec)
             where TSource : class

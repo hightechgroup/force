@@ -10,21 +10,17 @@ namespace Force.Extensions
             this Func<TSource, TIntermediate> func1, Func<TIntermediate, TResult> func2)
             => x => func2(func1(x));
 
-        public static TResult PipeTo<TSource, TResult>(
+        public static TResult Select<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);
 
-        public static T PipeToIf<T>(this T source
-            , Func<T, bool> condition
-            , Func<T, T> evaluator)
-            where T : class
-            => condition(source)
-                ? evaluator(source)
-                : source;
 
-        public static T PipeToIfNotNull<T>(this T source, Func<object, T> evaluator)
+
+        public static T SelectIfNotNull<T>(this T source, Func<object, T> evaluator)
             where T : class
-            => PipeToIf(source, x => x != null, x => evaluator(x));
+            => source == null
+            ? null
+            : Select(source, x => evaluator(x));
 
         public static TOutput Either<TInput, TOutput>(this TInput o
             , Func<TInput, bool> condition
@@ -41,19 +37,19 @@ namespace Force.Extensions
 
         #region Cqrs
 
-        public static TResult PipeTo<TSource, TResult>(
+        public static TResult Select<TSource, TResult>(
             this TSource source, IQuery<TSource, TResult> query)
             => query.Ask(source);
 
-        public static Task<TResult> PipeTo<TSource, TResult>(
+        public static Task<TResult> Select<TSource, TResult>(
             this TSource source, IQuery<TSource, Task<TResult>> query)
             => query.Ask(source);
 
-        public static TResult PipeTo<TSource, TResult>(
+        public static TResult Select<TSource, TResult>(
             this TSource source, IHandler<TSource, TResult> query)
             => query.Handle(source);
 
-        public static TSource PipeTo<TSource>(
+        public static TSource Select<TSource>(
             this TSource source, IHandler<TSource> query)
         {
             query.Handle(source);

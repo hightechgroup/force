@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Force.Cqrs
+namespace Force.Meta
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public abstract class MessageAttribute : Attribute, ITypeAssociation

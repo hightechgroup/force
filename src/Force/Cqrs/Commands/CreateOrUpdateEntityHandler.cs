@@ -6,7 +6,14 @@ using Force.Extensions;
 
 namespace Force.Cqrs.Commands
 {
-    public class CreateOrUpdateEntityHandler<TKey, TCommand, TEntity>: IHandler<TCommand, TKey>
+    /// <summary>
+    /// Command handler for generic Create/Update entity operations
+    /// </summary>
+    /// <typeparam name="TKey">Id Type</typeparam>
+    /// <typeparam name="TCommand">Create or update entity command type</typeparam>
+    /// <typeparam name="TEntity">Target entity type</typeparam>
+    public class CreateOrUpdateEntityHandler<TKey, TCommand, TEntity>:
+        IHandler<TCommand, TKey>
         where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
@@ -22,12 +29,31 @@ namespace Force.Cqrs.Commands
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Create new entity or update existing. If command is IHasId&lt;T&gt; handler tries to load
+        /// existing using IUnitOfWork. Otherwise create new Entity
+        /// </summary>
+        /// <param name="command">Create or update entity command</param>
+        /// <exception cref="InvalidOperationException">Occurs when trying delete not existing entity</exception>
+        /// <returns>Modified entity Id</returns>
         public TKey Handle(TCommand command)
         {
             var id = (command as IHasId)?.Id;
-            var entity = id != null && id.Equals(default(TKey)) == false
-                ? _mapper.Map(command, _unitOfWork.Find<TEntity>(id))
-                : _mapper.Map<TEntity>(command);
+            TEntity entity = null;
+            if (id != null && id.Equals(default(TKey)) == false)
+            {
+                var existing = _unitOfWork.Find<TEntity>(id);
+                if (existing == null)
+                {
+                    throw new InvalidOperationException($"Entity {typeof(TEntity).Name} with id={id} doesn't exists");
+                }
+
+                entity = _mapper.Map(command, _unitOfWork.Find<TEntity>(id));
+            }
+            else
+            {
+                entity = _mapper.Map<TEntity>(command);
+            }
 
             if (entity.IsNew())
             {

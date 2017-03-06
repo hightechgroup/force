@@ -13,13 +13,13 @@ namespace Force.Ddd.Pagination
         // ReSharper disable once StaticMemberInGenericType
         public static int DefaultTake = 30;
 
-        private readonly IEnumerable<Sorting<TEntity, TOrderKey>> _orderBy;
+        private readonly IEnumerable<OrderBy<TEntity, TOrderKey>> _orderBy;
 
         private int _page;
 
         private int _take;
 
-        protected Paging(int page, int take, params Sorting<TEntity, TOrderKey>[] orderBy)
+        protected Paging(int page, int take, params OrderBy<TEntity, TOrderKey>[] orderBy)
         {
             Page = page;
             Take = take;
@@ -44,7 +44,7 @@ namespace Force.Ddd.Pagination
             }
         }
 
-        protected abstract IEnumerable<Sorting<TEntity, TOrderKey>> BuildDefaultSorting();
+        protected abstract IEnumerable<OrderBy<TEntity, TOrderKey>> BuildDefaultSorting();
 
         public int Page
         {
@@ -74,6 +74,6 @@ namespace Force.Ddd.Pagination
             }
         }
 
-        public IEnumerable<Sorting<TEntity, TOrderKey>> OrderBy => _orderBy;
+        public IEnumerable<OrderBy<TEntity, TOrderKey>> OrderBy => _orderBy;
     }
 }

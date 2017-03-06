@@ -8,7 +8,8 @@
         "projectUrl": "http://github.com/hightechtoday/force"
     },
     "dependencies": {
-        "JetBrains.Annotations": "10.1.5"
+        "JetBrains.Annotations": "10.1.5",
+        "System.Linq.Dynamic.Core": "1.0.6.5"
     },
 
     "frameworks": {

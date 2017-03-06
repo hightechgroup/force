@@ -15,22 +15,46 @@ namespace Force.Ddd.Pagination
         long TotalCount { get; }
     }
 
+    public class PagedEnumerable<T> : IPagedEnumerable<T>
+    {
+        private readonly IEnumerable<T> _inner;
+        private readonly int _totalCount;
+
+        public PagedEnumerable(IEnumerable<T> inner, int totalCount)
+        {
+            _inner = inner;
+            _totalCount = totalCount;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _inner.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public long TotalCount => _totalCount;
+    }
+
     [PublicAPI]
-    public static class Paged
+    public static class PagedEnumerableExtensions
     {
         public static IOrderedQueryable<TEntity> OrderBy<TEntity, TKey>(this IQueryable<TEntity> queryable
-            , Sorting<TEntity, TKey> sorting)
+            , OrderBy<TEntity, TKey> orderBy)
             where TEntity : class
-            => sorting.SortOrder == SortOrder.Asc
-                ? queryable.OrderBy(sorting.Expression)
-                : queryable.OrderByDescending(sorting.Expression);
+            => orderBy.SortOrder == SortOrder.Asc
+                ? queryable.OrderBy(orderBy.Expression)
+                : queryable.OrderByDescending(orderBy.Expression);
 
         public static IOrderedQueryable<TEntity> ThenBy<TEntity, TKey>(this IOrderedQueryable<TEntity> queryable
-            , Sorting<TEntity, TKey> sorting)
+            , OrderBy<TEntity, TKey> orderBy)
             where TEntity : class
-            => sorting.SortOrder == SortOrder.Asc
-                ? queryable.ThenBy(sorting.Expression)
-                : queryable.ThenByDescending(sorting.Expression);
+            => orderBy.SortOrder == SortOrder.Asc
+                ? queryable.ThenBy(orderBy.Expression)
+                : queryable.ThenByDescending(orderBy.Expression);
 
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, IPaging  paging) => queryable
             .Skip((paging.Page - 1) * paging.Take)
@@ -65,30 +89,7 @@ namespace Force.Ddd.Pagination
             =>  new PagedEnumerable<T>(inner, totalCount);
 
         public static IPagedEnumerable<T> Empty<T>()
-             =>  From(Enumerable.Empty<T>(), 0);
+            =>  From(Enumerable.Empty<T>(), 0);
     }
 
-    public class PagedEnumerable<T> : IPagedEnumerable<T>
-    {
-        private readonly IEnumerable<T> _inner;
-        private readonly int _totalCount;
-
-        public PagedEnumerable(IEnumerable<T> inner, int totalCount)
-        {
-            _inner = inner;
-            _totalCount = totalCount;
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _inner.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public long TotalCount => _totalCount;
-    }
 }

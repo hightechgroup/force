@@ -10,10 +10,9 @@ namespace Force.Ddd.Pagination
 
     }
 
-    public interface IPaging<TEntity, TSortKey> : IPaging
+    public interface IPaging<TEntity, TSortKey>
+        : IPaging, IOrderBy<TEntity, TSortKey>
         where TEntity : class
     {
-
-        IEnumerable<Sorting<TEntity, TSortKey>> OrderBy { get; }
     }
 }

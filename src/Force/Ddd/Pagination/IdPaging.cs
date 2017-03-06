@@ -4,22 +4,21 @@ using Force.Ddd.Entities;
 
 namespace Force.Ddd.Pagination
 {
-    public class IdPaging<TEntity, TKey>: Paging<TEntity, TKey>
+    public class IdPaging<TEntity, TKey>
+        : Paging<TEntity, TKey>
         where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
         public IdPaging(int page, int take)
-            : base(page, take, new Sorting<TEntity, TKey>(x => x.Id, SortOrder.Desc))
-        {
-        }
+            : base(page, take, new OrderBy<TEntity, TKey>(x => x.Id, SortOrder.Desc))
+        {}
 
         public IdPaging()
-        {
-        }
+        {}
 
-        protected override IEnumerable<Sorting<TEntity, TKey>> BuildDefaultSorting()
+        protected override IEnumerable<OrderBy<TEntity, TKey>> BuildDefaultSorting()
         {
-            yield return new Sorting<TEntity, TKey>(x => x.Id, SortOrder.Desc);
+            yield return new OrderBy<TEntity, TKey>(x => x.Id, SortOrder.Desc);
         }
     }
 
@@ -28,11 +27,9 @@ namespace Force.Ddd.Pagination
     {
         public IdPaging(int page, int take)
             : base(page, take)
-        {
-        }
+        {}
 
         public IdPaging()
-        {
-        }
+        {}
     }
 }

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Force.Common;
 using Force.Cqrs;
 using Force.Ddd.Entities;
+using Force.Meta;
 using JetBrains.Annotations;
 
 namespace Force.Extensions
@@ -51,6 +53,8 @@ namespace Force.Extensions
             return obj.Id == null || obj.Id.Equals(default(TKey));
         }
 
+        public static TDest Map<TDest>(this object obj, IMapper mapper) => mapper.Map<TDest>(obj);
+
         public static void Merge<TKey, TValue>(this IDictionary<TKey, TValue> me, IDictionary<TKey, TValue> merge)
         {
             foreach (var item in merge)
@@ -58,5 +62,13 @@ namespace Force.Extensions
                 me[item.Key] = item.Value;
             }
         }
+
+        private static readonly ConcurrentDictionary<Type, PropertyInfo[]> Dictionary = new ConcurrentDictionary<Type, PropertyInfo[]>();
+
+        public static PropertyInfo[] GetPublicProperties(this Type type) => Dictionary.GetOrAdd(type, x => x
+            .GetTypeInfo()
+            .GetProperties()
+            .Where(y => y.CanRead && y.CanWrite)
+            .ToArray());
     }
 }

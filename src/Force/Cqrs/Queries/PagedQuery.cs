@@ -8,7 +8,6 @@ namespace Force.Cqrs.Queries
     public class PagedQuery<TSource, TDest, TSortKey>
         : ProjectionQuery<TSource, TDest>
         , IQuery<IPaging<TDest, TSortKey>, IPagedEnumerable<TDest>>
-
         where TSource : class, IHasId
         where TDest : class
     {
@@ -17,7 +16,7 @@ namespace Force.Cqrs.Queries
         {}
 
         public IPagedEnumerable<TDest> Ask(IPaging<TDest, TSortKey> spec)
-            => Query(spec).ToPagedEnumerable(spec);
+            => ProjectQuery(spec).ToPagedEnumerable(spec);
     }
 
 
@@ -31,6 +30,18 @@ namespace Force.Cqrs.Queries
         {}
 
         public IPagedEnumerable<TDest> Ask(IPaging spec)
+            => ProjectQuery(spec).ToPagedEnumerable(spec);
+    }
+
+    public class PagedQuery<TEntity>
+        : ListQuery<TEntity>
+        , IQuery<IPaging, IPagedEnumerable<TEntity>>
+        where TEntity : class, IHasId
+    {
+        public PagedQuery(ILinqProvider linqProvider) : base(linqProvider)
+        {}
+
+        public IPagedEnumerable<TEntity> Ask(IPaging spec)
             => Query(spec).ToPagedEnumerable(spec);
     }
 }
