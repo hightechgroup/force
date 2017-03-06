@@ -6,6 +6,7 @@ using System.Reflection;
 using AutoMapper;
 using Force.Ddd;
 using Force.Ddd.Entities;
+using Force.Extensions;
 
 namespace Force.AutoMapper
 {
@@ -29,14 +30,12 @@ namespace Force.AutoMapper
                 : new TEntity());
 
             var sp = typeof(TCommand)
-                .GetTypeInfo()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .GetPublicProperties()
                 .Where(x => x.CanRead && x.CanWrite)
                 .ToDictionary(x => x.Name.ToUpper(), x => x);
 
             var dp = typeof(TEntity)
-                .GetTypeInfo()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .GetPublicProperties()
                 .Where(x => x.CanRead && x.CanWrite)
                 .ToArray();
 
