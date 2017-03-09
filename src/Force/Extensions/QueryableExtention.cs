@@ -126,12 +126,13 @@ namespace Force.Extensions
         public static IQueryable<TDest> Project<TDest>(this IQueryable source, IProjector projector)
             => projector.Project<TDest>(source);
 
-        public static TEntity ById<TEntity>(this ILinqProvider linqProvider, int id)
-            where TEntity : class, IHasId<int>
+        public static TEntity ById<TKey, TEntity>(this ILinqProvider linqProvider, TKey id)
+            where TEntity : class, IHasId<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             => linqProvider.Query<TEntity>().ById(id);
 
-        public static TEntity ById<TEntity>(this IQueryable<TEntity> queryable, int id)
-            where TEntity : class, IHasId<int>
-            => queryable.SingleOrDefault(x => x.Id == id);
+        public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
+            where TEntity : class, IHasId<TKey> where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            => queryable.SingleOrDefault(x => x.Id.Equals(id));
     }
 }
