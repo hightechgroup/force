@@ -22,8 +22,8 @@ namespace Force
             Expression<Func<TEntity, TProjection>> projectior)
             where TKey : class, IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
-            where TEntity : class, IHasId<TKey> =>
-            linqProvider.Query<TEntity>().Select(projectior).ById(id);
+            where TEntity : class, IHasId<TKey>
+            => linqProvider.Query<TEntity>().Select(projectior).ById(id);
 
 
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
