@@ -1,11 +1,8 @@
-﻿using JetBrains.Annotations;
-
-namespace Force.Common
+﻿namespace Force.Common
 {
     /// <summary>
     /// Data mapper
     /// </summary>
-    [PublicAPI]
     public interface IMapper
     {
         /// <summary>

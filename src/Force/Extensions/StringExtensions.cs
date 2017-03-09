@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace Force.Extensions
 {
     ///<summary>
     /// Класс свойств расширений для коллекций строк
     ///</summary>
-    [PublicAPI]
     public static class StringExtensions
     {
         /// <summary>
@@ -27,13 +25,11 @@ namespace Force.Extensions
         ///<param name="source"></param>
         ///<param name="separator"></param>
         ///<returns></returns>
-        [PublicAPI]
         public static string Join(this IEnumerable<string> source, string separator)
         {
             return string.Join(separator, source);
         }
 
-        [PublicAPI]
         public static bool Contains(this string input, string value, StringComparison comparisonType)
         {
             if (!string.IsNullOrEmpty(input))
@@ -44,14 +40,11 @@ namespace Force.Extensions
             return false;
         }
 
-
-        [PublicAPI]
         public static bool LikewiseContains(this string input, string value)
         {
             return Contains(input, value, StringComparison.CurrentCulture);
         }
 
-        [PublicAPI]
         public static string ToString(this int value, string oneForm, string twoForm, string fiveForm)
         {
             var significantValue = value%100;
@@ -74,7 +67,6 @@ namespace Force.Extensions
 
         }
 
-        [PublicAPI]
         public static string ToUnderscoreCase(this string str)
         {
             return string

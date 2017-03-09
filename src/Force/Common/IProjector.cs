@@ -1,12 +1,9 @@
 ﻿using System.Linq;
-using JetBrains.Annotations;
-
 namespace Force.Common
 {
     /// <summary>
     /// Projection builder for IQueryable. Used to avoid queryable.Select(x => {Id = x.Id, Name = x.Name, CategoryId = x.Category.Id} boilerplate
     /// </summary>
-    [PublicAPI]
     public interface IProjector
     {
         /// <summary>

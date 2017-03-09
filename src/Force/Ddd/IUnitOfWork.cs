@@ -1,10 +1,8 @@
 ﻿using System;
 using Force.Ddd.Entities;
-using JetBrains.Annotations;
 
 namespace Force.Ddd
 {
-    [PublicAPI]
     public interface IUnitOfWork : IDisposable
     {
         void Add<TEntity>(TEntity entity)

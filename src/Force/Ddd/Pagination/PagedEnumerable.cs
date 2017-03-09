@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace Force.Ddd.Pagination
 {
-    [PublicAPI]
     public interface IPagedEnumerable<out T> : IEnumerable<T>
     {
         /// <summary>
@@ -39,7 +37,6 @@ namespace Force.Ddd.Pagination
         public long TotalCount => _totalCount;
     }
 
-    [PublicAPI]
     public static class PagedEnumerableExtensions
     {
         public static IOrderedQueryable<TEntity> OrderBy<TEntity, TKey>(this IQueryable<TEntity> queryable

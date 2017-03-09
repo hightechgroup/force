@@ -9,11 +9,10 @@ using Force.Common;
 using Force.Cqrs;
 using Force.Ddd.Entities;
 using Force.Meta;
-using JetBrains.Annotations;
+
 
 namespace Force.Extensions
 {
-    [PublicAPI]
     public static class InfrastructureExtensions
     {
         #region Dynamic Expression Compilation

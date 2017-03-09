@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace Force.Common
 {
@@ -7,7 +6,6 @@ namespace Force.Common
     /// Used to avoid references to specific IOC container
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [PublicAPI]
     public interface ILifetimeScope<out T> : IDisposable
     {
         /// <summary>
