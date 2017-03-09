@@ -9,18 +9,18 @@ using Force.Extensions;
 
 namespace Force
 {
-    public static class Rest
+    public static class Crud
     {
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
             Func<TEntity, TProjection> mapper)
-            where TKey : class, IHasId<int>, IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class
             where TEntity : class, IHasId<TKey> =>
             linqProvider.ById<TKey, TEntity>(id).PipeTo(mapper);
 
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
             Expression<Func<TEntity, TProjection>> projectior)
-            where TKey : class, IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey>
             => linqProvider.Query<TEntity>().Select(projectior).ById(id);
@@ -28,7 +28,7 @@ namespace Force
 
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
             IProjector projector)
-            where TKey : class, IHasId<int>, IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IHasId<int>, IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
             linqProvider.Query<TEntity>().Project<TProjection>(projector).ById(id);
@@ -55,7 +55,7 @@ namespace Force
                 .MaybeOrderBy(spec)
                 .ToPagedEnumerable(spec);
 
-        public static TKey Create<TKey, TEntity, TCommand>(this IUnitOfWork uow
+        public static TKey Create<TKey, TCommand, TEntity>(this IUnitOfWork uow
             , TCommand command, Func<TCommand, TEntity> mapper)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
