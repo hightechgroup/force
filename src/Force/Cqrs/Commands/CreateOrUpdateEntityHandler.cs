@@ -39,7 +39,7 @@ namespace Force.Cqrs.Commands
         public TKey Handle(TCommand command)
         {
             var id = (command as IHasId)?.Id;
-            TEntity entity = null;
+            TEntity entity;
             if (id != null && id.Equals(default(TKey)) == false)
             {
                 var existing = _unitOfWork.Find<TEntity>(id);

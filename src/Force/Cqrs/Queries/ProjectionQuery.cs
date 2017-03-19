@@ -31,7 +31,6 @@ namespace Force.Cqrs.Queries
         where TProjection : class
     {
         protected readonly IProjector Projector;
-        protected readonly IMapper Mapper;
 
         public ProjectionQuery(ILinqProvider linqProvider, IProjector projector) : base(linqProvider)
         {

@@ -7,7 +7,7 @@ using AM = AutoMapper;
 
 namespace Force.AutoMapper
 {
-    public class StaticAutoMapperWrapper : Force.Common.IMapper, IProjector
+    public class StaticAutoMapperWrapper : IMapper, IProjector
     {
         public TReturn Map<TReturn>(object src) => AM.Mapper.Map<TReturn>(src);
 

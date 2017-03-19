@@ -66,11 +66,11 @@ namespace Force.Extensions
 
         class ParameterRebinder : ExpressionVisitor
         {
-            readonly Dictionary<ParameterExpression, ParameterExpression> map;
+            readonly Dictionary<ParameterExpression, ParameterExpression> _map;
 
-            ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
+            private ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
             {
-                this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
+                _map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
             }
 
             public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
@@ -82,7 +82,7 @@ namespace Force.Extensions
             {
                 ParameterExpression replacement;
 
-                if (map.TryGetValue(p, out replacement))
+                if (_map.TryGetValue(p, out replacement))
                 {
                     p = replacement;
                 }

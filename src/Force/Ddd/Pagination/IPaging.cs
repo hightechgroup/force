@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Force.Ddd.Pagination
+﻿namespace Force.Ddd.Pagination
 {
     public interface IPaging
     {

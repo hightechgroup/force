@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Force.Common;
-using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Entities;
 using Force.Ddd.Pagination;

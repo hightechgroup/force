@@ -6,7 +6,7 @@ namespace Force.Ddd.Specifications
 {
     public class ExpressionSpecification<T> : ISpecification<T>
     {
-        public Expression<Func<T, bool>> Expression { get; private set; }
+        public Expression<Func<T, bool>> Expression { get; }
 
         private Func<T, bool> Func => Expression.AsFunc();
 

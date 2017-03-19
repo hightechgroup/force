@@ -5,10 +5,10 @@ using AM = AutoMapper;
 
 namespace Force.AutoMapper
 {
-    public class InstanceBasedAutoMapperWrapper : Force.Common.IMapper, IProjector
+    public class InstanceBasedAutoMapperWrapper : IMapper, IProjector
     {
-        public AM.IConfigurationProvider Configuration { get; private set; }
-        public AM.IMapper Instance { get; private set; }
+        public AM.IConfigurationProvider Configuration { get; }
+        public AM.IMapper Instance { get; }
 
         public InstanceBasedAutoMapperWrapper(AM.IConfigurationProvider configuration, bool skipValidnessAssertation = false)
         {
