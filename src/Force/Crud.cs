@@ -28,7 +28,7 @@ namespace Force
 
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
             IProjector projector)
-            where TKey : IHasId<int>, IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
             linqProvider.Query<TEntity>().Project<TProjection>(projector).ById(id);
