@@ -4,6 +4,18 @@ using System.Linq;
 
 namespace Force.Ddd.Pagination
 {
+    public abstract class Paging : IPaging
+    {
+        protected Paging(int page, int take)
+        {
+            Page = page;
+            Take = take;
+        }
+
+        public int Page { get; }
+        public int Take { get; }
+    }
+
     public abstract class Paging<T, TOrderKey> : IPaging<T, TOrderKey>
         where T : class
     {
