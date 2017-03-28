@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>AutoMapper IMapper, IProjector implementations for Force</Description>
+    <Copyright>HighTech</Copyright>
+    <VersionPrefix>1.0.0-alpha2</VersionPrefix>
+    <Authors>HighTech.Today</Authors>
+    <TargetFrameworks>net45;netstandard1.6</TargetFrameworks>
+    <AssemblyName>Force.AutoMapper</AssemblyName>
+    <PackageId>Force.AutoMapper</PackageId>
+    <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Force\Force.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="5.1.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="10.1.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
+  </Target>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="System.Linq.Queryable" Version="4.0.1" />
+    <PackageReference Include="System.Reflection" Version="4.1.0" />
+    <PackageReference Include="System.Reflection.Extensions" Version="4.0.1" />
+  </ItemGroup>
+
+</Project>
