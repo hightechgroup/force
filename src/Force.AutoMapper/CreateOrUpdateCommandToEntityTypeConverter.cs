@@ -12,7 +12,7 @@ namespace Force.AutoMapper
 {
     public class CreateOrUpdateCommandToEntityTypeConverter<TKey, TCommand, TEntity> : ITypeConverter<TCommand, TEntity>
         where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TEntity : class, IHasId<TKey>, new()
+        where TEntity : class, IHasId<TKey>
     {
         protected readonly IUnitOfWork UnitOfWork;
 
@@ -26,8 +26,8 @@ namespace Force.AutoMapper
             var sourceId = (source as IHasId)?.Id;
 
             var dest = destination ?? (sourceId != null
-                ? UnitOfWork.Find<TEntity>(sourceId) ?? new TEntity()
-                : new TEntity());
+                ? UnitOfWork.Find<TEntity>(sourceId) ?? (TEntity)Activator.CreateInstance(typeof(TEntity), true)
+                : (TEntity)Activator.CreateInstance(typeof(TEntity), true));
 
             var sp = typeof(TCommand)
                 .GetPublicProperties()
@@ -64,12 +64,11 @@ namespace Force.AutoMapper
                             if (add != null)
                             {
                                 var ids = (IEnumerable)sp[key].GetValue(source);
-                                if (ids != null)
+                                if (ids == null) continue;
+
+                                foreach (var id in ids)
                                 {
-                                    foreach (var id in ids)
-                                    {
-                                        add.Invoke(collection, new object[] { UnitOfWork.Find(et, id) });
-                                    }
+                                    add.Invoke(collection, new object[] { UnitOfWork.Find(et, id) });
                                 }
                             }
                             else
