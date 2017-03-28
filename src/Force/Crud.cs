@@ -5,6 +5,7 @@ using Force.Common;
 using Force.Ddd;
 using Force.Ddd.Entities;
 using Force.Ddd.Pagination;
+using Force.Ddd.Specifications;
 using Force.Extensions;
 
 namespace Force
@@ -19,22 +20,21 @@ namespace Force
             linqProvider.ById<TKey, TEntity>(id).PipeTo(mapper);
 
         public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
-            Expression<Func<TEntity, TProjection>> projectior)
-            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-            where TProjection : class, IHasId<TKey>
-            where TEntity : class, IHasId<TKey>
-            => linqProvider.Query<TEntity>().Select(projectior).ById(id);
-
-
-        public static TProjection ById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
             IProjector projector)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
             linqProvider.Query<TEntity>().Project<TProjection>(projector).ById(id);
 
-        public static IPagedEnumerable<TDest> ListPaged<TEntity, TDest>(this ILinqProvider linqProvider
-            , IPaging spec , Expression<Func<TEntity, TDest>> projectionExpression)
+        public static TProjection SelectById<TKey, TEntity, TProjection>(this ILinqProvider linqProvider, TKey id,
+            Expression<Func<TEntity, TProjection>> projector)
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TProjection : class, IHasId<TKey>
+            where TEntity : class, IHasId<TKey>
+            => linqProvider.Query<TEntity>().Select(projector).ById(id);
+
+        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this ILinqProvider linqProvider,
+            IPaging spec , Expression<Func<TEntity, TDest>> projectionExpression)
             where TEntity : class, IHasId where TDest : class
             => linqProvider
                 .Query<TEntity>()
@@ -44,8 +44,8 @@ namespace Force
                 .MaybeOrderBy(spec)
                 .ToPagedEnumerable(spec);
 
-        public static IPagedEnumerable<TDest> ListPaged<TEntity, TDest>(this ILinqProvider linqProvider
-            , IPaging spec, IProjector projector)
+        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this ILinqProvider linqProvider,
+            IPaging spec, IProjector projector)
             where TEntity : class, IHasId where TDest : class
             => linqProvider
                 .Query<TEntity>()
@@ -55,24 +55,58 @@ namespace Force
                 .MaybeOrderBy(spec)
                 .ToPagedEnumerable(spec);
 
-        public static TKey Create<TKey, TCommand, TEntity>(this IUnitOfWork uow
-            , TCommand command, Func<TCommand, TEntity> mapper)
+
+        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this ILinqProvider linqProvider,
+            IPaging paging, ILinqOrderBy<TDest> linqOrderBy, IProjector projector,
+             ILinqSpecification<TEntity> entitySpec = null, ILinqSpecification<TDest> destSpec = null)
+            where TEntity : class, IHasId where TDest : class
+            => linqProvider
+                .Query<TEntity>()
+                .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
+                .Project<TDest>(projector)
+                .EitherOrSelf(destSpec, x => x.Where(destSpec))
+                .OrderBy(linqOrderBy)
+                .ToPagedEnumerable(paging);
+
+        public static TKey Create<TKey, TCommand, TEntity>(this IUnitOfWork uow,
+            TCommand command, Func<TCommand, IUnitOfWork, TEntity> mapper)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         {
-            var entity = mapper(command);
+            var entity = mapper(command, uow);
             uow.Add(entity);
             uow.Commit();
             return entity.Id;
         }
 
-        public static void Update<TKey, TEntity, TCommand>(this IUnitOfWork uow, TKey id
-            , TCommand command, Func<TCommand, TEntity, TEntity> mapper)
+        public static TKey Create<TKey, TCommand, TEntity>(this IUnitOfWork uow,
+            TCommand command, IMapper mapper)
+            where TEntity : class, IHasId<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+        {
+            var entity = mapper.Map<TEntity>(command);
+            uow.Add(entity);
+            uow.Commit();
+            return entity.Id;
+        }
+
+        public static void Update<TKey, TEntity, TCommand>(this IUnitOfWork uow, TKey id,
+            TCommand command, Func<TCommand, TEntity, TEntity> mapper)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         {
             var entity = uow.Find<TEntity>(id);
-            entity = mapper(command, entity);
+            mapper(command, entity);
+            uow.Commit();
+        }
+
+        public static void Update<TKey, TEntity, TCommand>(this IUnitOfWork uow, TKey id,
+            TCommand command, IMapper mapper)
+            where TEntity : class, IHasId<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+        {
+            var entity = uow.Find<TEntity>(id);
+            mapper.Map(command, entity);
             uow.Commit();
         }
     }

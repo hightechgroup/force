@@ -35,14 +35,17 @@ namespace Force.Extensions
 
         public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> predicate)
         {
-            return condition ? query.Where<T>(predicate) : query;
+            return condition ? query.Where(predicate) : query;
         }
 
         public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
            => condition
-                ? query.Where<T>(predicateIfTrue)
-                : query.Where<T>(predicateIfFalse);
+                ? query.Where(predicateIfTrue)
+                : query.Where(predicateIfFalse);
 
+        public static IQueryable<T> WhereIfNotNull<T>(this IQueryable<T> query, object obj,
+            Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
+            => query.WhereIf(obj != null, predicateIfTrue, predicateIfFalse);
 
         public static bool In<T>(this T value, params T[] values)
             =>  values != null && values.Contains(value);
@@ -54,13 +57,13 @@ namespace Force.Extensions
             => values != null && values.Contains(value);
 
         public static bool NotIn<T>(this T value, params T[] values)
-            => values == null || !values.Contains<T>(value);
+            => values == null || !values.Contains(value);
 
         public static bool NotIn<T>(this T value, IQueryable<T> values)
-            => values == null || !values.Contains<T>(value);
+            => values == null || !values.Contains(value);
 
         public static bool NotIn<T>(this T value, IEnumerable<T> values)
-            => values == null || !values.Contains<T>(value);
+            => values == null || !values.Contains(value);
 
         public static IQueryable<T> Where<T>(this IQueryable<T> source, ILinqSpecification<T> spec)
             where T : class

@@ -21,16 +21,46 @@ namespace Force.Extensions
             ? null
             : PipeTo(source, x => evaluator(x));
 
+
         public static TOutput Either<TInput, TOutput>(this TInput o
-            , Func<TInput, bool> condition
             , Func<TInput, TOutput> ifTrue
             , Func<TInput, TOutput> ifFalse)
             where TInput : class
+            => o.Either(x => x != null, ifTrue, ifFalse);
+
+        public static TOutput Either<TInput, TOutput>(this TInput o,
+            Func<TInput, bool> condition,
+            Func<TInput, TOutput> ifTrue,
+            Func<TInput, TOutput> ifFalse)
+            where TInput : class
             => condition(o) ? ifTrue(o) : ifFalse(o);
 
-        public static T Do<T>(T obj, Action<T> action)
+
+        public static TInput EitherOrSelf<TInput>(this TInput o,
+            Func<TInput, bool> condition,
+            Func<TInput, TInput> ifTrue)
+            where TInput : class
+            => condition(o) ? ifTrue(o) : o;
+
+        public static TInput EitherOrSelf<TInput>(this TInput o,
+            object obj,
+            Func<TInput, TInput> ifTrue)
+            where TInput : class
+            => obj != null ? ifTrue(o) : o;
+
+        public static T Do<T>(this T obj, Action<T> action)
         {
             action(obj);
+            return obj;
+        }
+
+        public static T DoIfNotNull<T>(this T obj, Action<T> action)
+        {
+            if (obj != null)
+            {
+                action(obj);
+            }
+
             return obj;
         }
 
