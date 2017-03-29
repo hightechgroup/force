@@ -4,7 +4,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Force.Ddd;
 using Force.Ddd.Pagination;
-using Force.Ddd.Specifications;
 using Force.Extensions;
 
 namespace Force.AutoMapper

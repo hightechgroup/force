@@ -9,8 +9,8 @@ using Force.Extensions;
 
 namespace Force.AutoMapper
 {
-    public class DtoToEntityTypeConverter<TKey, TCommand, TEntity> : ITypeConverter<TCommand, TEntity>
-        where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
+    public class DtoToEntityTypeConverter<TKey, TDto, TEntity> : ITypeConverter<TDto, TEntity>
+        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
         protected readonly IUnitOfWork UnitOfWork;
@@ -18,17 +18,26 @@ namespace Force.AutoMapper
         public DtoToEntityTypeConverter(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
+
+            var hasParameterlessCtor = typeof(TEntity)
+                .GetTypeInfo()
+                .DeclaredConstructors.Any(x => !x.GetParameters().Any());
+
+            if (!hasParameterlessCtor)
+                throw new InvalidOperationException(
+                    "Generic argument TEntity should refer to class with parameterless constructor (public, protected or private)");
         }
 
-        public virtual TEntity Convert(TCommand source, TEntity destination, ResolutionContext context)
+        public virtual TEntity Convert(TDto source, TEntity destination, ResolutionContext context)
         {
             var sourceId = (source as IHasId)?.Id;
 
             var dest = destination ?? (sourceId != null
-                ? UnitOfWork.Find<TEntity>(sourceId) ?? (TEntity)Activator.CreateInstance(typeof(TEntity), true)
-                : (TEntity)Activator.CreateInstance(typeof(TEntity), true));
+                           ? UnitOfWork.Find<TEntity>(sourceId) ??
+                             (TEntity) Activator.CreateInstance(typeof(TEntity), true)
+                           : (TEntity) Activator.CreateInstance(typeof(TEntity), true));
 
-            var sp = typeof(TCommand)
+            var sp = typeof(TDto)
                 .GetPublicProperties()
                 .Where(x => x.CanRead && x.CanWrite)
                 .ToDictionary(x => x.Name.ToUpper(), x => x);
@@ -56,28 +65,26 @@ namespace Force.AutoMapper
                     if (propertyInfo.PropertyType != sp[key].PropertyType)
                     {
                         var et = IsEntityGenericColections(sp[key].PropertyType, propertyInfo.PropertyType);
-                        if (et != null)
-                        {
-                            var collection = propertyInfo.GetValue(dest);
-                            var add = collection.GetType().GetTypeInfo().GetMethod("Add");
-                            if (add != null)
-                            {
-                                var ids = (IEnumerable)sp[key].GetValue(source);
-                                if (ids == null) continue;
+                        if (et == null) continue;
 
-                                foreach (var id in ids)
-                                {
-                                    add.Invoke(collection, new object[] { UnitOfWork.Find(et, id) });
-                                }
-                            }
-                            else
+                        var collection = propertyInfo.GetValue(dest);
+                        var add = collection.GetType().GetTypeInfo().GetMethod("Add");
+                        if (add != null)
+                        {
+                            var ids = (IEnumerable) sp[key].GetValue(source);
+                            if (ids == null) continue;
+
+                            foreach (var id in ids)
                             {
-                                throw new InvalidOperationException(
-                                    $"Can't map Property {propertyInfo.Name} because of type mismatch:" +
-                                    $"{sp[key].PropertyType.Name} -> {propertyInfo.PropertyType.Name}");
+                                add.Invoke(collection, new object[] {UnitOfWork.Find(et, id)});
                             }
                         }
-
+                        else
+                        {
+                            throw new InvalidOperationException(
+                                $"Can't map Property {propertyInfo.Name} because of type mismatch:" +
+                                $"{sp[key].PropertyType.Name} -> {propertyInfo.PropertyType.Name}");
+                        }
                     }
                     else
                     {
@@ -96,8 +103,10 @@ namespace Force.AutoMapper
 
             if (!typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(src) ||
                 typeof(ICollection<>) != dest.GetGenericTypeDefinition()
-                && !dest.GetTypeInfo().GetInterfaces().Any(x => x.GetTypeInfo().IsGenericType
-                && x.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICollection<>)))
+                && !dest.GetTypeInfo()
+                    .GetInterfaces()
+                    .Any(x => x.GetTypeInfo().IsGenericType
+                              && x.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICollection<>)))
             {
                 return null;
             }

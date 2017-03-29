@@ -33,8 +33,17 @@ namespace Force.AutoMapper
 
                     if (attr.MapOptions != MapOptions.EntityToDto)
                     {
-                        CreateMap(v, kv.Key).ConvertUsing(typeof(DtoToEntityTypeConverter<,,>)
-                            .MakeGenericType(kv.Key.GetTypeInfo().GetProperty("Id").PropertyType, v, kv.Key));
+                        var hasParameterlessCtor = kv.Key
+                            .GetTypeInfo()
+                            .DeclaredConstructors.Any(x => !x.GetParameters().Any());
+
+                        if (!hasParameterlessCtor)
+                            throw new InvalidOperationException(
+                                $"Type {kv.Key} should provide parameterless constructor (public, protected or private) in order to be mapped");
+
+                        CreateMap(v, kv.Key)
+                            .ConvertUsing(typeof(DtoToEntityTypeConverter<,,>)
+                                .MakeGenericType(kv.Key.GetTypeInfo().GetProperty("Id").PropertyType, v, kv.Key));
                     }
                 }
             }
