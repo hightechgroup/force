@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0-alpha7",
+    "version": "1.0.0-alpha8",
     "copyright": "HighTech",
     "title": "Force",
     "description": "General-purpose .NET framework powered with CQRS, DDD and EventSourcing patterns",
