@@ -5,18 +5,17 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Force.Ddd;
-using Force.Ddd.Entities;
 using Force.Extensions;
 
 namespace Force.AutoMapper
 {
-    public class CreateOrUpdateCommandToEntityTypeConverter<TKey, TCommand, TEntity> : ITypeConverter<TCommand, TEntity>
+    public class DtoToEntityTypeConverter<TKey, TCommand, TEntity> : ITypeConverter<TCommand, TEntity>
         where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
         protected readonly IUnitOfWork UnitOfWork;
 
-        public CreateOrUpdateCommandToEntityTypeConverter(IUnitOfWork unitOfWork)
+        public DtoToEntityTypeConverter(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
         }
@@ -73,8 +72,9 @@ namespace Force.AutoMapper
                             }
                             else
                             {
-                                throw new InvalidOperationException($"Can't map Property {propertyInfo.Name} because of type mismatch:" +
-                                                                    $"{sp[key].PropertyType.Name} -> {propertyInfo.PropertyType.Name}");
+                                throw new InvalidOperationException(
+                                    $"Can't map Property {propertyInfo.Name} because of type mismatch:" +
+                                    $"{sp[key].PropertyType.Name} -> {propertyInfo.PropertyType.Name}");
                             }
                         }
 

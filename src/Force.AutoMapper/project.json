@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "AutoMapper": "5.1.1",
-    "Force": "1.0.0-*",
-    "JetBrains.Annotations": "10.1.5"
+    "Force": "1.0.0-*"
   },
 
   "frameworks": {

@@ -2,7 +2,7 @@
 
 namespace Force.Ddd.Specifications
 {
-    public interface ILinqSpecification<T>
+    public interface IQueryableSpecification<T>
         where T: class 
     {
         IQueryable<T> Apply(IQueryable<T> query);

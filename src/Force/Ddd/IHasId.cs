@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Force.Ddd.Entities
+namespace Force.Ddd
 {
     public interface IHasId
     {

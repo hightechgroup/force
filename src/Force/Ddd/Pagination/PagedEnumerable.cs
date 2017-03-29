@@ -39,41 +39,11 @@ namespace Force.Ddd.Pagination
 
     public static class PagedEnumerableExtensions
     {
-        public static IOrderedQueryable<TEntity> OrderBy<TEntity, TKey>(this IQueryable<TEntity> queryable
-            , OrderBy<TEntity, TKey> orderBy)
-            where TEntity : class
-            => orderBy.SortOrder == SortOrder.Asc
-                ? queryable.OrderBy(orderBy.Expression)
-                : queryable.OrderByDescending(orderBy.Expression);
-
-        public static IOrderedQueryable<TEntity> ThenBy<TEntity, TKey>(this IOrderedQueryable<TEntity> queryable
-            , OrderBy<TEntity, TKey> orderBy)
-            where TEntity : class
-            => orderBy.SortOrder == SortOrder.Asc
-                ? queryable.ThenBy(orderBy.Expression)
-                : queryable.ThenByDescending(orderBy.Expression);
-
         public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, IPaging  paging) => queryable
             .Skip((paging.Page - 1) * paging.Take)
             .Take(paging.Take);
 
-        public static IQueryable<T> Paginate<T, TKey>(this IQueryable<T> queryable, IPaging<T, TKey> paging)
-            where T : class
-        {
-            if(!paging.OrderBy.Any())
-            {
-                throw new ArgumentException("OrderBy can't be null or empty", nameof(paging));
-            }
-
-            var ordered = queryable.OrderBy(paging.OrderBy.First());
-            ordered = paging.OrderBy.Skip(1).Aggregate(ordered, (current, order) => current.ThenBy(order));
-
-            return ordered
-                .Skip((paging.Page - 1) * paging.Take)
-                .Take(paging.Take);
-        }
-
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, ILinqOrderBy<T> orderBy)
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, IQueryableOrderBy<T> orderBy)
             where T : class
             => orderBy.Apply(queryable);
 

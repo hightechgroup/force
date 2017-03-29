@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Force.Common;
 using Force.Ddd;
-using Force.Ddd.Entities;
 using Force.Ddd.Pagination;
 using Force.Ddd.Specifications;
 
@@ -12,7 +10,8 @@ namespace Force.Extensions
 {
     public static class QueryableExtention
     {
-        public static IQueryable<T> OrderIf<T, TKey>(this IQueryable<T> query, bool condition, bool acs, Expression<Func<T, TKey>> keySelector)
+        public static IQueryable<T> OrderIf<T, TKey>(this IQueryable<T> query, bool condition,
+            bool acs, Expression<Func<T, TKey>> keySelector)
         {
             if (!condition)
             {
@@ -24,7 +23,8 @@ namespace Force.Extensions
                 : query.OrderByDescending(keySelector);
         }
 
-        public static IQueryable<T> OrderThenIf<T, TKey>(this IQueryable<T> query, bool condition, bool acs, Expression<Func<T, TKey>> keySelector)
+        public static IQueryable<T> OrderThenIf<T, TKey>(this IQueryable<T> query, bool condition,
+            bool acs, Expression<Func<T, TKey>> keySelector)
         {
             if (!condition)
                 return query;
@@ -33,12 +33,14 @@ namespace Force.Extensions
                 : ((IOrderedQueryable<T>)query).ThenByDescending(keySelector);
         }
 
-        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> predicate)
+        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition,
+            Expression<Func<T, bool>> predicate)
         {
             return condition ? query.Where(predicate) : query;
         }
 
-        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition, Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
+        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition,
+            Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
            => condition
                 ? query.Where(predicateIfTrue)
                 : query.Where(predicateIfFalse);
@@ -65,13 +67,13 @@ namespace Force.Extensions
         public static bool NotIn<T>(this T value, IEnumerable<T> values)
             => values == null || !values.Contains(value);
 
-        public static IQueryable<T> Where<T>(this IQueryable<T> source, ILinqSpecification<T> spec)
+        public static IQueryable<T> Where<T>(this IQueryable<T> source, IQueryableSpecification<T> spec)
             where T : class
             => spec.Apply(source);
 
         public static IQueryable<T> MaybeOrderBy<T>(this IQueryable<T> source, object sort)
         {
-            var srt = sort as ILinqOrderBy<T>;
+            var srt = sort as IQueryableOrderBy<T>;
             return srt != null
                 ? srt.Apply(source)
                 : source;
@@ -83,29 +85,10 @@ namespace Force.Extensions
             .MaybeWhere(spec)
             .MaybeOrderBy(spec);
 
-        public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(this IQueryable<TSource> queryable, IProjector projector, object spec)
-            where TSource : class
-            where TDest : class
-            => queryable
-            .MaybeWhere(spec)
-            .MaybeOrderBy(spec)
-            .Project<TDest>(projector)
-            .MaybeWhere(spec)
-            .MaybeOrderBy(spec);
-
-        public static IQueryable<TDest> ApplyProjectApplyAgainWithoutOrderBy<TSource, TDest>(
-            this IQueryable<TSource> queryable, IProjector projector, object spec)
-            where TSource : class
-            where TDest : class
-            => queryable
-                .MaybeWhere(spec)
-                .Project<TDest>(projector)
-                .MaybeWhere(spec);
-
         public static IQueryable<T> MaybeWhere<T>(this IQueryable<T> source, object spec)
             where T : class
         {
-            var specification = spec as ILinqSpecification<T>;
+            var specification = spec as IQueryableSpecification<T>;
             if (specification != null)
             {
                 source = specification.Apply(source);
@@ -117,21 +100,13 @@ namespace Force.Extensions
                 source = source.Where(expr);
             }
 
-            var exprSpec = spec as ExpressionSpecification<T>;
-            if (exprSpec != null)
-            {
-                source = source.Where(exprSpec.Expression);
-            }
             return source;
         }
 
-        public static IQueryable<TDest> Project<TDest>(this IQueryable source, IProjector projector)
-            => projector.Project<TDest>(source);
-
-        public static TEntity ById<TKey, TEntity>(this ILinqProvider linqProvider, TKey id)
+        public static TEntity ById<TKey, TEntity>(this IQueryableProvider queryableProvider, TKey id)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-            => linqProvider.Query<TEntity>().ById(id);
+            => queryableProvider.Query<TEntity>().ById(id);
 
         public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
             where TEntity : class, IHasId<TKey> where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>

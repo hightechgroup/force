@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Force.Ddd.Pagination
@@ -13,10 +12,12 @@ namespace Force.Ddd.Pagination
         }
 
         public int Page { get; }
+
         public int Take { get; }
+
     }
 
-    public abstract class Paging<T, TOrderKey> : IPaging<T, TOrderKey>
+    public abstract class Paging<T> : IQueryablePaging<T>
         where T : class
     {
         // ReSharper disable once StaticMemberInGenericType
@@ -25,22 +26,14 @@ namespace Force.Ddd.Pagination
         // ReSharper disable once StaticMemberInGenericType
         public static int DefaultTake = 30;
 
-        private readonly IEnumerable<OrderBy<T, TOrderKey>> _orderBy;
-
         private int _page;
 
         private int _take;
 
-        protected Paging(int page, int take, params OrderBy<T, TOrderKey>[] orderBy)
+        protected Paging(int page, int take)
         {
             Page = page;
             Take = take;
-            if (orderBy == null)
-            {
-                throw new ArgumentException("OrderBy can't be null", nameof(orderBy));
-            }
-
-            _orderBy = orderBy;
         }
 
         protected Paging()
@@ -48,15 +41,8 @@ namespace Force.Ddd.Pagination
             Page = DefaultStartPage;
             Take = DefaultTake;
             // ReSharper disable once VirtualMemberCallInConstructor
-            _orderBy = BuildDefaultSorting();
-
-            if (_orderBy == null || !_orderBy.Any())
-            {
-                throw new ArgumentException("OrderBy can't be null or empty", nameof(_orderBy));
-            }
         }
 
-        protected abstract IEnumerable<OrderBy<T, TOrderKey>> BuildDefaultSorting();
 
         public int Page
         {
@@ -86,6 +72,6 @@ namespace Force.Ddd.Pagination
             }
         }
 
-        public IEnumerable<OrderBy<T, TOrderKey>> OrderBy => _orderBy;
+        public abstract IOrderedQueryable<T> Apply(IQueryable<T> queryable);
     }
 }

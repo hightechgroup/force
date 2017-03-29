@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Force.Cqrs;
 
@@ -15,24 +16,18 @@ namespace Force.Extensions
             => func(source);
 
 
-        public static T PipeTofNotNull<T>(this T source, Func<object, T> evaluator)
+        public static T PipeToIfNotNull<T>(this T source, Func<object, T> evaluator)
             where T : class
             => source == null
             ? null
             : PipeTo(source, x => evaluator(x));
 
-
-        public static TOutput Either<TInput, TOutput>(this TInput o
-            , Func<TInput, TOutput> ifTrue
-            , Func<TInput, TOutput> ifFalse)
-            where TInput : class
+        public static TOutput Either<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
+            Func<TInput, TOutput> ifFalse)
             => o.Either(x => x != null, ifTrue, ifFalse);
 
-        public static TOutput Either<TInput, TOutput>(this TInput o,
-            Func<TInput, bool> condition,
-            Func<TInput, TOutput> ifTrue,
-            Func<TInput, TOutput> ifFalse)
-            where TInput : class
+        public static TOutput Either<TInput, TOutput>(this TInput o, Func<TInput, bool> condition,
+            Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition(o) ? ifTrue(o) : ifFalse(o);
 
 
@@ -50,18 +45,32 @@ namespace Force.Extensions
 
         public static T Do<T>(this T obj, Action<T> action)
         {
-            action(obj);
-            return obj;
-        }
-
-        public static T DoIfNotNull<T>(this T obj, Action<T> action)
-        {
             if (obj != null)
             {
                 action(obj);
             }
 
             return obj;
+        }
+
+        public static bool IsSatisfy<T>(this T obj, Func<T, bool> spec)
+        {
+            return spec(obj);
+        }
+
+        public static bool IsSatisfyExpresion<T>(this T obj, Expression<Func<T, bool>> spec)
+        {
+            return spec.AsFunc()(obj);
+        }
+
+        public static bool IsSatisfiedBy<T>(this Func<T, bool> spec, T obj)
+        {
+            return spec(obj);
+        }
+
+        public static bool IsSatisfiedBy<T>(this Expression<Func<T, bool>> spec, T obj)
+        {
+            return spec.AsFunc()(obj);
         }
 
         #region Cqrs

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Force.Ddd.Entities;
 
 namespace Force.Ddd
 {
-    public class InMemoryStore : ILinqProvider, IUnitOfWork
+    public class InMemoryStore : IQueryableProvider, IUnitOfWork
     {
         private ConcurrentDictionary<Type, ConcurrentBag<IHasId>> _store = new ConcurrentDictionary<Type, ConcurrentBag<IHasId>>();
 
