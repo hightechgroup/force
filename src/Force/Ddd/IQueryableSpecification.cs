@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Force.Ddd.Specifications
+namespace Force.Ddd
 {
     public interface IQueryableSpecification<T>
         where T: class 

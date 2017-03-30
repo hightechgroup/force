@@ -50,7 +50,7 @@ namespace Force.Extensions
         /// <summary>
         /// Combines the first expression with the second using the specified merge function.
         /// </summary>
-        static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
+        private static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // zip parameters (map from parameters of second to parameters of first)
             var map = first.Parameters
@@ -64,7 +64,7 @@ namespace Force.Extensions
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
 
-        class ParameterRebinder : ExpressionVisitor
+        private class ParameterRebinder : ExpressionVisitor
         {
             readonly Dictionary<ParameterExpression, ParameterExpression> _map;
 

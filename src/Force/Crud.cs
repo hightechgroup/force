@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Force.Ddd;
 using Force.Ddd.Pagination;
-using Force.Ddd.Specifications;
 using Force.Extensions;
 
 namespace Force

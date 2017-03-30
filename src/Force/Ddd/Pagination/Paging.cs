@@ -11,38 +11,20 @@ namespace Force.Ddd.Pagination
             Take = take;
         }
 
-        public int Page { get; }
+        protected Paging()
+        {
+            Page = DefaultStartPage;
+            Take = DefaultTake;
+        }
 
-        public int Take { get; }
+        private int _page;
+        private int _take;
 
-    }
-
-    public abstract class Paging<T> : IQueryablePaging<T>
-        where T : class
-    {
         // ReSharper disable once StaticMemberInGenericType
         public static int DefaultStartPage = 1;
 
         // ReSharper disable once StaticMemberInGenericType
         public static int DefaultTake = 30;
-
-        private int _page;
-
-        private int _take;
-
-        protected Paging(int page, int take)
-        {
-            Page = page;
-            Take = take;
-        }
-
-        protected Paging()
-        {
-            Page = DefaultStartPage;
-            Take = DefaultTake;
-            // ReSharper disable once VirtualMemberCallInConstructor
-        }
-
 
         public int Page
         {
@@ -70,6 +52,19 @@ namespace Force.Ddd.Pagination
 
                 _take = value;
             }
+        }
+
+    }
+
+    public abstract class Paging<T> : Paging, IQueryablePaging<T>
+        where T : class
+    {
+        protected Paging(int page, int take) : base(page, take)
+        {
+        }
+
+        protected Paging()
+        {
         }
 
         public abstract IOrderedQueryable<T> Apply(IQueryable<T> queryable);
