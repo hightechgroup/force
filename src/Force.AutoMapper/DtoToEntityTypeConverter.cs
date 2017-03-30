@@ -9,7 +9,7 @@ using Force.Extensions;
 
 namespace Force.AutoMapper
 {
-    public class DtoToEntityTypeConverter<TKey, TCommand, TEntity> : ITypeConverter<TCommand, TEntity>
+    public class DtoToEntityTypeConverter<TKey, TDto, TEntity> : ITypeConverter<TDto, TEntity>
         where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
@@ -20,7 +20,7 @@ namespace Force.AutoMapper
             UnitOfWork = unitOfWork;
         }
 
-        public virtual TEntity Convert(TCommand source, TEntity destination, ResolutionContext context)
+        public virtual TEntity Convert(TDto source, TEntity destination, ResolutionContext context)
         {
             var sourceId = (source as IHasId)?.Id;
 
@@ -28,7 +28,7 @@ namespace Force.AutoMapper
                 ? UnitOfWork.Find<TEntity>(sourceId) ?? (TEntity)Activator.CreateInstance(typeof(TEntity), true)
                 : (TEntity)Activator.CreateInstance(typeof(TEntity), true));
 
-            var sp = typeof(TCommand)
+            var sp = typeof(TDto)
                 .GetPublicProperties()
                 .Where(x => x.CanRead && x.CanWrite)
                 .ToDictionary(x => x.Name.ToUpper(), x => x);

@@ -53,12 +53,12 @@ namespace Force.Extensions
             return obj;
         }
 
-        public static bool IsSatisfy<T>(this T obj, Func<T, bool> spec)
+        public static bool Satisfy<T>(this T obj, Func<T, bool> spec)
         {
             return spec(obj);
         }
 
-        public static bool IsSatisfyExpresion<T>(this T obj, Expression<Func<T, bool>> spec)
+        public static bool SatisfyExpresion<T>(this T obj, Expression<Func<T, bool>> spec)
         {
             return spec.AsFunc()(obj);
         }

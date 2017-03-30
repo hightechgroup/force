@@ -59,24 +59,23 @@ namespace Force.AutoMapper
                 .OrderBy(queryableOrderBy)
                 .ToPagedEnumerable(paging);
 
-        public static TKey Create<TKey, TCommand, TEntity>(this IUnitOfWork uow,
-            TCommand command, IMapper mapper)
+        public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         {
-            var entity = mapper.Map<TEntity>(command);
+            var entity = Mapper.Map<TEntity>(dto);
             uow.Add(entity);
             uow.Commit();
             return entity.Id;
         }
 
-        public static void Update<TKey, TEntity, TCommand>(this IUnitOfWork uow, TKey id,
-            TCommand command, IMapper mapper)
+        public static void Update<TKey, TEntity, TDto>(this IUnitOfWork uow, TKey id,
+            TDto dto)
             where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         {
             var entity = uow.Find<TEntity>(id);
-            mapper.Map(command, entity);
+            Mapper.Map(dto, entity);
             uow.Commit();
         }
 
