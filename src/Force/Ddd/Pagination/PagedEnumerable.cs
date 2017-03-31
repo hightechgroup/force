@@ -36,17 +36,17 @@ namespace Force.Ddd.Pagination
         public long TotalCount => _totalCount;
     }
 
-    public sealed class  PagedResponse<T>
+    public sealed class PagedResponse<T>
     {
         public PagedResponse(IEnumerable<T> items, long total)
         {
             Total = total;
-            Itmes = items.ToArray();
+            Items = items.ToArray();
         }
 
         public long Total { get; }
 
-        public T[] Itmes { get; }
+        public T[] Items { get; }
     }
 
     public static class PagedEnumerableExtensions

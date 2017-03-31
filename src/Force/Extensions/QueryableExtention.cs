@@ -110,11 +110,6 @@ namespace Force.Extensions
             return source;
         }
 
-        public static TEntity ById<TKey, TEntity>(this IQueryableFilter<TEntity> query, TKey id)
-            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-            where TEntity : class, IHasId<TKey>
-            => query.ById(id);
-
         public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TEntity : class, IHasId<TKey>

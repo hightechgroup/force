@@ -3,11 +3,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using Force.Ddd;
 using Force.Ddd.Pagination;
-using Force.Extensions;
 
-namespace Force
+namespace Force.Extensions
 {
-    public static class Crud
+    public static class CrudExtensions
     {
         public static long Count<T>(this IQueryable<T> query, IQueryableFilter<T> spec) where T : class
             => query.Apply(spec).Count();
