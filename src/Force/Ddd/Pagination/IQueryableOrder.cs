@@ -2,7 +2,7 @@
 
 namespace Force.Ddd.Pagination
 {
-    public interface IQueryableOrderBy<T>
+    public interface IQueryableOrder<T>
     {
         IOrderedQueryable<T> Apply(IQueryable<T> queryable);
     }

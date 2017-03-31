@@ -2,7 +2,7 @@
 
 namespace Force.Ddd
 {
-    public interface IQueryableSpecification<T>
+    public interface IQueryableFilter<T>
         where T: class 
     {
         IQueryable<T> Apply(IQueryable<T> query);

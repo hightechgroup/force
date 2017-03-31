@@ -70,17 +70,17 @@ namespace Force.Extensions
         public static bool NotIn<T>(this T value, IEnumerable<T> values)
             => values == null || !values.Contains(value);
 
-        public static IQueryable<T> Where<T>(this IQueryable<T> source, IQueryableSpecification<T> spec)
+        public static IQueryable<T> Where<T>(this IQueryable<T> source, IQueryableFilter<T> spec)
             where T : class
             => spec.Apply(source);
 
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, IQueryableOrderBy<T> spec)
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, IQueryableOrder<T> spec)
             where T : class
             => spec.Apply(source);
 
         public static IQueryable<T> MaybeOrderBy<T>(this IQueryable<T> source, object sort)
         {
-            var srt = sort as IQueryableOrderBy<T>;
+            var srt = sort as IQueryableOrder<T>;
             return srt != null
                 ? srt.Apply(source)
                 : source;
@@ -95,7 +95,7 @@ namespace Force.Extensions
         public static IQueryable<T> MaybeWhere<T>(this IQueryable<T> source, object spec)
             where T : class
         {
-            var specification = spec as IQueryableSpecification<T>;
+            var specification = spec as IQueryableFilter<T>;
             if (specification != null)
             {
                 source = specification.Apply(source);

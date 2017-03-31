@@ -9,7 +9,7 @@ namespace Force
 {
     public static class Crud
     {
-        public static long Count<T>(this IQueryable<T> query, IQueryableSpecification<T> spec) where T : class
+        public static long Count<T>(this IQueryable<T> query, IQueryableFilter<T> spec) where T : class
             => query.Apply(spec).Count();
 
         public static TProjection ById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id,

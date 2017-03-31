@@ -48,15 +48,15 @@ namespace Force.AutoMapper
                 .ToPagedEnumerable(spec);
 
         public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
-            IPaging paging, IQueryableOrderBy<TDest> queryableOrderBy, IQueryableSpecification<TEntity> entitySpec = null,
-            IQueryableSpecification<TDest> destSpec = null)
+            IPaging paging, IQueryableOrder<TDest> queryableOrder, IQueryableFilter<TEntity> entitySpec = null,
+            IQueryableFilter<TDest> destSpec = null)
             where TEntity : class, IHasId where TDest : class
             => queryableProvider
                 .Query<TEntity>()
                 .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
                 .ProjectTo<TDest>()
                 .EitherOrSelf(destSpec, x => x.Where(destSpec))
-                .OrderBy(queryableOrderBy)
+                .OrderBy(queryableOrder)
                 .ToPagedEnumerable(paging);
 
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto)
