@@ -30,6 +30,9 @@ namespace Force.Extensions
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition(o) ? ifTrue(o) : ifFalse(o);
 
+        public static TOutput Either<TInput, TOutput>(this TInput o, bool condition,
+            Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
+            => condition ? ifTrue(o) : ifFalse(o);
 
         public static TInput EitherOrSelf<TInput>(this TInput o,
             Func<TInput, bool> condition,

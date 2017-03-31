@@ -35,7 +35,7 @@ namespace Force.AutoMapper
                 .ProjectTo<TDest>()
                 .MaybeWhere(spec);
 
-        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
+        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
             IPaging spec)
             where TEntity : class, IHasId
             where TDest : class, IHasId => queryableProvider
@@ -45,9 +45,9 @@ namespace Force.AutoMapper
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
                 .OrderByIdIfNotOrdered()
-                .ToPagedEnumerable(spec);
+                .ToPagedResponse(spec);
 
-        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
+        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
             IPaging paging, IQueryableOrder<TDest> queryableOrder, IQueryableFilter<TEntity> entitySpec = null,
             IQueryableFilter<TDest> destSpec = null)
             where TEntity : class, IHasId where TDest : class
@@ -57,7 +57,7 @@ namespace Force.AutoMapper
                 .ProjectTo<TDest>()
                 .EitherOrSelf(destSpec, x => x.Where(destSpec))
                 .OrderBy(queryableOrder)
-                .ToPagedEnumerable(paging);
+                .ToPagedResponse(paging);
 
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto)
             where TEntity : class, IHasId<TKey>
