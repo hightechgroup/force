@@ -38,15 +38,11 @@ namespace Force.Ddd.Pagination
 
     public static class PagedEnumerableExtensions
     {
-        public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, IPaging  paging) => queryable
+        public static IQueryable<T> Paginate<T>(this IOrderedQueryable<T> queryable, IPaging  paging) => queryable
             .Skip((paging.Page - 1) * paging.Take)
             .Take(paging.Take);
 
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, IQueryableOrderBy<T> orderBy)
-            where T : class
-            => orderBy.Apply(queryable);
-
-        public static IPagedEnumerable<T> ToPagedEnumerable<T>(this IQueryable<T> queryable,
+        public static IPagedEnumerable<T> ToPagedEnumerable<T>(this IOrderedQueryable<T> queryable,
             IPaging paging)
             where T : class
             => From(queryable.Paginate(paging).ToArray(), queryable.Count());

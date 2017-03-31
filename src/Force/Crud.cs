@@ -28,13 +28,15 @@ namespace Force
 
         public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
             IPaging spec , Expression<Func<TEntity, TDest>> projectionExpression)
-            where TEntity : class, IHasId where TDest : class
+            where TEntity : class, IHasId
+            where TDest : class, IHasId
             => queryableProvider
                 .Query<TEntity>()
                 .MaybeWhere(spec)
                 .Select(projectionExpression)
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
+                .OrderByIdIfNotOrdered()
                 .ToPagedEnumerable(spec);
 
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow,

@@ -10,7 +10,7 @@ namespace Force.AutoMapper
 {
     public static class Extensions
     {
-        public static TProjection ById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id)
+        public static TProjection ProjectById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
@@ -37,13 +37,14 @@ namespace Force.AutoMapper
 
         public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
             IPaging spec)
-            where TEntity : class, IHasId where TDest : class
-            => queryableProvider
+            where TEntity : class, IHasId
+            where TDest : class, IHasId => queryableProvider
                 .Query<TEntity>()
                 .MaybeWhere(spec)
                 .ProjectTo<TDest>()
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
+                .OrderByIdIfNotOrdered()
                 .ToPagedEnumerable(spec);
 
         public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,

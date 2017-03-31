@@ -9,6 +9,10 @@ namespace Force.Extensions
 {
     public static class QueryableExtention
     {
+        public static IOrderedQueryable<T> OrderByIdIfNotOrdered<T>(this IQueryable<T> query)
+            where T : IHasId
+            => (query as IOrderedQueryable<T>) ?? query.OrderBy(x => x.Id);
+
         public static IQueryable<T> OrderIf<T, TKey>(this IQueryable<T> query, bool condition,
             bool acs, Expression<Func<T, TKey>> keySelector)
         {
@@ -70,6 +74,10 @@ namespace Force.Extensions
             where T : class
             => spec.Apply(source);
 
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, IQueryableOrderBy<T> spec)
+            where T : class
+            => spec.Apply(source);
+
         public static IQueryable<T> MaybeOrderBy<T>(this IQueryable<T> source, object sort)
         {
             var srt = sort as IQueryableOrderBy<T>;
@@ -103,12 +111,19 @@ namespace Force.Extensions
         }
 
         public static TEntity ById<TKey, TEntity>(this IQueryableProvider queryableProvider, TKey id)
-            where TEntity : class, IHasId<TKey>
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TEntity : class, IHasId<TKey>
             => queryableProvider.Query<TEntity>().ById(id);
 
         public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
-            where TEntity : class, IHasId<TKey> where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TEntity : class, IHasId<TKey>
             => queryable.SingleOrDefault(x => x.Id.Equals(id));
+
+        public static TProjection ById<TKey, TEntity, TProjection>(this IQueryable<TEntity> queryable, TKey id, Expression<Func<TEntity, TProjection>> projectionExpression)
+            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TEntity : class, IHasId<TKey>
+            where TProjection : class, IHasId<TKey>
+            => queryable.Select(projectionExpression).SingleOrDefault(x => x.Id.Equals(id));
     }
 }
