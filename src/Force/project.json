@@ -1,8 +1,8 @@
 {
-    "version": "1.0.0-alpha9",
+    "version": "1.0.0-alpha10",
     "copyright": "HighTech",
     "title": "Force",
-    "description": "General-purpose .NET framework powered with CQRS, DDD and EventSourcing patterns",
+    "description": "General-purpose .NET Library for rapid application development",
     "authors": ["HighTech"],
     "packOptions": {
         "projectUrl": "http://github.com/hightechtoday/force"

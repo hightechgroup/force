@@ -12,26 +12,25 @@ namespace Force
         public static long Count<T>(this IQueryable<T> query, IQueryableFilter<T> spec) where T : class
             => query.Apply(spec).Count();
 
-        public static TProjection ById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id,
+        public static TProjection ById<TKey, TEntity, TProjection>(this IQueryable<TEntity> query, TKey id,
             Func<TEntity, TProjection> mapper)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class
             where TEntity : class, IHasId<TKey> =>
-            queryableProvider.ById<TKey, TEntity>(id).PipeTo(mapper);
+            query.ById(id).PipeTo(mapper);
 
-        public static TProjection ProjectById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id,
+        public static TProjection ProjectById<TKey, TEntity, TProjection>(this IQueryable<TEntity> query, TKey id,
             Expression<Func<TEntity, TProjection>> projector)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey>
-            => queryableProvider.Query<TEntity>().Select(projector).ById(id);
+            => query.Select(projector).ById(id);
 
-        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
+        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query,
             IPaging spec , Expression<Func<TEntity, TDest>> projectionExpression)
             where TEntity : class, IHasId
             where TDest : class, IHasId
-            => queryableProvider
-                .Query<TEntity>()
+            => query
                 .MaybeWhere(spec)
                 .Select(projectionExpression)
                 .MaybeWhere(spec)

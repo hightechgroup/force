@@ -11,11 +11,11 @@ namespace Force.AutoMapper
     public static class Extensions
     {
         public static TProjection ProjectById<TKey, TEntity, TProjection>(
-            this IQueryableProvider queryableProvider,TKey id)
+            this IQueryable<TEntity> query,TKey id)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
-            queryableProvider.Query<TEntity>().ProjectTo<TProjection>().ById(id);
+            query.ProjectTo<TProjection>().ById(id);
 
         public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(
             this IQueryable<TSource> queryable, object spec)
@@ -37,11 +37,9 @@ namespace Force.AutoMapper
                 .ProjectTo<TDest>()
                 .MaybeWhere(spec);
 
-        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
-            IPaging spec)
+        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query, IPaging spec)
             where TEntity : class, IHasId
-            where TDest : class, IHasId => queryableProvider
-                .Query<TEntity>()
+            where TDest : class, IHasId => query
                 .MaybeWhere(spec)
                 .ProjectTo<TDest>()
                 .MaybeWhere(spec)
@@ -49,12 +47,11 @@ namespace Force.AutoMapper
                 .OrderByIdIfNotOrdered()
                 .ToPagedResponse(spec);
 
-        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryableProvider queryableProvider,
+        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query,
             IPaging paging, IQueryableOrder<TDest> queryableOrder, IQueryableFilter<TEntity> entitySpec = null,
             IQueryableFilter<TDest> destSpec = null)
             where TEntity : class, IHasId where TDest : class
-            => queryableProvider
-                .Query<TEntity>()
+            => query
                 .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
                 .ProjectTo<TDest>()
                 .EitherOrSelf(destSpec, x => x.Where(destSpec))

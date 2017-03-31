@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Force.Ddd
 {
-    public class InMemoryStore : IQueryableProvider, IUnitOfWork
+    public class InMemoryStore : IUnitOfWork
     {
         private ConcurrentDictionary<Type, ConcurrentBag<IHasId>> _store = new ConcurrentDictionary<Type, ConcurrentBag<IHasId>>();
 

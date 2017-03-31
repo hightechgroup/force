@@ -1,7 +1,7 @@
 ﻿{
-  "version": "1.0.0-alpha5",
+  "version": "1.0.0-alpha6",
   "copyright": "HighTech",
-  "description": "AutoMapper IMapper, IProjector implementations for Force",
+  "description": "AutoMapper extensions for Force",
   "authors": [ "HighTech.Today" ],
   "packOptions": {
       "projectUrl": "http://github.com/hightechtoday/force"
