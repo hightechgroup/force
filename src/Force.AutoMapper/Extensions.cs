@@ -10,13 +10,15 @@ namespace Force.AutoMapper
 {
     public static class Extensions
     {
-        public static TProjection ProjectById<TKey, TEntity, TProjection>(this IQueryableProvider queryableProvider, TKey id)
+        public static TProjection ProjectById<TKey, TEntity, TProjection>(
+            this IQueryableProvider queryableProvider,TKey id)
             where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey> =>
             queryableProvider.Query<TEntity>().ProjectTo<TProjection>().ById(id);
 
-        public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(this IQueryable<TSource> queryable, object spec)
+        public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(
+            this IQueryable<TSource> queryable, object spec)
             where TSource : class
             where TDest : class
             => queryable
