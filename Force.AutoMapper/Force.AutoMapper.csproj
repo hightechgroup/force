@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>AutoMapper extensions for Force</Description>
+    <Version>1.0.0-alpha6</Version>
+    <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
+    <RepositoryUrl>http://github.com/hightechtoday/force</RepositoryUrl>
+    <Company>HighTech.Today</Company>
+    <Authors>HighTech.Today</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Force\Force.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

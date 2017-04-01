@@ -1,0 +1,7 @@
+C:\csharp_apps\Force\Force\bin\Debug\netstandard1.6\Force.deps.json
+C:\csharp_apps\Force\Force\bin\Debug\netstandard1.6\Force.dll
+C:\csharp_apps\Force\Force\bin\Debug\netstandard1.6\Force.pdb
+C:\csharp_apps\Force\Force\obj\Debug\netstandard1.6\Force.AssemblyInfo.cs
+C:\csharp_apps\Force\Force\obj\Debug\netstandard1.6\Force.dll
+C:\csharp_apps\Force\Force\obj\Debug\netstandard1.6\Force.pdb
+C:\csharp_apps\Force\Force\obj\Debug\netstandard1.6\Force.csprojResolveAssemblyReference.cache

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0-beta2</Version>
+    <Description>General-purpose .NET Library for rapid application development</Description>
+    <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
+    <Company>HighTech.Today</Company>
+    <Authors>HighTech.Today</Authors>
+    <RepositoryUrl>http://github.com/hightechtoday/force</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Extensions" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
