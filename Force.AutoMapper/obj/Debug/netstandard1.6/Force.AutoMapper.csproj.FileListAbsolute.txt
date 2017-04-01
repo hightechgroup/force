@@ -1,9 +1,0 @@
-C:\csharp_apps\Force\Force.AutoMapper\bin\Debug\netstandard1.6\Force.AutoMapper.deps.json
-C:\csharp_apps\Force\Force.AutoMapper\obj\Debug\netstandard1.6\Force.AutoMapper.csprojResolveAssemblyReference.cache
-C:\csharp_apps\Force\Force.AutoMapper\obj\Debug\netstandard1.6\Force.AutoMapper.AssemblyInfo.cs
-C:\csharp_apps\Force\Force.AutoMapper\bin\Debug\netstandard1.6\Force.AutoMapper.dll
-C:\csharp_apps\Force\Force.AutoMapper\bin\Debug\netstandard1.6\Force.AutoMapper.pdb
-C:\csharp_apps\Force\Force.AutoMapper\bin\Debug\netstandard1.6\Force.dll
-C:\csharp_apps\Force\Force.AutoMapper\bin\Debug\netstandard1.6\Force.pdb
-C:\csharp_apps\Force\Force.AutoMapper\obj\Debug\netstandard1.6\Force.AutoMapper.dll
-C:\csharp_apps\Force\Force.AutoMapper\obj\Debug\netstandard1.6\Force.AutoMapper.pdb
