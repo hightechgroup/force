@@ -16,48 +16,58 @@ namespace Force.AutoMapper
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey>
             => query
-                .ProjectTo<TProjection>(configurationProvider)
-                .ById(id);
+               .EitherProjectTo<TEntity, TProjection>(configurationProvider)
+               .ById(id);
 
-        public static IQueryable<TDest> ApplyProjectApplyAgain<TSource, TDest>(
-            this IQueryable<TSource> queryable, object spec, IConfigurationProvider configurationProvider = null)
-            where TSource : class
-            where TDest : class
+        public static IQueryable<TProjection> ApplyProjectApplyAgain<TEntity, TProjection>(
+            this IQueryable<TEntity> queryable, object spec, IConfigurationProvider configurationProvider = null)
+            where TEntity : class
+            where TProjection : class
             => queryable
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
-                .ProjectTo<TDest>(configurationProvider)
+                .EitherProjectTo<TEntity, TProjection>(configurationProvider)
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec);
 
-        public static IQueryable<TDest> ApplyProjectApplyAgainWithoutOrderBy<TSource, TDest>(
-            this IQueryable<TSource> queryable, object spec, IConfigurationProvider configurationProvider = null)
-            where TSource : class
-            where TDest : class
+        public static IQueryable<TProjection> ApplyProjectApplyAgainWithoutOrderBy<TEntity, TProjection>(
+            this IQueryable<TEntity> queryable, object spec, IConfigurationProvider configurationProvider = null)
+            where TEntity : class
+            where TProjection : class
             => queryable
                 .MaybeWhere(spec)
-                .ProjectTo<TDest>(configurationProvider)
+                .ProjectTo<TProjection>(configurationProvider)
                 .MaybeWhere(spec);
 
-        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query, IPaging spec,
+        public static IQueryable<TProjection> EitherProjectTo<TEntity, TProjection>(this IQueryable<TEntity> queryable,
+            IConfigurationProvider configurationProvider = null)
+            where TEntity : class
+            where TProjection : class
+            => queryable
+                .Either(configurationProvider != null,
+                    x => x.ProjectTo<TProjection>(configurationProvider),
+                    x => x.ProjectTo<TProjection>());
+
+
+        public static PagedResponse<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query, IPaging spec,
             IConfigurationProvider configurationProvider = null)
             where TEntity : class, IHasId
-            where TDest : class, IHasId => query
+            where TProjection : class, IHasId => query
                 .MaybeWhere(spec)
-                .ProjectTo<TDest>(configurationProvider)
+                .EitherProjectTo<TEntity, TProjection>(configurationProvider)
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
                 .OrderByIdIfNotOrdered()
                 .ToPagedResponse(spec);
 
-        public static PagedResponse<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query,
-            IPaging paging, IQueryableOrder<TDest> queryableOrder, IQueryableFilter<TEntity> entitySpec = null,
-            IQueryableFilter<TDest> destSpec = null, IConfigurationProvider configurationProvider = null)
-            where TEntity : class, IHasId where TDest : class
+        public static PagedResponse<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
+            IPaging paging, IQueryableOrder<TProjection> queryableOrder, IQueryableFilter<TEntity> entitySpec = null,
+            IQueryableFilter<TProjection> projectionSpec = null, IConfigurationProvider configurationProvider = null)
+            where TEntity : class, IHasId where TProjection : class
             => query
                 .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
-                .ProjectTo<TDest>(configurationProvider)
-                .EitherOrSelf(destSpec, x => x.Where(destSpec))
+                .EitherProjectTo<TEntity, TProjection>(configurationProvider)
+                .EitherOrSelf(projectionSpec, x => x.Where(projectionSpec))
                 .OrderBy(queryableOrder)
                 .ToPagedResponse(paging);
 
