@@ -4,7 +4,7 @@
     <TargetFrameworks>net45;netstandard1.6;netcoreapp1.1</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>AutoMapper extensions for Force</Description>
-    <Version>1.0.0-beta1</Version>
+    <Version>1.0.0-beta2</Version>
     <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
     <RepositoryUrl>http://github.com/hightechtoday/force</RepositoryUrl>
     <Company>HighTech.Today</Company>

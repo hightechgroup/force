@@ -16,15 +16,15 @@ namespace Force.AutoMapper
 
             TypeMap = assemblies
                 .SelectMany(x => x.GetTypes())
-                .Where(x => x.GetTypeInfo().GetCustomAttribute<AutomapAttribute>() != null)
-                .GroupBy(x => x.GetTypeInfo().GetCustomAttribute<AutomapAttribute>().EntityType)
+                .Where(x => x.GetTypeInfo().GetCustomAttribute<AutoMapAttribute>() != null)
+                .GroupBy(x => x.GetTypeInfo().GetCustomAttribute<AutoMapAttribute>().EntityType)
                 .ToDictionary(k => k.Key, v => v.ToArray());
 
             foreach (var kv in TypeMap)
             {
                 foreach (var v in kv.Value)
                 {
-                    var attr = v.GetTypeInfo().GetCustomAttribute<AutomapAttribute>();
+                    var attr = v.GetTypeInfo().GetCustomAttribute<AutoMapAttribute>();
 
                     if (attr.MapOptions != MapOptions.DtoToEntity)
                     {

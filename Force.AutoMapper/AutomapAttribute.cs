@@ -4,16 +4,16 @@ namespace Force.AutoMapper
 {
     public enum MapOptions: byte
     {
-        Both, EntityToDto, DtoToEntity
+        EntityToDto, DtoToEntity, Both
     }
 
-    public class AutomapAttribute : Attribute
+    public class AutoMapAttribute : Attribute
     {
         public Type EntityType { get; }
 
         public MapOptions MapOptions { get; }
 
-        public AutomapAttribute(Type entityType, MapOptions mapOptions)
+        public AutoMapAttribute(Type entityType, MapOptions mapOptions)
         {
             EntityType = entityType;
             MapOptions = mapOptions;
