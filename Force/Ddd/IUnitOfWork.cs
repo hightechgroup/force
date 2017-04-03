@@ -15,6 +15,6 @@ namespace Force.Ddd
 
         IHasId Find(Type entityType, params object[] id);
 
-        void SaveChanges();
+        void Commit();
     }
 }

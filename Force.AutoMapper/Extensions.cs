@@ -79,7 +79,7 @@ namespace Force.AutoMapper
 
             var entity = mapperInstance.Map<TEntity>(dto);
             uow.Add(entity);
-            uow.SaveChanges();
+            uow.Commit();
 
             return entity.Id;
         }
@@ -93,7 +93,7 @@ namespace Force.AutoMapper
 
             var entity = uow.Find<TEntity>(id);
             mapperInstance.Map(dto, entity);
-            uow.SaveChanges();
+            uow.Commit();
         }
 
         public static TDest Map<TDest>(this object obj, IMapper mapper = null) =>

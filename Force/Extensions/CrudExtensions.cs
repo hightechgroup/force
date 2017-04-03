@@ -44,7 +44,7 @@ namespace Force.Extensions
         {
             var entity = mapper(dto, uow);
             uow.Add(entity);
-            uow.SaveChanges();
+            uow.Commit();
             return entity.Id;
         }
 
@@ -59,7 +59,7 @@ namespace Force.Extensions
                 uow.Add(entity);
             }
 
-            uow.SaveChanges();
+            uow.Commit();
             return entity.Id;
         }
 
@@ -70,7 +70,7 @@ namespace Force.Extensions
         {
             var entity = uow.Find<TEntity>(id);
             mapper(dto, entity);
-            uow.SaveChanges();
+            uow.Commit();
         }
 
         public static void Update<TKey, TEntity, TDto>(this IUnitOfWork uow, TEntity entity,
@@ -79,7 +79,7 @@ namespace Force.Extensions
             where TKey : IEquatable<TKey>
         {
             mapper(dto, entity);
-            uow.SaveChanges();
+            uow.Commit();
         }
     }
 }
