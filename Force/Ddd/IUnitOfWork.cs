@@ -7,14 +7,14 @@ namespace Force.Ddd
         void Add<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
-        void Delete<TEntity>(TEntity entity)
+        void Remove<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
-        TEntity Find<TEntity>(object id)
+        TEntity Find<TEntity>(params object[] id)
             where TEntity : class, IHasId;
 
-        IHasId Find(Type entityType, object id);
+        IHasId Find(Type entityType, params object[] id);
 
-        void Commit();
+        void SaveChanges();
     }
 }

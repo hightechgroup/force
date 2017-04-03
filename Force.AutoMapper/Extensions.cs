@@ -12,7 +12,7 @@ namespace Force.AutoMapper
     {
         public static TProjection ProjectById<TKey, TEntity, TProjection>(
             this IQueryable<TEntity> query, TKey id, IConfigurationProvider configurationProvider = null)
-            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IEquatable<TKey>
             where TProjection : class, IHasId<TKey>
             where TEntity : class, IHasId<TKey>
             => query
@@ -73,13 +73,13 @@ namespace Force.AutoMapper
 
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto, IMapper mapper = null)
             where TEntity : class, IHasId<TKey>
-            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IEquatable<TKey>
         {
             var mapperInstance = mapper ?? Mapper.Instance;
 
             var entity = mapperInstance.Map<TEntity>(dto);
             uow.Add(entity);
-            uow.Commit();
+            uow.SaveChanges();
 
             return entity.Id;
         }
@@ -87,13 +87,13 @@ namespace Force.AutoMapper
         public static void Update<TKey, TEntity, TDto>(this IUnitOfWork uow, TKey id,
             TDto dto, IMapper mapper = null)
             where TEntity : class, IHasId<TKey>
-            where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
+            where TKey : IEquatable<TKey>
         {
             var mapperInstance = mapper ?? Mapper.Instance;
 
             var entity = uow.Find<TEntity>(id);
             mapperInstance.Map(dto, entity);
-            uow.Commit();
+            uow.SaveChanges();
         }
 
         public static TDest Map<TDest>(this object obj, IMapper mapper = null) =>

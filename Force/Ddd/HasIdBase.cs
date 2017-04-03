@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace Force.Ddd
 {
     public abstract class HasIdBase<TKey> : IHasId<TKey>
-        where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
+        where TKey: IEquatable<TKey>
     {
         [Key, Required]
-        public virtual TKey Id { get; protected set; }
+        public virtual TKey Id { get; set; }
 
         object IHasId.Id => Id;
     }

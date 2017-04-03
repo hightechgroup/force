@@ -4,7 +4,7 @@ using System.Linq;
 namespace Force.Ddd.Pagination
 {
     public class IdPaging<TEntity, TKey>: Paging<TEntity>
-        where TKey: IComparable, IComparable<TKey>, IEquatable<TKey>
+        where TKey: IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
         public IdPaging(int page, int take)
