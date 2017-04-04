@@ -6,11 +6,11 @@ using AutoMapper;
 
 namespace Force.AutoMapper
 {
-    public class AttributeProfile : Profile
+    public class AutoMapAttributeProfile : Profile
     {
         public IDictionary<Type, Type[]> TypeMap;
 
-        public AttributeProfile(params Assembly[] assemblies)
+        public AutoMapAttributeProfile(params Assembly[] assemblies)
         {
             if (assemblies == null) throw new ArgumentNullException(nameof(assemblies));
 
@@ -26,12 +26,12 @@ namespace Force.AutoMapper
                 {
                     var attr = v.GetTypeInfo().GetCustomAttribute<AutoMapAttribute>();
 
-                    if (attr.MapOptions != MapOptions.DtoToEntity)
+                    if (attr.MapOptions.HasFlag(MapOptions.EntityToDto))
                     {
                         CreateMap(kv.Key, v);
                     }
 
-                    if (attr.MapOptions != MapOptions.EntityToDto)
+                    if (attr.MapOptions.HasFlag( MapOptions.DtoToEntity))
                     {
                         var hasParameterlessCtor = kv.Key
                             .GetTypeInfo()
