@@ -52,7 +52,7 @@ namespace Force.Ddd.Pagination
     public static class PagedEnumerableExtensions
     {
         public static PagedResponse<T> ToPagedResponse<T>(this IOrderedQueryable<T> queryable, IPaging  paging)
-            => new PagedResponse<T>(queryable.Paginate(paging), queryable.Count());
+            => new PagedResponse<T>(queryable.Paginate(paging).ToArray(), queryable.Count());
 
         public static IQueryable<T> Paginate<T>(this IOrderedQueryable<T> queryable, IPaging  paging) => queryable
             .Skip((paging.Page - 1) * paging.Take)
@@ -61,7 +61,7 @@ namespace Force.Ddd.Pagination
         public static IPagedEnumerable<T> ToPagedEnumerable<T>(this IOrderedQueryable<T> queryable,
             IPaging paging)
             where T : class
-            => From(queryable.Paginate(paging), queryable.Count());
+            => From(queryable.Paginate(paging).ToArray(), queryable.Count());
 
         public static IPagedEnumerable<T> From<T>(IEnumerable<T> inner, int totalCount)
             =>  new PagedEnumerable<T>(inner, totalCount);
