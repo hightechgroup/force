@@ -25,15 +25,28 @@ namespace Force.Extensions
             where TEntity : class, IHasId<TKey>
             => query.Select(projector).ById(id);
 
-        public static IPagedEnumerable<TDest> Paged<TEntity, TDest>(this IQueryable<TEntity> query,
-            IPaging spec , Expression<Func<TEntity, TDest>> projectionExpression)
+        public static IPagedEnumerable<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
+            IPaging spec, Expression<Func<TEntity, TProjection>> projectionExpression)
             where TEntity : class, IHasId
-            where TDest : class, IHasId
+            where TProjection : class, IHasId
             => query
                 .MaybeWhere(spec)
                 .Select(projectionExpression)
                 .MaybeWhere(spec)
                 .MaybeOrderBy(spec)
+                .OrderByIdIfNotOrdered()
+                .ToPagedEnumerable(spec);
+
+        public static IPagedEnumerable<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
+            IPaging spec, IQueryableOrder<TProjection> queryableOrder, Expression<Func<TEntity, TProjection>> projectionExpression, IQueryableFilter<TEntity> entitySpec = null,
+            IQueryableFilter<TProjection> projectionSpec = null)
+            where TEntity : class, IHasId
+            where TProjection : class, IHasId
+            => query
+                .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
+                .Select(projectionExpression)
+                .EitherOrSelf(projectionSpec, x => x.Where(projectionSpec))
+                .OrderBy(queryableOrder)
                 .OrderByIdIfNotOrdered()
                 .ToPagedEnumerable(spec);
 

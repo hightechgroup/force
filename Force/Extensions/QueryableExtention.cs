@@ -49,8 +49,8 @@ namespace Force.Extensions
                 : query.Where(predicateIfFalse);
 
         public static IQueryable<T> WhereIfNotNull<T>(this IQueryable<T> query, object obj,
-            Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
-            => query.WhereIf(obj != null, predicateIfTrue, predicateIfFalse);
+            Expression<Func<T, bool>> predicateIfTrue)
+            => query.WhereIf(obj != null, predicateIfTrue);
 
         public static bool In<T>(this T value, params T[] values)
             =>  values != null && values.Contains(value);
