@@ -2,6 +2,7 @@
 
 namespace Force.AutoMapper
 {
+    [Flags]
     public enum MapOptions
     {
         EntityToDto= 0x0,
