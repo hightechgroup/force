@@ -28,7 +28,7 @@ namespace Force.Ddd.Pagination
 
         public int Page
         {
-            get { return _page; }
+            get => _page;
             set
             {
                 if (value <= 0)
@@ -42,7 +42,7 @@ namespace Force.Ddd.Pagination
 
         public int Take
         {
-            get { return _take; }
+            get => _take;
             set
             {
                 if (value <= 0)
@@ -67,6 +67,6 @@ namespace Force.Ddd.Pagination
         {
         }
 
-        public abstract IOrderedQueryable<T> Apply(IQueryable<T> queryable);
+        public abstract IOrderedQueryable<T> Order(IQueryable<T> queryable);
     }
 }
