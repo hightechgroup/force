@@ -67,6 +67,6 @@ namespace Force.Ddd.Pagination
         {
         }
 
-        public abstract IOrderedQueryable<T> Order(IQueryable<T> queryable);
+        public abstract IOrderedQueryable<T> OrderBy(IQueryable<T> queryable);
     }
 }
