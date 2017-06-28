@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard1.6;netcoreapp1.1</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.0-beta8</Version>
+    <Version>1.0.0</Version>
     <Description>General-purpose .NET Library for rapid application development</Description>
     <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
     <Company>HighTech.Today</Company>
