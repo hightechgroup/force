@@ -72,17 +72,17 @@ namespace Force.Extensions
 
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IQueryableFilter<T> spec)
             where T : class
-            => spec.Apply(source);
+            => spec.Filter(source);
 
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, IQueryableOrder<T> spec)
             where T : class
-            => spec.OrderBy(source);
+            => spec.Order(source);
 
         public static IQueryable<T> MaybeOrderBy<T>(this IQueryable<T> source, object sort)
         {
             var srt = sort as IQueryableOrder<T>;
             return srt != null
-                ? srt.OrderBy(source)
+                ? srt.Order(source)
                 : source;
         }
 
@@ -98,7 +98,7 @@ namespace Force.Extensions
             var specification = spec as IQueryableFilter<T>;
             if (specification != null)
             {
-                source = specification.Apply(source);
+                source = specification.Filter(source);
             }
 
             var expr = spec as Expression<Func<T, bool>>;

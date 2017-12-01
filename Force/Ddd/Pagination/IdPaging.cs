@@ -14,7 +14,7 @@ namespace Force.Ddd.Pagination
         public IdPaging()
         { }
 
-        public override IOrderedQueryable<TEntity> OrderBy(IQueryable<TEntity> queryable) => queryable.OrderBy(x => x.Id);
+        public override IOrderedQueryable<TEntity> Order(IQueryable<TEntity> queryable) => queryable.OrderBy(x => x.Id);
     }
 
     public class IdPaging<TEntity> : IdPaging<TEntity, int>

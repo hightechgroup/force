@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>AsQueryableVsExpressionCompile</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.10.10, OS=Windows 10 Redstone 2 [1703, Creators Update] (10.0.15063.726)
+Processor=Intel Core i7-7700 CPU 3.60GHz (Kaby Lake), ProcessorCount=8
+Frequency=3515622 Hz, Resolution=284.4447 ns, Timer=TSC
+.NET Core SDK=2.0.3
+  [Host]     : .NET Core 2.0.3 (Framework 4.6.25815.02), 64bit RyuJIT
+  DefaultJob : .NET Core 2.0.3 (Framework 4.6.25815.02), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>          Method</th><th>   Mean</th><th>  Error</th><th> StdDev</th>
+</tr>
+</thead><tbody><tr><td>         Compile</td><td>45,464.56 ns</td><td>363.2867 ns</td><td>339.8186 ns</td>
+</tr><tr><td>     AsQueryable</td><td>72.32 ns</td><td>0.3044 ns</td><td>0.2201 ns</td>
+</tr><tr><td>       ListWhere</td><td>170.17 ns</td><td>0.5104 ns</td><td>0.4775 ns</td>
+</tr><tr><td>AsQueryableWhereToList</td><td>322,938.13 ns</td><td>4,009.5173 ns</td><td>3,750.5046 ns</td>
+</tr></tbody></table>
+</body>
+</html>

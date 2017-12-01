@@ -4,6 +4,6 @@ namespace Force.Ddd
 {
     public interface IQueryableOrder<T>
     {
-        IOrderedQueryable<T> OrderBy(IQueryable<T> queryable);
+        IOrderedQueryable<T> Order(IQueryable<T> queryable);
     }
 }

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Force.Demo.Domain\Force.Demo.Domain.csproj">
+      <Project>{A85993D5-3642-44BC-8381-5DC858692C73}</Project>
+      <Name>Force.Demo.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

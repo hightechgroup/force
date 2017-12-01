@@ -2,17 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Force.Extensions;
+using Force.Infrastructure;
 
 namespace Force.Ddd
 {
-    public static class SpecExtenions
-    {
-        public static Spec<T> AsSpec<T>(this Expression<Func<T, bool>> expr)
-            where T : class, IHasId
-            => new Spec<T>(expr);
-    }
-
-    public sealed class Spec<T> : IQueryableFilter<T>
+    public class Spec<T> : IQueryableFilter<T>
         where T: class, IHasId
     {
         public Expression<Func<T, bool>> Expression { get; }
@@ -23,7 +17,7 @@ namespace Force.Ddd
             if (expression == null) throw new ArgumentNullException(nameof(expression));
         }
 
-        public static explicit operator Expression<Func<T, bool>>(Spec<T> spec)
+        public static implicit operator Expression<Func<T, bool>>(Spec<T> spec)
             => spec.Expression;
 
         public static bool operator false(Spec<T> spec)
@@ -45,9 +39,36 @@ namespace Force.Ddd
         public static Spec<T> operator !(Spec<T> spec)
             => new Spec<T>(spec.Expression.Not());
 
-        public IQueryable<T> Apply(IQueryable<T> query)
+        public IQueryable<T> Filter(IQueryable<T> query)
             => query.Where(Expression);
 
         public bool IsSatisfiedBy(T obj) => Expression.AsFunc()(obj);
     }
+    
+    public static class SpecExtenions
+    {
+        public static Spec<T> AsSpec<T>(this Expression<Func<T, bool>> expr)
+            where T : class, IHasId
+            => new Spec<T>(expr);
+        
+        public static bool Satisfy<T>(this T obj, Func<T, bool> spec)
+        {
+            return spec(obj);
+        }
+
+        public static bool SatisfyExpresion<T>(this T obj, Expression<Func<T, bool>> spec)
+        {
+            return spec.AsFunc()(obj);
+        }
+
+        public static bool IsSatisfiedBy<T>(this Func<T, bool> spec, T obj)
+        {
+            return spec(obj);
+        }
+
+        public static bool IsSatisfiedBy<T>(this Expression<Func<T, bool>> spec, T obj)
+        {
+            return spec.AsFunc()(obj);
+        }  
+    }    
 }

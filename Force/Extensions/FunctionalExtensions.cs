@@ -15,13 +15,12 @@ namespace Force.Extensions
             this TSource source, Func<TSource, TResult> func)
             => func(source);
 
-
-        public static T PipeToIfNotNull<T>(this T source, Func<object, T> evaluator)
-            where T : class
-            => source == null
-            ? null
-            : PipeTo(source, x => evaluator(x));
-
+        public static T PipeToOrSelf<T>(this T obj, Func<T, bool> condition, Func<T, T> action)
+            => condition(obj) ? action(obj) : obj;               
+        
+        public static T PipeToOrSelf<T>(this T obj, Func<T, T> func)
+            => PipeToOrSelf(obj, x => x != null, func);
+        
         public static TOutput Either<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
             Func<TInput, TOutput> ifFalse)
             => o.Either(x => x != null, ifTrue, ifFalse);
@@ -34,21 +33,9 @@ namespace Force.Extensions
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition ? ifTrue(o) : ifFalse(o);
 
-        public static TInput EitherOrSelf<TInput>(this TInput o,
-            Func<TInput, bool> condition,
-            Func<TInput, TInput> ifTrue)
-            where TInput : class
-            => condition(o) ? ifTrue(o) : o;
-
-        public static TInput EitherOrSelf<TInput>(this TInput o,
-            object obj,
-            Func<TInput, TInput> ifTrue)
-            where TInput : class
-            => obj != null ? ifTrue(o) : o;
-
-        public static T Do<T>(this T obj, Action<T> action)
+        public static T Do<T>(this T obj, Func<T, bool> condition, Action<T> action)
         {
-            if (obj != null)
+            if (condition(obj))
             {
                 action(obj);
             }
@@ -56,26 +43,9 @@ namespace Force.Extensions
             return obj;
         }
 
-        public static bool Satisfy<T>(this T obj, Func<T, bool> spec)
-        {
-            return spec(obj);
-        }
-
-        public static bool SatisfyExpresion<T>(this T obj, Expression<Func<T, bool>> spec)
-        {
-            return spec.AsFunc()(obj);
-        }
-
-        public static bool IsSatisfiedBy<T>(this Func<T, bool> spec, T obj)
-        {
-            return spec(obj);
-        }
-
-        public static bool IsSatisfiedBy<T>(this Expression<Func<T, bool>> spec, T obj)
-        {
-            return spec.AsFunc()(obj);
-        }
-
+        public static T Do<T>(this T obj, Action<T> action)
+            => Do(obj, x => x != null, action);
+        
         #region Cqrs
 
         public static TResult PipeTo<TSource, TResult>(
@@ -102,10 +72,10 @@ namespace Force.Extensions
             => query.Ask(new TInput());
 
         public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IQuery<TIn, TOut> query)
-            => x => query.Ask(x);
+            => query.Ask;
 
         public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IHandler<TIn, TOut> handler)
-            => x => handler.Handle(x);
+            => handler.Handle;
 
         #endregion
     }

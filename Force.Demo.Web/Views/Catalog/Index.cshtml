@@ -1,0 +1,13 @@
+@using Force.Demo.Domain
+@model IEnumerable<Category>
+
+<h2>Каталог</h2>
+@if (Model.Any())
+{
+    <ul>
+    @foreach (var cat in Model)
+    {
+        <li>@Html.ActionLink(cat.Name, "Index", new {cat.Url})</li>
+    }
+    </ul>
+}

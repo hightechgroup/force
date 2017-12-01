@@ -38,14 +38,16 @@ namespace Force.Extensions
                 .ToPagedEnumerable(spec);
 
         public static IPagedEnumerable<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
-            IPaging spec, IQueryableOrder<TProjection> queryableOrder, Expression<Func<TEntity, TProjection>> projectionExpression, IQueryableFilter<TEntity> entitySpec = null,
+            IPaging spec, IQueryableOrder<TProjection> queryableOrder,
+            Expression<Func<TEntity, TProjection>> projectionExpression,
+            IQueryableFilter<TEntity> entitySpec = null,
             IQueryableFilter<TProjection> projectionSpec = null)
             where TEntity : class, IHasId
             where TProjection : class, IHasId
             => query
-                .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
+                .PipeToOrSelf(_ => entitySpec != null, x => x.Where(entitySpec))
                 .Select(projectionExpression)
-                .EitherOrSelf(projectionSpec, x => x.Where(projectionSpec))
+                .PipeToOrSelf(_ => projectionSpec != null, x => x.Where(projectionSpec))
                 .OrderBy(queryableOrder)
                 .OrderByIdIfNotOrdered()
                 .ToPagedEnumerable(spec);

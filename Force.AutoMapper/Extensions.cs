@@ -65,9 +65,9 @@ namespace Force.AutoMapper
             IQueryableFilter<TProjection> projectionSpec = null, IConfigurationProvider configurationProvider = null)
             where TEntity : class, IHasId where TProjection : class
             => query
-                .EitherOrSelf(entitySpec, x => x.Where(entitySpec))
+                .PipeToOrSelf(_ => entitySpec != null, x => x.Where(entitySpec))
                 .EitherProjectTo<TEntity, TProjection>(configurationProvider)
-                .EitherOrSelf(projectionSpec, x => x.Where(projectionSpec))
+                .PipeToOrSelf(_ => projectionSpec != null, x => x.Where(projectionSpec))
                 .OrderBy(queryableOrder)
                 .ToPagedResponse(paging);
 
@@ -98,7 +98,7 @@ namespace Force.AutoMapper
 
         public static TDest Map<TDest>(this object obj, IMapper mapper = null) =>
             mapper
-                .EitherOrSelf(x => x == null, _ => Mapper.Instance)
+                .PipeToOrSelf(x => x == null, _ => Mapper.Instance)
                 .Map<TDest>(obj);
     }
 }
