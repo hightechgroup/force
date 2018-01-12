@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Force.Demo.Data;
 using Force.Demo.Domain;
+using Force.Demo.Web.LinqToDb;
+using LinqToDB.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -21,26 +23,34 @@ namespace Force.Demo.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            var connection = @"";
-            //services.AddDbContext<DemoContext>(options => options.UseNpgsql(connection));  
+            services
+                .AddMiniProfiler()
+                .AddEntityFramework();
             
-            services.AddSingleton(_categories.AsQueryable());
+            services.AddMvc();
+            services.AddDbContext<DemoContext>(options => options.UseSqlServer(DemoContext.ConnectionString));
+            services.AddScoped(x => new DemoConnection());
+            services.AddScoped<IQueryable<Category>>(x =>
+            {
+                var dbContext = x.GetService<DemoContext>();
+                return dbContext.Categories;
+            });                
+            
+            DataConnection.DefaultSettings = new ForceSettings();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-
+            
+#if DEBUG
+            app.UseDeveloperExceptionPage();
+#endif
+      
+            app.UseMiniProfiler();
             app.UseMvc();
-            
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
-                    
+
         }
     }
 }

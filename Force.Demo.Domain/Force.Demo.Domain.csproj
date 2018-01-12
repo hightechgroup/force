@@ -5,4 +5,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Force\Force.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="linq2db.Core" Version="1.10.1" />
+  </ItemGroup>
 </Project>

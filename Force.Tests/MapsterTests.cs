@@ -13,9 +13,9 @@ namespace Force.Tests
         {
             var products = new[]
             {
-                new Product(100){Id = 1},
-                new Product(200){Id = 2},
-                new Product(300){Id = 3}
+                new Product("", 100),
+                new Product("",200),
+                new Product("",300)
             }.AsQueryable();
 
             var dtos = products.ProjectToType<ProductDto>().ToList();
