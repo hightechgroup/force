@@ -113,12 +113,12 @@ namespace Force.Extensions
         public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
             where TKey : IEquatable<TKey>
             where TEntity : class, IHasId<TKey>
-            => queryable.SingleOrDefault(x => x.Id.Equals(id));
+            => queryable.FirstOrDefault(x => x.Id.Equals(id));
 
         public static TProjection ById<TKey, TEntity, TProjection>(this IQueryable<TEntity> queryable, TKey id, Expression<Func<TEntity, TProjection>> projectionExpression)
             where TKey : IEquatable<TKey>
             where TEntity : class, IHasId<TKey>
             where TProjection : class, IHasId<TKey>
-            => queryable.Select(projectionExpression).SingleOrDefault(x => x.Id.Equals(id));
+            => queryable.Select(projectionExpression).FirstOrDefault(x => x.Id.Equals(id));
     }
 }

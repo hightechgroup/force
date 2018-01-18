@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using FastMember;
 using Force.Demo.Data;
 using Force.Demo.Domain;
 using Force.Demo.Web.LinqToDb;
@@ -34,7 +37,30 @@ namespace Force.Demo.Web
             {
                 var dbContext = x.GetService<DemoContext>();
                 return dbContext.Categories;
-            });                
+            });
+
+            services.AddScoped<Func<Type, object, bool>>(x =>
+            {
+                bool Func(Type t, object o)
+                {
+                    var dbContext = x.GetService<DemoContext>();
+                    return dbContext.Find(t, o) != null;
+                };
+
+                return Func;
+            });
+            
+            services.AddScoped<Func<Type, object, object>>(x =>
+            {
+                object Func(Type t, object o)
+                {
+                    var typeAccessor = TypeAccessor.Create(t);
+                    var dbContext = x.GetService<DemoContext>();
+                    return dbContext.Find(t, o);
+                };
+                
+                return Func;
+            });
             
             DataConnection.DefaultSettings = new ForceSettings();
         }

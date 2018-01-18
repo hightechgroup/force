@@ -1,29 +1,30 @@
 ﻿using System.Linq;
+using Force.Demo.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Force.Demo.Web
+namespace Force.MvcCore
 {
-    public enum ValidationResult
+    public enum ValidationMode
     {
-        View,
-        Json
+        Mvc,
+        WebApi
     }
     
     public class ValidateAttribute: ActionFilterAttribute
     {
-        private readonly ValidationResult _result;
+        private readonly ValidationMode _mode;
 
-        public ValidateAttribute(ValidationResult result = ValidationResult.Json)
+        public ValidateAttribute(ValidationMode mode = ValidationMode.WebApi)
         {
-            _result = result;
+            _mode = mode;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
             {
-                if (_result == ValidationResult.Json)
+                if (_mode == ValidationMode.WebApi)
                 {
                     context.Result = new ValidationFailedResult(context.ModelState);
                 }

@@ -6,15 +6,15 @@ using Force.Demo.Data;
 using Force.Demo.Domain;
 using Force.Demo.Web.LinqToDb;
 using Force.Extensions;
+using Force.MvcCore;
 using LinqToDB.Data;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Force.Demo.Web.Shop.Catalog
 {
     //https://liiw.blogspot.ru/2017/02/ef-core-vs-linq2db.html
-    [Validate(ValidationResult.View)]
+    [Validate]
     public class CatalogController: Controller
     {
         private readonly IQueryable<Category> _categories;
@@ -35,17 +35,22 @@ namespace Force.Demo.Web.Shop.Catalog
             //_dc.Categories.Add(new Category("Шины", "tires"));
 
             var cat = new Category("Штуки", "shtuki");
-            var pr = new Product("Продуктик", 100500, cat);
-            _dc.Products.Add(pr);
+            //var pr = new Product("Продуктик", 100500, cat);
+            _dc.Categories.Add(cat);
             _dc.SaveChanges();
             return Ok();
         }
         
         [Route("test-ef")]
-        public IActionResult TestEf(TestParam param)
+        public IActionResult TestEf()
         {
-            var products = _dc.Products.ProjectToType<NameDto>().ToList();
-            return View("test", products);
+            var r1 = new Category().ValidateToResult();
+            var r2 = new Product().ValidateToResult();
+            return Ok(new
+            {
+                c1 = Result.Combine(Result.Success, Result.Succeed<Category>(new Category())),
+                c2 = Result.Combine(r1, r2)
+            });
         }
         
         [Route("test-linq-to-db")]
@@ -57,7 +62,7 @@ namespace Force.Demo.Web.Shop.Catalog
 
         [Route("test-dapper")]
         public IActionResult TestLinqToDb()
-        {
+        {            
             return Ok();
         }
 
@@ -86,10 +91,12 @@ namespace Force.Demo.Web.Shop.Catalog
     public class TestParam
     {
         [Required]
+        [EntityId(typeof(Category))]
         public int A { get; set; }
         
         [Required]
-        public int B { get; set; }
+        [ModelBinder(typeof(EntityModelBinder))]
+        public Category Category { get; set; }
     }
 
     public class SomeEntity

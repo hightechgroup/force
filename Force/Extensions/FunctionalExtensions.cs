@@ -43,9 +43,6 @@ namespace Force.Extensions
             return obj;
         }
 
-        public static T Do<T>(this T obj, Action<T> action)
-            => Do(obj, x => x != null, action);
-        
         #region Cqrs
 
         public static TResult PipeTo<TSource, TResult>(

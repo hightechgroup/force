@@ -3,7 +3,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Shop\Catalog" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
@@ -24,5 +23,6 @@
       <Project>{FD3CFC17-6F65-4880-B49B-9E3D6F41B474}</Project>
       <Name>Force.Demo.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Force.MvcCore\Force.MvcCore.csproj" />
   </ItemGroup>
 </Project>
