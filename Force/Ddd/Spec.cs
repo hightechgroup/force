@@ -9,6 +9,19 @@ namespace Force.Ddd
     public class Spec<T> : IQueryableFilter<T>
         where T: class, IHasId
     {
+        public static bool operator false(Spec<T> spec) => false;
+        
+        public static bool operator true(Spec<T> spec) => false;
+        
+        public static Spec<T> operator &(Spec<T> spec1, Spec<T> spec2)
+            => new Spec<T>(spec1.Expression.And(spec2.Expression));
+
+        public static Spec<T> operator |(Spec<T> spec1, Spec<T> spec2)
+            => new Spec<T>(spec1.Expression.Or(spec2.Expression));
+
+        public static Spec<T> operator !(Spec<T> spec)
+            => new Spec<T>(spec.Expression.Not());
+        
         public Expression<Func<T, bool>> Expression { get; }
 
         public Spec(Expression<Func<T, bool>> expression)
@@ -19,25 +32,6 @@ namespace Force.Ddd
 
         public static implicit operator Expression<Func<T, bool>>(Spec<T> spec)
             => spec.Expression;
-
-        public static bool operator false(Spec<T> spec)
-        {
-            return false;
-        }
-
-        public static bool operator true(Spec<T> spec)
-        {
-            return false;
-        }
-
-        public static Spec<T> operator &(Spec<T> spec1, Spec<T> spec2)
-            => new Spec<T>(spec1.Expression.And(spec2.Expression));
-
-        public static Spec<T> operator |(Spec<T> spec1, Spec<T> spec2)
-            => new Spec<T>(spec1.Expression.Or(spec2.Expression));
-
-        public static Spec<T> operator !(Spec<T> spec)
-            => new Spec<T>(spec.Expression.Not());
 
         public IQueryable<T> Filter(IQueryable<T> query)
             => query.Where(Expression);

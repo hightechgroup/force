@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Force.Cqrs
 {
@@ -20,5 +21,5 @@ namespace Force.Cqrs
     public interface IAsyncQuery<in TSpecification, TOutput>
         : IQuery<TSpecification, Task<TOutput>>
     {
-    }
+    }    
 }
