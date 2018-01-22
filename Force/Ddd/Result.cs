@@ -52,6 +52,11 @@ namespace Force.Ddd
             Failure = failure;
         }
 
+        public static VoidResult Invoke<T>(Action<T> action, T obj)
+        {
+            action(obj);
+            return new VoidResult(new Void());
+        }
         
         public static Result Combine(params Result[] results) => new Result(results);
 
@@ -77,7 +82,7 @@ namespace Force.Ddd
         }
     }
 
-    public sealed class Result<T> : Result
+    public class Result<T> : Result
     {
         public static implicit operator Result<T>(T value) => Result.Succeed<T>(value);
         
@@ -92,12 +97,41 @@ namespace Force.Ddd
             Value = value;
         }
 
+        public Result<T> OnSuccess(Action<T> action)
+        {
+            action(Value);
+            return this;
+        }
+        
+        public Result<T> OnFailure(Action<Failure> action)
+        {
+            action(Failure);
+            return this;
+        }
+        
         public TOut Return<TOut>(Func<T, TOut> success, Func<Failure, TOut> failure)
             => IsFaulted
                 ? failure(Failure)
                 : success(Value);
     }
 
+    public sealed class Void
+    {
+        internal Void()
+        {}
+    }
+    
+    public class VoidResult : Result<Void>
+    {
+        internal VoidResult(Failure failure) : base(failure)
+        {
+        }
+
+        internal VoidResult(Void value) : base(value)
+        {
+        }
+    }
+    
     public static class ResultExtensions
     {
         public static Result<TDestination> Select<TSource, TDestination>(this Result<TSource> source,
@@ -118,7 +152,7 @@ namespace Force.Ddd
             Func<TSource, TIntermediate, TDestination> resultSelector)
             => result.SelectMany<TSource, TDestination>(s => inermidiateSelector(s)
                 .SelectMany<TIntermediate, TDestination>(m => resultSelector(s, m)));
-
+        
         public static Result Try(this Action action)
         {
             try
@@ -145,23 +179,35 @@ namespace Force.Ddd
             }
         }
 
-        public static void SendEmail(ChangeUserNameCommand cmd)
+        public static void SendEmail(string cmd)
         {
             throw new NotImplementedException();            
-        }        
+        }  
+        
+        public static void SendEmail2(string cmd)
+        {
+            throw new NotImplementedException();            
+        } 
         
         public static Result<string> ChangeUserName(ChangeUserNameCommand cmd)
         {
             throw new NotImplementedException();
         }
 
-        public static Result Query(ChangeUserNameCommand command)
-            =>
-                from validationResult in command.ValidateToResult()
-                from changeResult in ChangeUserName(validationResult)
-                select changeResult;
+        public static Result Query(ChangeUserNameCommand command) =>
+            from validation in command.ValidateToResult()
+            from updateDb in ChangeUserName(validation)
+            from sendEmail in Result.Invoke(SendEmail, updateDb)
+            select sendEmail;
 
-
+        public static Result Imperative(ChangeUserNameCommand command)
+        {
+            var res = command.ValidateToResult();
+            if (res.IsFaulted) return res;
+            
+            return ChangeUserName(command)
+                .OnSuccess(x => SendEmail(x));
+        }        
     }
 
     public class ChangeUserNameCommand
