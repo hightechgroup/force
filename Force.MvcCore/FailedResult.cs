@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Force.Ddd;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -6,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Force.Demo.Web
 {
     // https://stackoverflow.com/questions/3290182/rest-http-status-codes-for-failed-validation-or-invalid-duplicate
-    internal class ValidationFailedResult: JsonResult
+    internal class FailedResult: JsonResult
     {
-        public ValidationFailedResult(ModelStateDictionary modelState)
+        public FailedResult(ModelStateDictionary modelState)
             : base(modelState.Select(x => new
                 {
                     x.Key,
@@ -16,6 +17,11 @@ namespace Force.Demo.Web
                     x.Value.Errors
                 }).ToList())        
         {
+        }
+
+        public FailedResult(Failure failure)
+            : base(failure)
+        {         
         }
 
         public override void ExecuteResult(ActionContext context)

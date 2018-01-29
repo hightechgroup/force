@@ -3,14 +3,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\Users\max\.nuget\packages\fastmember\1.1.0\lib\netstandard1.3\FastMember.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Annotations, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\..\..\Users\max\.nuget\packages\system.componentmodel.annotations\4.3.0\ref\netstandard1.4\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FastMember" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
   </ItemGroup>

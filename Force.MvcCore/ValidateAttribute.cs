@@ -26,12 +26,12 @@ namespace Force.MvcCore
             {
                 if (_mode == ValidationMode.WebApi)
                 {
-                    context.Result = new ValidationFailedResult(context.ModelState);
+                    context.Result = new FailedResult(context.ModelState);
                 }
                 else
                 {
                     context.Result = ((Controller)context.Controller).View(context.ActionArguments.Values.First());
-                    ValidationFailedResult.SetStatusCodeAndHeaders(context.HttpContext);
+                    FailedResult.SetStatusCodeAndHeaders(context.HttpContext);
                 }
             }
         }

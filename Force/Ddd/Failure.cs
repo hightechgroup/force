@@ -7,8 +7,8 @@ using Force.Extensions;
 namespace Force.Ddd
 {
     public class Failure
-    {
-        public static implicit operator Failure(Exception e) => new Failure(e);
+    {        
+        public static implicit operator Failure(Exception e) => new ExceptionFailure(e);
                 
         public Failure(params Failure[] failures)
         {
@@ -28,11 +28,6 @@ namespace Force.Ddd
             Data = new ReadOnlyDictionary<string, object>(dict);
         }
 
-        public Failure(Exception exception)
-        {
-            Message = exception.Message;
-            Exception = exception;
-        }
         
         public Failure(string message)
         {
@@ -47,8 +42,6 @@ namespace Force.Ddd
         
         public string Message { get; }
 
-        public Exception Exception { get; }
-        
         public ReadOnlyDictionary<string, object> Data { get; protected set; }
     }
 }

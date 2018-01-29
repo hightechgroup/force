@@ -22,7 +22,7 @@ namespace Force.Ddd
         public static Spec<T> operator !(Spec<T> spec)
             => new Spec<T>(spec.Expression.Not());
         
-        public Expression<Func<T, bool>> Expression { get; }
+        public virtual Expression<Func<T, bool>> Expression { get; }
 
         public Spec(Expression<Func<T, bool>> expression)
         {

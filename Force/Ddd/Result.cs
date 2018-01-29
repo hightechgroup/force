@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Force.Cqrs;
 
 namespace Force.Ddd
 {
@@ -9,17 +10,17 @@ namespace Force.Ddd
     {
         public static implicit operator Result (Failure failure) => new Result(failure);
         
-        public static bool operator false(Result result) => false;
+        public static bool operator false(Result result) => result.IsFaulted;
         
-        public static bool operator true(Result result) => false;
+        public static bool operator true(Result result) => !result.IsFaulted;
 
         public static Result operator &(Result result1, Result result2)
             => Result.Combine(result1, result2);
 
         public static Result operator |(Result result1, Result result2)
             => result1.IsFaulted ? result2 : result1;
-
-        public Failure Failure { get; private set; }
+        
+        public Failure Failure { get; internal set; }
 
         public bool IsFaulted => Failure != null;
 
@@ -51,12 +52,32 @@ namespace Force.Ddd
         {
             Failure = failure;
         }
-
-        public static VoidResult Invoke<T>(Action<T> action, T obj)
+        
+        public static Result Try(Action action)
         {
-            action(obj);
-            return new VoidResult(new Void());
+            try
+            {
+                action();
+                return Result.Success;
+            }
+            catch (Exception e)
+            {
+                return new Result(e);
+            }
         }
+        
+        public static Result<TDestination> Try<TSource, TDestination>(Func<TSource, TDestination> func, 
+            TSource source)
+        {
+            try
+            {
+                return func(source);
+            }
+            catch (Exception e)
+            {
+                return new Result<TDestination>(e);
+            }
+        } 
         
         public static Result Combine(params Result[] results) => new Result(results);
 
@@ -65,6 +86,8 @@ namespace Force.Ddd
         public static Result Success = new Result(){};
         
         public static Result<T> Succeed<T> (T obj) => new Result<T>(obj);
+
+        public static Result Fail(string failure) => Fail(new Failure(failure));
         
         public static Result Fail(Failure failure)
         {
@@ -72,6 +95,8 @@ namespace Force.Ddd
             return new Result(failure);
         }
 
+        public static Result<T> Fail<T>(string failure) => Fail<T>(new Failure(failure));
+        
         public static Result<T> Fail<T>(Failure failure)
         {
             if (failure == null) throw new ArgumentNullException(nameof(failure));
@@ -84,10 +109,20 @@ namespace Force.Ddd
 
     public class Result<T> : Result
     {
-        public static implicit operator Result<T>(T value) => Result.Succeed<T>(value);
+        public static implicit operator Result<T>(T value) => Succeed<T>(value);
+
+        public static Result<T> operator &(Result<T> result1, Result<T> result2)
+            => result1.IsFaulted
+                ? result1
+                : result2;
         
         internal T Value { get; }
 
+        internal Result(IEnumerable<Result> results) : base(results)
+        {
+            
+        }
+        
         internal Result(Failure failure): base(failure)
         {
         }
@@ -95,41 +130,46 @@ namespace Force.Ddd
         internal Result(T value)
         {
             Value = value;
+            if (value == null)
+            {
+                Failure = new NullReferenceFailure(typeof(T));
+            }
         }
 
         public Result<T> OnSuccess(Action<T> action)
         {
-            action(Value);
+            if (!IsFaulted)
+            {
+                action(Value);
+            }
+
             return this;
         }
         
         public Result<T> OnFailure(Action<Failure> action)
         {
-            action(Failure);
+            if (IsFaulted)
+            {
+                action(Failure);
+            }
+
             return this;
         }
         
-        public TOut Return<TOut>(Func<T, TOut> success, Func<Failure, TOut> failure)
+        public Result<T> Check(Func<T, bool> func, Func<T, Failure> onFailure)
+        {
+            if (!IsFaulted && !func(Value))
+            {
+                Failure = onFailure(Value);
+            }
+            
+            return this;
+        }
+        
+        public TDestination Return<TDestination>(Func<T, TDestination> success, Func<Failure, TDestination> failure)
             => IsFaulted
                 ? failure(Failure)
                 : success(Value);
-    }
-
-    public sealed class Void
-    {
-        internal Void()
-        {}
-    }
-    
-    public class VoidResult : Result<Void>
-    {
-        internal VoidResult(Failure failure) : base(failure)
-        {
-        }
-
-        internal VoidResult(Void value) : base(value)
-        {
-        }
     }
     
     public static class ResultExtensions
@@ -151,67 +191,22 @@ namespace Force.Ddd
             Func<TSource, Result<TIntermediate>> inermidiateSelector,
             Func<TSource, TIntermediate, TDestination> resultSelector)
             => result.SelectMany<TSource, TDestination>(s => inermidiateSelector(s)
-                .SelectMany<TIntermediate, TDestination>(m => resultSelector(s, m)));
-        
-        public static Result Try(this Action action)
-        {
-            try
-            {
-                action();
-                return Result.Success;
-            }
-            catch (Exception e)
-            {
-                return new Result(e);
-            }
-        }
-        
-        public static Result<TDestination> Try<TSource, TDestination>(this Func<TSource, TDestination> func, 
-            TSource source)
-        {
-            try
-            {
-                return func(source);
-            }
-            catch (Exception e)
-            {
-                return new Result<TDestination>(e);
-            }
-        }
-
-        public static void SendEmail(string cmd)
-        {
-            throw new NotImplementedException();            
-        }  
-        
-        public static void SendEmail2(string cmd)
-        {
-            throw new NotImplementedException();            
-        } 
-        
-        public static Result<string> ChangeUserName(ChangeUserNameCommand cmd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Result Query(ChangeUserNameCommand command) =>
-            from validation in command.ValidateToResult()
-            from updateDb in ChangeUserName(validation)
-            from sendEmail in Result.Invoke(SendEmail, updateDb)
-            select sendEmail;
-
-        public static Result Imperative(ChangeUserNameCommand command)
-        {
-            var res = command.ValidateToResult();
-            if (res.IsFaulted) return res;
-            
-            return ChangeUserName(command)
-                .OnSuccess(x => SendEmail(x));
-        }        
+                .SelectMany<TIntermediate, TDestination>(m => resultSelector(s, m)));      
     }
 
-    public class ChangeUserNameCommand
+    public class Result<T, TFailure>: Result<T>
+        where TFailure : Failure
     {
-        
+        internal Result(Failure failure) : base(failure)
+        {
+        }
+
+        internal Result(T value) : base(value)
+        {
+        }
+
+        public new TFailure Failure => (TFailure) base.Failure;
     }
+
+
 }
