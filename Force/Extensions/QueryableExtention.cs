@@ -79,13 +79,10 @@ namespace Force.Extensions
             => spec.Order(source);
 
         public static IQueryable<T> MaybeOrderBy<T>(this IQueryable<T> source, object sort)
-        {
-            var srt = sort as IQueryableOrder<T>;
-            return srt != null
+            => sort is IQueryableOrder<T> srt
                 ? srt.Order(source)
-                : source;
-        }
-
+                : source;       
+        
         public static IQueryable<TSource> Apply<TSource>(this IQueryable<TSource> queryable, object spec)
             where TSource : class
             => queryable

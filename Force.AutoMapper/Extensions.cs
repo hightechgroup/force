@@ -44,7 +44,7 @@ namespace Force.AutoMapper
             where TEntity : class
             where TProjection : class
             => queryable
-                .Either(configurationProvider != null,
+                .EitherOr(configurationProvider != null,
                     x => x.ProjectTo<TProjection>(configurationProvider),
                     x => x.ProjectTo<TProjection>());
 

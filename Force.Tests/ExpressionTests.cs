@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Force.Demo.Domain;
+using DemoApp.Domain;
 using Force.Extensions;
 using Xunit;
 

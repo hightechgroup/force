@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations;
 
 namespace Force.Infrastructure
 {
@@ -9,6 +10,14 @@ namespace Force.Infrastructure
              = new ConcurrentDictionary<int, T>();
 
         public static T Get(Func<T> func)
-            => _cache.GetOrAdd(func.GetHashCode(), func());
+        {
+            var forClojure = func;
+            return _cache.GetOrAdd(func.GetHashCode(), forClojure()); 
+        }
+
+        public static T Get(Func<T> func, TimeSpan timeSpan)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

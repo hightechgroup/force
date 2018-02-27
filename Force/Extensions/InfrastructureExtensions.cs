@@ -46,15 +46,6 @@ namespace Force.Extensions
                 me[item.Key] = item.Value;
             }
         }
-
-        private static readonly ConcurrentDictionary<Type, PropertyInfo[]> PublicPropertyDictionary 
-            = new ConcurrentDictionary<Type, PropertyInfo[]>();
-
-        public static PropertyInfo[] GetPublicProperties(this Type type)
-            => PublicPropertyDictionary.GetOrAdd(type, x => x
-                .GetTypeInfo()
-                .GetProperties()
-                .ToArray());
         
         #endregion
     }

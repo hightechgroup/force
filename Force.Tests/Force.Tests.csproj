@@ -10,6 +10,10 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Force.Demo.Domain\Force.Demo.Domain.csproj" />
+    <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
+    <ProjectReference Include="..\Force\Force.csproj">
+      <Project>{FB262EF5-16F5-47ED-AA59-327E923875D4}</Project>
+      <Name>Force</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

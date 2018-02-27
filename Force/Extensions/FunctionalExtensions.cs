@@ -7,6 +7,8 @@ namespace Force.Extensions
 {
     public static class FunctionalExtensions
     {
+        #region Fluent
+        
         public static Func<TSource, TResult> Compose<TSource, TIntermediate, TResult>(
             this Func<TSource, TIntermediate> func1, Func<TIntermediate, TResult> func2)
             => x => func2(func1(x));
@@ -21,19 +23,19 @@ namespace Force.Extensions
         public static T PipeToOrSelf<T>(this T obj, Func<T, T> func)
             => PipeToOrSelf(obj, x => x != null, func);
         
-        public static TOutput Either<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
+        public static TOutput EitherOr<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
             Func<TInput, TOutput> ifFalse)
-            => o.Either(x => x != null, ifTrue, ifFalse);
+            => o.EitherOr(x => x != null, ifTrue, ifFalse);
 
-        public static TOutput Either<TInput, TOutput>(this TInput o, Func<TInput, bool> condition,
+        public static TOutput EitherOr<TInput, TOutput>(this TInput o, Func<TInput, bool> condition,
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition(o) ? ifTrue(o) : ifFalse(o);
 
-        public static TOutput Either<TInput, TOutput>(this TInput o, bool condition,
+        public static TOutput EitherOr<TInput, TOutput>(this TInput o, bool condition,
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition ? ifTrue(o) : ifFalse(o);
 
-        public static T Do<T>(this T obj, Func<T, bool> condition, Action<T> action)
+        public static T DoIf<T>(this T obj, Func<T, bool> condition, Action<T> action)
         {
             if (condition(obj))
             {
@@ -43,18 +45,30 @@ namespace Force.Extensions
             return obj;
         }
 
+        public static T DoIfNotNull<T>(this T obj, Action<T> action)
+        {
+            if (obj != null)
+            {
+                action(obj);
+            }
+
+            return obj;
+        }
+        
+        #endregion
+
         #region Cqrs
 
         public static TResult PipeTo<TSource, TResult>(
-            this TSource source, IQuery<TSource, TResult> query)
-            => query.Ask(source);
+            this TSource source, IQueryHandler<TSource, TResult> queryHandler)
+            => queryHandler.Handle(source);
 
         public static Task<TResult> PipeTo<TSource, TResult>(
-            this TSource source, IQuery<TSource, Task<TResult>> query)
-            => query.Ask(source);
+            this TSource source, IQueryHandler<TSource, Task<TResult>> queryHandler)
+            => queryHandler.Handle(source);
 
         public static TResult PipeTo<TSource, TResult>(
-            this TSource source, IHandler<TSource, TResult> query)
+            this TSource source, ICommandHandler<TSource, TResult> query)
             => query.Handle(source);
 
         public static TSource PipeTo<TSource>(
@@ -64,15 +78,11 @@ namespace Force.Extensions
             return source;
         }
 
-        public static TOutput Ask<TInput, TOutput>(this IQuery<TInput, TOutput> query)
-            where TInput : new()
-            => query.Ask(new TInput());
+        public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IQueryHandler<TIn, TOut> queryHandler)
+            => queryHandler.Handle;
 
-        public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IQuery<TIn, TOut> query)
-            => query.Ask;
-
-        public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IHandler<TIn, TOut> handler)
-            => handler.Handle;
+        public static Func<TIn, TOut> ToFunc<TIn, TOut>(this ICommandHandler<TIn, TOut> commandHandler)
+            => commandHandler.Handle;
 
         #endregion
     }

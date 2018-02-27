@@ -6,6 +6,7 @@ using System.Reflection;
 using AutoMapper;
 using Force.Ddd;
 using Force.Extensions;
+using Force.Infrastructure;
 
 namespace Force.AutoMapper
 {
@@ -37,14 +38,12 @@ namespace Force.AutoMapper
                              (TEntity) Activator.CreateInstance(typeof(TEntity), true)
                            : (TEntity) Activator.CreateInstance(typeof(TEntity), true));
 
-            var sp = typeof(TDto)
-                .GetPublicProperties()
-                .Where(x => x.CanRead && x.CanWrite)
+            var sp = ReflectionHelper<TDto>
+                .PublicProperties
                 .ToDictionary(x => x.Name.ToUpper(), x => x);
 
-            var dp = typeof(TEntity)
-                .GetPublicProperties()
-                .Where(x => x.CanRead && x.CanWrite)
+            var dp = ReflectionHelper<TEntity>
+                .PublicProperties
                 .ToArray();
 
             foreach (var propertyInfo in dp)

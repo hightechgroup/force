@@ -1,25 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Force.Cqrs
+﻿namespace Force.Cqrs
 {
-    public interface IQuery<out TOutput>
+    public interface IQuery<T>: IRequest<T>
     {
-        TOutput Ask();
+        
     }
-
-    public interface IQuery<in TSpecification, out TOutput>
-    {
-        TOutput Ask(TSpecification spec);
-    }
-
-    public interface IAsyncQuery<TOutput>
-        : IQuery<Task<TOutput>>
-    {
-    }
-
-    public interface IAsyncQuery<in TSpecification, TOutput>
-        : IQuery<TSpecification, Task<TOutput>>
-    {
-    }    
 }

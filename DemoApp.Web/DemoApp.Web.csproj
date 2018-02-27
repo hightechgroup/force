@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Experiments" />
+    <Folder Include="Shop" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
+    <PackageReference Include="Mapster" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.0-alpha9-00206" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.0-alpha9-00206" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.0.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoApp.Data\DemoApp.Data.csproj">
+      <Project>{FD3CFC17-6F65-4880-B49B-9E3D6F41B474}</Project>
+      <Name>DemoApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
+    <ProjectReference Include="..\Force.Decorators\Force.Decorators.csproj">
+      <Project>{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}</Project>
+      <Name>Force.Decorators</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

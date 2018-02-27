@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Force.Demo.Domain;
 using Mapster;
 using Xunit;
 
