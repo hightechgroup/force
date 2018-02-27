@@ -37,6 +37,8 @@ namespace Force.Infrastructure
 
         public static Attribute[] Attributes => _attributes;
 
+        #region Create
+
         public static T Create(params object[] args)
             => _activators.GetOrAdd(
                 GetSignature(args),
@@ -58,13 +60,20 @@ namespace Force.Infrastructure
                 {
                     continue;
                 }
-                
+
+                var flag = true;
                 for (var j = 0; j < args.Length; i++)
                 {
                     if (ctrParams[j].ParameterType != args[j].GetType())
                     {
-                        continue;
+                        flag = false;
+                        break;
                     }
+                }
+
+                if (!flag)
+                {
+                    continue;
                 }
 
                 return consturctor;
@@ -111,5 +120,7 @@ namespace Force.Infrastructure
             var compiled = (ObjectActivator<T>)lambda.Compile();
             return compiled;
         }
+        
+        #endregion
     }
 }
