@@ -38,11 +38,11 @@ namespace Force.AutoMapper
                              (TEntity) Activator.CreateInstance(typeof(TEntity), true)
                            : (TEntity) Activator.CreateInstance(typeof(TEntity), true));
 
-            var sp = ReflectionHelper<TDto>
+            var sp = FastTypeInfo<TDto>
                 .PublicProperties
                 .ToDictionary(x => x.Name.ToUpper(), x => x);
 
-            var dp = ReflectionHelper<TEntity>
+            var dp = FastTypeInfo<TEntity>
                 .PublicProperties
                 .ToArray();
 

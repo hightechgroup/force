@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.Decorators", "Force.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Admin", "DemoApp.Admin\DemoApp.Admin.csproj", "{D2F1084A-D722-4139-984C-18DFD91DC01A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.Meta", "Force.Meta\Force.Meta.csproj", "{04F712A9-4742-43A8-A537-873DC3E38843}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04F712A9-4742-43A8-A537-873DC3E38843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F712A9-4742-43A8-A537-873DC3E38843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F712A9-4742-43A8-A537-873DC3E38843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F712A9-4742-43A8-A537-873DC3E38843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

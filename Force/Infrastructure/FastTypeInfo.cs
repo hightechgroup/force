@@ -9,7 +9,7 @@ namespace Force.Infrastructure
 {
     public delegate T ObjectActivator<T>(params object[] args);
     
-    public static class ReflectionHelper<T>
+    public static class FastTypeInfo<T>
     {
         private static Attribute[] _attributes;
 
@@ -19,7 +19,7 @@ namespace Force.Infrastructure
 
         private static ConcurrentDictionary<string, ObjectActivator<T>> _activators;
         
-        static ReflectionHelper()
+        static FastTypeInfo()
         {
             var type = typeof(T);
             _attributes = type.GetCustomAttributes().ToArray();
@@ -37,7 +37,10 @@ namespace Force.Infrastructure
 
         public static Attribute[] Attributes => _attributes;
 
-        
+        public static bool HasAttribute<TAttr>()
+            where TAttr : Attribute
+            => Attributes.Any(x => x.GetType() == typeof(TAttr));
+            
         public static TAttr GetCustomAttribute<TAttr>() 
             where TAttr: Attribute
             => (TAttr)_attributes.FirstOrDefault(x => x.GetType() == typeof(TAttr));
