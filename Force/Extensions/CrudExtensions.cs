@@ -25,33 +25,6 @@ namespace Force.Extensions
             where TEntity : class, IHasId<TKey>
             => query.Select(projector).ById(id);
 
-        public static IPagedEnumerable<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
-            IPaging spec, Expression<Func<TEntity, TProjection>> projectionExpression)
-            where TEntity : class, IHasId
-            where TProjection : class, IHasId
-            => query
-                .MaybeWhere(spec)
-                .Select(projectionExpression)
-                .MaybeWhere(spec)
-                .MaybeOrderBy(spec)
-                .OrderByIdIfNotOrdered()
-                .ToPagedEnumerable(spec);
-
-        public static IPagedEnumerable<TProjection> Paged<TEntity, TProjection>(this IQueryable<TEntity> query,
-            IPaging spec, IQueryableOrder<TProjection> queryableOrder,
-            Expression<Func<TEntity, TProjection>> projectionExpression,
-            IQueryableFilter<TEntity> entitySpec = null,
-            IQueryableFilter<TProjection> projectionSpec = null)
-            where TEntity : class, IHasId
-            where TProjection : class, IHasId
-            => query
-                .PipeToOrSelf(_ => entitySpec != null, x => x.Where(entitySpec))
-                .Select(projectionExpression)
-                .PipeToOrSelf(_ => projectionSpec != null, x => x.Where(projectionSpec))
-                .OrderBy(queryableOrder)
-                .OrderByIdIfNotOrdered()
-                .ToPagedEnumerable(spec);
-
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow,
             TDto dto, Func<TDto, IUnitOfWork, TEntity> mapper)
             where TEntity : class, IHasId<TKey>
