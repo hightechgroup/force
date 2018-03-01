@@ -17,7 +17,7 @@ namespace Force.Tests
             {
                 res = Result.Success && Exception();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 isException = true;
             }
@@ -37,7 +37,7 @@ namespace Force.Tests
             {
                 res = Result.Fail("fail") || Exception();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 isException = true;
             }

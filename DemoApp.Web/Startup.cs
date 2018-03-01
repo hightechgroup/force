@@ -143,16 +143,16 @@ namespace Force.Demo.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-            
+
 #if DEBUG
             app.UseDeveloperExceptionPage();
 #endif
             InitializeContainer(app);
-      
-            app.UseMiniProfiler();
-            app.UseMvc();
 
-            
+            app.UseMiniProfiler();
+            app.UseMvc(routes => routes.MapRoute(
+                name: "default",
+                template: "{controller=Home}/{action=Index}/{id?}"));
         }
     }
 }

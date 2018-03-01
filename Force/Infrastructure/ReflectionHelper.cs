@@ -37,6 +37,11 @@ namespace Force.Infrastructure
 
         public static Attribute[] Attributes => _attributes;
 
+        
+        public static TAttr GetCustomAttribute<TAttr>() 
+            where TAttr: Attribute
+            => (TAttr)_attributes.FirstOrDefault(x => x.GetType() == typeof(TAttr));
+
         #region Create
 
         public static T Create(params object[] args)

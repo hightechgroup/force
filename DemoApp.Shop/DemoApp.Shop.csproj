@@ -3,9 +3,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Force.AspNetCore.Mvc\Force.AspNetCore.Mvc.csproj">
       <Project>{52A1C26A-DE5B-4A1E-99C9-91C5AE5C2B95}</Project>
       <Name>Force.AspNetCore.Mvc</Name>
@@ -15,9 +12,9 @@
       <Name>Force.Decorators</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
-
     <ProjectReference Include="..\Force\Force.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
   </ItemGroup>
 </Project>

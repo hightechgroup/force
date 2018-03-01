@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Force.Ddd;
 
 namespace DemoApp.Domain
 {
-    public abstract class HasNameBase : EntityBase<int>
+    public abstract class HasNameBase : HasIdBase<int>
     {
         protected HasNameBase()
         {            

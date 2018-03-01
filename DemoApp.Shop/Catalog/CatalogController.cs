@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using DemoApp.Domain;
+using Force;
 using Force.AspNetCore.Mvc;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Pagination;
+using Force.Demo.Web;
 using Force.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Force.Demo.Web.Shop.Catalog
+namespace DemoApp.Shop.Catalog
 {
     //https://liiw.blogspot.ru/2017/02/ef-core-vs-linq2db.html
     //[Validate]
@@ -26,16 +26,10 @@ namespace Force.Demo.Web.Shop.Catalog
         private readonly IQueryHandler<int, Result<ProductDto>> _productDtoQueryHandler;
 
         public CatalogController(
-//            IQueryable<Category> categories,
-//            DemoContext dc,
-//            DemoConnection dataConnection,
             ICommandHandler<ProductFilterParam, Result<PagedResponse<ProductDto>>> commandHandler,
             IQueryHandler<ProductFilterParam, Result<PagedResponse<ProductDto>>> productQueryHandler,
             IQueryHandler<int, Result<ProductDto>> productDtoQueryHandler)
         {
-//            _categories = categories;
-//            _dc = dc;
-//            _dataConnection = dataConnection;
             _commandHandler = commandHandler;
             _productQueryHandler = productQueryHandler;
             _productDtoQueryHandler = productDtoQueryHandler;
@@ -79,14 +73,7 @@ namespace Force.Demo.Web.Shop.Catalog
             // DTO - в Query нет модели
             // Посмотреть HandleError
             
-            // permanent redirect 302
-            // staff only 404?
-            // model binding 404, 415, 422
-            // validation 404, 415 422 Result<T, ValidationFailure>
-            // security 401, 403 Result<T, SecurityFailure>
-            // business logic validation 422 Result<T, Failure>
-            // проверка на 15% (фгис), закрытый 
-            // response data 200 / tmp redirect 301
+
             throw new NotImplementedException();
         }
 
@@ -193,10 +180,5 @@ namespace Force.Demo.Web.Shop.Catalog
     public class ChangeUserNameCommand
     {
         
-    }
-
-    public class SomeEntity
-    {
-        public EntityId<int> Id { get; set; }
     }
 }

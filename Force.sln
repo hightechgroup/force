@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApp", "DemoApp", "{5929
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.Decorators", "Force.Decorators\Force.Decorators.csproj", "{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Admin", "DemoApp.Admin\DemoApp.Admin.csproj", "{D2F1084A-D722-4139-984C-18DFD91DC01A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F1084A-D722-4139-984C-18DFD91DC01A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,5 +102,6 @@ Global
 		{180B65D9-F881-4F02-9F4B-784885F6E16A} = {5929B096-90C0-47FB-A18B-53BCAB9E03BF}
 		{1F609644-3F67-42E5-BC70-528565DB8F7B} = {5929B096-90C0-47FB-A18B-53BCAB9E03BF}
 		{9B4C8DEB-69D8-43EC-A5DC-03DB61E0D0CB} = {5929B096-90C0-47FB-A18B-53BCAB9E03BF}
+		{D2F1084A-D722-4139-984C-18DFD91DC01A} = {9B4C8DEB-69D8-43EC-A5DC-03DB61E0D0CB}
 	EndGlobalSection
 EndGlobal
