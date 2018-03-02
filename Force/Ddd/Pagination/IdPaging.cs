@@ -7,11 +7,11 @@ namespace Force.Ddd.Pagination
         where TKey : IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
-        public IdPaging(int page, int take)
+        protected IdPaging(int page, int take)
             : base(page, take)
         { }
 
-        public IdPaging()
+        protected IdPaging()
         { }
 
         public override IOrderedQueryable<TEntity> Order(IQueryable<TEntity> queryable) => queryable.OrderBy(x => x.Id);

@@ -3,16 +3,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DemoApp.Domain
 {
-    public class Product: HasNameBase
+    public abstract class ProductBase : HasNameBase
     {
-        public decimal Price { get; protected set; }
+        protected ProductBase()
+        {            
+        }
+        
+        protected ProductBase(string name) : base(name)
+        {
+        }
 
+        public decimal Price { get; protected set; }
+    }
+
+    public class Product: ProductBase
+    {
         [Required]
-        public virtual Category Category { get; set; }
+        public Category Category { get; protected set; }
         
         public Product()
-        {
-            
+        {            
         }
         
         public Product(string name, decimal price, Category category): base(name)
