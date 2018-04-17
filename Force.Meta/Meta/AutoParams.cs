@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using FastMember;
+using Force.Ddd;
 
-namespace Force.Ddd
+namespace Force.Meta
 {
-    public class AutoParams<T>
+    public abstract class AutoParams<T>
         : IQueryableFilter<T>
         , IQueryableOrder<T>
     
         where T : class, IHasId
     {
+        public string OrderBy { get; set; }
+        
+        public ComposeKind ComposeKind { get; set; }
+        
         public IQueryable<T> Filter(IQueryable<T> query)
         {
             throw new NotImplementedException();

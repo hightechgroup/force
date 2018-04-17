@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Force.Meta.Validation;
 
 namespace DemoApp.Domain
 {
@@ -13,7 +14,7 @@ namespace DemoApp.Domain
         {
         }
 
-        public decimal Price { get; protected set; }
+        public decimal Price { get; protected set; }        
     }
 
     public class Product: ProductBase

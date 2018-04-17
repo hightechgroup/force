@@ -11,12 +11,10 @@
       <Project>{FB262EF5-16F5-47ED-AA59-327E923875D4}</Project>
       <Name>Force</Name>
     </ProjectReference>
-
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
-
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mapster" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
   </ItemGroup>
 </Project>

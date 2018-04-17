@@ -26,8 +26,7 @@ namespace DemoApp.Core
         
         public EfMapsterQueryHandler()
         {
-            //_dbContext = dbContext;
-            
+            //_dbContext = dbContext;           
         }
 
         private static IQueryable<Product> _products = new Product[]

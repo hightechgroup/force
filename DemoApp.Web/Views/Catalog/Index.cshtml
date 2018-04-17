@@ -1,13 +1,57 @@
-@using DemoApp.Domain
-@model IEnumerable<Category>
-
-<h2>Каталог</h2>
-@if (Model.Any())
-{
-    <ul>
-    @foreach (var cat in Model)
+@using DemoApp.Shop.Catalog
+@model ProductListViewModel
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="bootstrap.css"/>
+</head>
+<body>
+<div class="container">
+    <h1>Product List</h1>
+    @using (Html.BeginForm(FormMethod.Post, null))
     {
-        <li>@Html.ActionLink(cat.Name, "Index", new {cat.Url})</li>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductListParams.Name)
+            @Html.TextBoxFor(x => x.ProductListParams.Name, new {@class="form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductListParams.Price)
+            @Html.TextBoxFor(x => x.ProductListParams.Price, new {@class="form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ProductListParams.CategoryIsActive)
+            @Html.EditorFor(x => x.ProductListParams.CategoryIsActive)
+        </div>
+        <p>
+            Order by:
+            @Html.DropDownListFor(x => x.ProductListParams.OrderBy, new[]
+            {
+                new SelectListItem() {Text = "-", Value = "", Selected = string.IsNullOrEmpty(Model.ProductListParams.OrderBy)},
+                new SelectListItem() {Text = "Name", Selected = Model.ProductListParams.OrderBy == "Name"},
+                new SelectListItem() {Text = "Price", Selected = Model.ProductListParams.OrderBy == "Price"},
+            })
+        </p>
+        <input type="submit" value="Filter" class="btn btn-primary"/>
+        <hr/>
     }
-    </ul>
-}
+
+    @if (Model.Products.Any())
+    {
+        <ul>
+            @foreach (var product in Model.Products)
+            {
+                <li>
+                    
+                    <p>@product.Name</p>
+                    <p>@product.Price</p>
+                    <p>@product.CategoryIsActive</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <h2>Products not found:(</h2>
+    }
+</div>
+</body>
+</html>

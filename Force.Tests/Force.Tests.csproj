@@ -11,6 +11,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
+    <ProjectReference Include="..\Force.Meta\Force.Meta.csproj">
+      <Project>{04F712A9-4742-43A8-A537-873DC3E38843}</Project>
+      <Name>Force.Meta</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Force\Force.csproj">
       <Project>{FB262EF5-16F5-47ED-AA59-327E923875D4}</Project>
       <Name>Force</Name>

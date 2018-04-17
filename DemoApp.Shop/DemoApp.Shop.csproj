@@ -3,6 +3,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DemoApp.Admin\DemoApp.Admin.csproj">
+      <Project>{D2F1084A-D722-4139-984C-18DFD91DC01A}</Project>
+      <Name>DemoApp.Admin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Force.AspNetCore.Mvc\Force.AspNetCore.Mvc.csproj">
       <Project>{52A1C26A-DE5B-4A1E-99C9-91C5AE5C2B95}</Project>
       <Name>Force.AspNetCore.Mvc</Name>

@@ -7,7 +7,7 @@ using Force.Extensions;
 
 namespace Force.Infrastructure
 {
-    public delegate T ObjectActivator<T>(params object[] args);
+    public delegate T ObjectActivator<out T>(params object[] args);
     
     public static class FastTypeInfo<T>
     {
@@ -15,6 +15,8 @@ namespace Force.Infrastructure
 
         private static PropertyInfo[] _properties;
 
+        private static MethodInfo[] _methods;
+        
         private static ConstructorInfo[] _constructors;
 
         private static ConcurrentDictionary<string, ObjectActivator<T>> _activators;
@@ -29,11 +31,17 @@ namespace Force.Infrastructure
                 .Where(x => x.CanRead && x.CanWrite)
                 .ToArray();
 
+            _methods = type.GetMethods()
+                .Where(x => x.IsPublic && !x.IsAbstract)
+                .ToArray();
+            
             _constructors = typeof(T).GetConstructors();
             _activators = new ConcurrentDictionary<string, ObjectActivator<T>>();
         }
 
         public static PropertyInfo[] PublicProperties => _properties;
+
+        public static MethodInfo[] PublicMethods => _methods;
 
         public static Attribute[] Attributes => _attributes;
 
@@ -129,6 +137,56 @@ namespace Force.Infrastructure
             return compiled;
         }
         
+        public static Delegate CreateMethod(MethodInfo method)
+        {
+            if (method == null)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+
+            if (!method.IsStatic)
+            {
+                throw new ArgumentException("The provided method must be static.", nameof(method));
+            }
+
+            if (method.IsGenericMethod)
+            {
+                throw new ArgumentException("The provided method must not be generic.", nameof(method));
+            }
+
+            var parameters = method.GetParameters()
+                .Select(p => Expression.Parameter(p.ParameterType, p.Name))
+                .ToArray();
+            
+            var call = Expression.Call(null, method, parameters);
+            return Expression.Lambda(call, parameters).Compile();
+        }
+        
         #endregion
+        
+        public static Func<TObject, TProperty> PropertyGetter<TObject, TProperty>(string propertyName)
+        {
+            var paramExpression = Expression.Parameter(typeof(TObject), "value");
+
+            var propertyGetterExpression = Expression.Property(paramExpression, propertyName);
+
+            var result = Expression.Lambda<Func<TObject, TProperty>>(propertyGetterExpression, paramExpression)
+                .Compile();
+
+            return result;
+        }
+
+        public static Action<TObject, TProperty> PropertySetter<TObject, TProperty>(string propertyName)
+        {            
+            var paramExpression = Expression.Parameter(typeof(TObject));
+            var paramExpression2 = Expression.Parameter(typeof(TProperty), propertyName);
+            var propertyGetterExpression = Expression.Property(paramExpression, propertyName);
+            var result = Expression.Lambda<Action<TObject, TProperty>>
+            (
+                Expression.Assign(propertyGetterExpression, paramExpression2), paramExpression, paramExpression2
+            ).Compile();
+            
+            return result;
+        }        
     }
 }

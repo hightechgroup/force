@@ -3,22 +3,16 @@ using DemoApp.Domain;
 using Force.AspNetCore.Mvc;
 using Force.Ddd;
 using Force.Ddd.Pagination;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DemoApp.Admin.CatalogAdmin
 {
     public class ProductAdminController
-        : RestControllerBase<int, Product, ProductListParams, ProductListItem>
+        //: RestControllerBase<int, Product, ProductListParams, ProductListItem>
     {
-        public ProductAdminController(IQueryable<Product> queryable, IUnitOfWork unitOfWork) 
-            : base(queryable, unitOfWork)
-        {
-        }
-    }
-
-    public class ProductDetails : ProductBase
-    {
-        public int CategoryId { get; set; }
+//        public ProductAdminController(IQueryable<Product> queryable, IUnitOfWork unitOfWork) 
+//            : base(queryable, unitOfWork)
+//        {
+//        }
     }
 
     public class ProductListParams : Paging<ProductListItem>, IQueryableFilter<ProductListItem>

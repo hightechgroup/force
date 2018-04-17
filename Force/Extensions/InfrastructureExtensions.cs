@@ -12,6 +12,15 @@ using Force.Infrastructure;
 
 namespace Force.Extensions
 {
+    internal class CompiledExpressions<TIn, TOut>
+    {
+        private static readonly ConcurrentDictionary<Expression<Func<TIn, TOut>>, Func<TIn, TOut>> Cache
+            = new ConcurrentDictionary<Expression<Func<TIn, TOut>>, Func<TIn, TOut>>();
+
+        internal static Func<TIn, TOut> AsFunc(Expression<Func<TIn, TOut>> expr)
+            => Cache.GetOrAdd(expr, k => k.Compile());
+    }
+    
     public static class InfrastructureExtensions
     {
         #region Expressions
@@ -20,9 +29,7 @@ namespace Force.Extensions
             = new ConcurrentDictionary<string, object>();
 
         public static Func<TIn, TOut> AsFunc<TIn, TOut>(this Expression<Func<TIn, TOut>> expr)
-            //@see http://sergeyteplyakov.blogspot.ru/2015/06/lazy-trick-with-concurrentdictionary.html
-            => (Func<TIn, TOut>)((Lazy<object>)Cache
-                .GetOrAdd(expr.Body.ToString(), id => new Lazy<object>(expr.Compile))).Value;
+            => CompiledExpressions<TIn, TOut>.AsFunc(expr);
 
         public static bool Is<T>(this T entity, Expression<Func<T, bool>> expr)
             => AsFunc(expr).Invoke(entity);
