@@ -88,14 +88,12 @@ namespace Force.AspNetCore.Mvc
             return CreatedAtAction("Get", new {id});
         }
 
-
         [HttpPut("{id}")]
         public virtual IActionResult Put(TKey id, [FromBody] TDetails model)
         {
             SaveOrUpdate(model);
             return Ok(new {success = true});
         }
-
 
         [HttpDelete("{id}")]
         public virtual IActionResult Delete(TKey id)
