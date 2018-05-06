@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Force.AspNetCore.Mvc
 {
     public abstract class RestControllerBase<TKey, TEntity>
-        : RestControllerBase<TKey, TEntity, SimpleParams<TEntity>, TEntity, TEntity>
+        : RestControllerBase<TKey, TEntity, SmartPaging<TEntity, TEntity>, TEntity, TEntity>
     
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
         where TEntity : class, IHasId<TKey>, IHasId<int>
@@ -22,10 +22,10 @@ namespace Force.AspNetCore.Mvc
         }
     }
 
-    public abstract class RestControllerBase<TKey, TEntity, TListParams, TInfo>
-        : RestControllerBase<TKey, TEntity, TListParams, TInfo, TEntity>
+    public abstract class RestControllerBase<TKey, TEntity, TSmartPaging, TInfo>
+        : RestControllerBase<TKey, TEntity, TSmartPaging, TInfo, TEntity>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TListParams : IQueryableFilter<TInfo>, IQueryableOrder<TInfo>, IPaging
+        where TSmartPaging : ISmartPaging<TEntity, TInfo>
         where TEntity : class, IHasId<TKey>
         where TInfo : class, IHasId<TKey>
     {
@@ -63,10 +63,10 @@ namespace Force.AspNetCore.Mvc
     }
 
 
-    public abstract class RestControllerBase<TKey, TEntity, TListParams, TInfo, TDetails>
-        : GetControllerBase<TKey, TEntity, TListParams, TInfo, TDetails>
+    public abstract class RestControllerBase<TKey, TEntity, TSmartPaging, TInfo, TDetails>
+        : GetControllerBase<TKey, TEntity, TSmartPaging, TInfo, TDetails>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TListParams : IQueryableFilter<TInfo>, IQueryableOrder<TInfo>, IPaging
+        where TSmartPaging : ISmartPaging<TEntity, TInfo>
         where TEntity : class, IHasId<TKey>
         where TInfo : class, IHasId<TKey>
         where TDetails : class, IHasId<TKey>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Force.Meta.Validation;
 
 namespace DemoApp.Domain
 {

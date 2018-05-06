@@ -1,7 +1,6 @@
 ﻿namespace Force.Cqrs
 {
-    public interface IQuery<T>: IRequest<T>
-    {
-        
+    public interface IQuery<T>: IUseCase<T>
+    {        
     }
 }

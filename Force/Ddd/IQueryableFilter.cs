@@ -5,6 +5,6 @@ namespace Force.Ddd
     public interface IQueryableFilter<T>
         where T: class 
     {
-        IQueryable<T> Filter(IQueryable<T> query);
+        IQueryable<T> Filter(IQueryable<T> queryable);
     }
 }

@@ -18,17 +18,10 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.0.12" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoApp.Core\DemoApp.Core.csproj" />
-    <ProjectReference Include="..\DemoApp.Core\DemoApp.Core.csproj" />
     <ProjectReference Include="..\DemoApp.Data\DemoApp.Data.csproj">
       <Project>{FD3CFC17-6F65-4880-B49B-9E3D6F41B474}</Project>
       <Name>DemoApp.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
-    <ProjectReference Include="..\DemoApp.Shop\DemoApp.Shop.csproj" />
-    <ProjectReference Include="..\Force.Decorators\Force.Decorators.csproj">
-      <Project>{3EF32692-BBF7-498F-AB33-DE9EAC88A2F3}</Project>
-      <Name>Force.Decorators</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>

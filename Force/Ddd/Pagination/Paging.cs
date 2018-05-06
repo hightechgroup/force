@@ -20,10 +20,8 @@ namespace Force.Ddd.Pagination
         private int _page;
         private int _take;
 
-        // ReSharper disable once StaticMemberInGenericType
         public static int DefaultStartPage = 1;
 
-        // ReSharper disable once StaticMemberInGenericType
         public static int DefaultTake = 30;
 
         public int Page
@@ -33,7 +31,7 @@ namespace Force.Ddd.Pagination
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("page must be >= 0", nameof(value));
+                    throw new ArgumentException("Page must be >= 0", nameof(value));
                 }
 
                 _page = value;
@@ -56,7 +54,7 @@ namespace Force.Ddd.Pagination
 
     }
 
-    public abstract class Paging<T> : Paging, IQueryablePaging<T>
+    public abstract class Paging<T> : Paging
         where T : class
     {
         protected Paging(int page, int take) : base(page, take)
@@ -66,7 +64,5 @@ namespace Force.Ddd.Pagination
         protected Paging()
         {
         }
-
-        public abstract IOrderedQueryable<T> Order(IQueryable<T> queryable);
     }
 }

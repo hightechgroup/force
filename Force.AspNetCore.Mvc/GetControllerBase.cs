@@ -4,14 +4,13 @@ using Force.Ddd;
 using Force.Ddd.Pagination;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Force.Meta;
 using Mapster;
 
 namespace Force.AspNetCore.Mvc
 {
-    public abstract class GetControllerBase<TEntity, TListParams, TInfo, TDetails> 
-        : GetControllerBase<long, TEntity, TListParams, TInfo, TDetails>
-        where TListParams : IQueryableFilter<TInfo>, IQueryableOrder<TInfo>, IPaging
+    public abstract class GetControllerBase<TEntity, TSmartPaging, TInfo, TDetails> 
+        : GetControllerBase<long, TEntity, TSmartPaging, TInfo, TDetails>
+        where TSmartPaging : ISmartPaging<TEntity, TInfo>
         where TEntity : class, IHasId<long>
         where TInfo : class, IHasId<long>
         where TDetails : class, IHasId<long>
@@ -22,9 +21,9 @@ namespace Force.AspNetCore.Mvc
         }
     }
 
-    public abstract class GetControllerBase<TKey, TEntity, TListParams, TInfo, TDetails> : Controller
+    public abstract class GetControllerBase<TKey, TEntity, TSmartPaging, TInfo, TDetails> : Controller
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TListParams : IQueryableFilter<TInfo>, IQueryableOrder<TInfo>, IPaging
+        where TSmartPaging : ISmartPaging<TEntity, TInfo>
         where TEntity : class, IHasId<TKey>
         where TInfo : class, IHasId<TKey>
         where TDetails : class, IHasId<TKey>
@@ -35,22 +34,17 @@ namespace Force.AspNetCore.Mvc
         {
             _queryable = queryable;
         }
-
-        public virtual IActionResult ListMeta() => Ok(MetaProvider<TEntity>.List);
-
+       
         [HttpGet]
-        public virtual IActionResult Get([FromQuery] TListParams listParams)
+        public virtual IActionResult Get([FromQuery] TSmartPaging smartPaging)
             => _queryable
-                .ProjectToType<TInfo>()    
-                .Where(listParams)
-                .OrderBy(listParams)
-                .ToPagedResponse(listParams)
+                .SmartPaging(smartPaging)
                 .PipeTo(Ok);
 
         [HttpGet("{id}")]
         public virtual IActionResult Get(TKey id)
             => _queryable                
-                .ProjectToType<TInfo>()
+                .ProjectToType<TDetails>()
                 .ById(id)
                 .PipeTo(Ok);
     }

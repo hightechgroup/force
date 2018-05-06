@@ -1,6 +1,6 @@
 ﻿namespace Force.Cqrs
 {
-    public interface ICommand<T>: IRequest<T>
+    public interface ICommand<T>: IUseCase<T>
     {        
     }
 }

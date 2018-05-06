@@ -1,6 +1,6 @@
 ﻿namespace Force
 {
-    public interface IRequest<T>
+    public interface IUseCase<T>
     {        
     }
 }

@@ -3,12 +3,15 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FastMember;
-using Force.Extensions;
 using Force.Infrastructure;
 
-namespace Force.Meta
+namespace Force.Ddd
 {
+    public enum ComposeKind
+    {
+        And, Or
+    }
+    
     public static class ConventionsExtensions
     {
         public static IQueryable<TSubject> AutoFilter<TSubject, TPredicate>(
@@ -22,6 +25,9 @@ namespace Force.Meta
                 ? filtered
                 : Conventions<TSubject>.Sort(filtered, proprtyName);
         }
+
+        public static IOrderedQueryable<TSubject> AutoSort<TSubject>(this IQueryable<TSubject> query, string propertyName)
+            => Conventions<TSubject>.Sort(query, propertyName);
     }
     
     public static class Conventions<TSubject>
@@ -101,7 +107,7 @@ namespace Force.Meta
                     var body = property.Type == typeof(string)
                                    ? (Expression)Expression.Call(property, StartsWith, value)
                                    : Expression.Equal(property, value);
-//                    var body = Expression.Equal(property, value);
+
                     return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
                 })
                 .ToArray();

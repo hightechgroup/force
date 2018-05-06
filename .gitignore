@@ -86,3 +86,7 @@ project.lock.json
 .vs
 
 /src/.idea
+/DemoApp.Web/wwwroot/semantic-ui
+/DemoApp.Web/wwwroot/bootstrap.css
+/DemoApp.Web/wwwroot/index.html
+/.idea

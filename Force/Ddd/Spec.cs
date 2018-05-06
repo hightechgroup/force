@@ -6,7 +6,7 @@ using Force.Infrastructure;
 
 namespace Force.Ddd
 {
-    public class Spec<T> : IQueryableFilter<T>
+    public class Spec<T>
         where T: class, IHasId
     {
         public static bool operator false(Spec<T> spec) => false;
@@ -29,12 +29,12 @@ namespace Force.Ddd
             Expression = expression;
             if (expression == null) throw new ArgumentNullException(nameof(expression));
         }
+                
+        public static explicit operator Func<T, bool>(Spec<T> spec)
+            => spec.IsSatisfiedBy;
 
         public static implicit operator Expression<Func<T, bool>>(Spec<T> spec)
             => spec.Expression;
-
-        public IQueryable<T> Filter(IQueryable<T> query)
-            => query.Where(Expression);
 
         public bool IsSatisfiedBy(T obj) => Expression.AsFunc()(obj);
     }

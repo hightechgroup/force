@@ -9,19 +9,22 @@ namespace Force.Extensions
     {
         #region Fluent
         
-        public static Func<TSource, TResult> Compose<TSource, TIntermediate, TResult>(
-            this Func<TSource, TIntermediate> func1, Func<TIntermediate, TResult> func2)
-            => x => func2(func1(x));
-
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);
 
-        public static T PipeToOrSelf<T>(this T obj, Func<T, bool> condition, Func<T, T> action)
-            => condition(obj) ? action(obj) : obj;               
+
+        public static TSource PipeToIf<TSource>(
+            this TSource source, Func<TSource, bool> predicate, Func<TSource, TSource> func)
+            => predicate(source)
+                ? func(source)
+                : source;
         
-        public static T PipeToOrSelf<T>(this T obj, Func<T, T> func)
-            => PipeToOrSelf(obj, x => x != null, func);
+        public static Func<TSource, TResult> Compose<TSource, TIntermediate, TResult>(
+            this Func<TSource, TIntermediate> func1, Func<TIntermediate, TResult> func2)
+            => x => func2(func1(x));
+
+
         
         public static TOutput EitherOr<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
             Func<TInput, TOutput> ifFalse)
@@ -61,27 +64,32 @@ namespace Force.Extensions
 
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, IQueryHandler<TSource, TResult> queryHandler)
+            where TSource: IUseCase<TResult>
             => queryHandler.Handle(source);
 
         public static Task<TResult> PipeTo<TSource, TResult>(
             this TSource source, IQueryHandler<TSource, Task<TResult>> queryHandler)
+            where TSource: IUseCase<Task<TResult>>
             => queryHandler.Handle(source);
 
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, ICommandHandler<TSource, TResult> query)
+            where TSource: IUseCase<TResult>
             => query.Handle(source);
 
         public static TSource PipeTo<TSource>(
-            this TSource source, IHandler<TSource> query)
+            this TSource source, IUseHandler<TSource> query)
         {
             query.Handle(source);
             return source;
         }
 
         public static Func<TIn, TOut> ToFunc<TIn, TOut>(this IQueryHandler<TIn, TOut> queryHandler)
+            where TIn: IUseCase<TOut>
             => queryHandler.Handle;
 
         public static Func<TIn, TOut> ToFunc<TIn, TOut>(this ICommandHandler<TIn, TOut> commandHandler)
+            where TIn: IUseCase<TOut>
             => commandHandler.Handle;
 
         #endregion
