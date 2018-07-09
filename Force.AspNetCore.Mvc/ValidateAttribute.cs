@@ -31,7 +31,6 @@ namespace Force.AspNetCore.Mvc
                 {
                     // ReSharper disable once Mvc.ViewNotResolved
                     context.Result = ((Controller)context.Controller).View(context.ActionArguments.Values.First());
-                    FailedResult.SetStatusCodeAndHeaders(context.HttpContext);
                 }
             }
         }

@@ -8,9 +8,6 @@ namespace Force.Extensions
 {
     public static class CrudExtensions
     {
-        public static long Count<T>(this IQueryable<T> query, IQueryableFilter<T> spec) where T : class
-            => query.Apply(spec).Count();
-
         public static TProjection ById<TKey, TEntity, TProjection>(this IQueryable<TEntity> query, TKey id,
             Func<TEntity, TProjection> mapper)
             where TKey : IEquatable<TKey>

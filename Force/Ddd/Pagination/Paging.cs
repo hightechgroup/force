@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Force.Ddd.Pagination
 {
-    public abstract class Paging : IPaging
+    public class Paging : IPaging
     {
-        protected Paging(int page, int take)
+        public Paging(int page, int take)
         {
             Page = page;
             Take = take;
         }
 
-        protected Paging()
+        public Paging()
         {
             Page = DefaultStartPage;
             Take = DefaultTake;
@@ -20,10 +20,12 @@ namespace Force.Ddd.Pagination
         private int _page;
         private int _take;
 
+        public const int MaxTake = 1000;
+        
         public static int DefaultStartPage = 1;
 
         public static int DefaultTake = 30;
-
+        
         public int Page
         {
             get => _page;
@@ -38,7 +40,8 @@ namespace Force.Ddd.Pagination
             }
         }
 
-        public int Take
+        [Range(1, MaxTake)]
+        public virtual int Take
         {
             get => _take;
             set
@@ -52,17 +55,5 @@ namespace Force.Ddd.Pagination
             }
         }
 
-    }
-
-    public abstract class Paging<T> : Paging
-        where T : class
-    {
-        protected Paging(int page, int take) : base(page, take)
-        {
-        }
-
-        protected Paging()
-        {
-        }
     }
 }

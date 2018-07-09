@@ -3,8 +3,8 @@ using Force.Extensions;
 
 namespace Force.Ddd
 {
-    public class AutoFilter<T> : IQueryableFilter<T>, IQueryableOrder<T>
-        where T : class, IHasId
+    public class AutoFilter<T>
+        where T : class
     {
         private readonly object _predicate;
         private readonly string _orderBy;
@@ -21,6 +21,6 @@ namespace Force.Ddd
         public IOrderedQueryable<T> Order(IQueryable<T> queryable)
             => !string.IsNullOrEmpty(_orderBy)
                    ? queryable.AutoSort(_orderBy)
-                   : queryable.OrderByIdIfNotOrdered();
+                   : queryable.OrderByFirstProperty();
     }
 }

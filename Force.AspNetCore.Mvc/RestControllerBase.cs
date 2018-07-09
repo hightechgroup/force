@@ -10,65 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Force.AspNetCore.Mvc
 {
-    public abstract class RestControllerBase<TKey, TEntity>
-        : RestControllerBase<TKey, TEntity, SmartPaging<TEntity, TEntity>, TEntity, TEntity>
-    
+    public abstract class RestControllerBase<TKey, TEntity, TInfo, TDetails>
+        : GetControllerBase<TKey, TEntity, TInfo, TDetails>
         where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TEntity : class, IHasId<TKey>, IHasId<int>
-    {
-        protected RestControllerBase(IQueryable<TEntity> queryable, IUnitOfWork unitOfWork)
-            : base(queryable, unitOfWork)
-        {
-        }
-    }
-
-    public abstract class RestControllerBase<TKey, TEntity, TSmartPaging, TInfo>
-        : RestControllerBase<TKey, TEntity, TSmartPaging, TInfo, TEntity>
-        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TSmartPaging : ISmartPaging<TEntity, TInfo>
-        where TEntity : class, IHasId<TKey>
-        where TInfo : class, IHasId<TKey>
-    {
-        protected RestControllerBase(IQueryable<TEntity> queryable, IUnitOfWork unitOfWork)
-            : base(queryable, unitOfWork)
-        {
-        }
-
-        public override IActionResult Post(
-            [FromBody, ModelBinder(typeof(EntityModelBinder))]
-            TEntity model)
-        {
-            return base.Post(model);
-        }
-
-        public override IActionResult Put(
-            TKey id,
-            [FromBody, ModelBinder(typeof(EntityModelBinder))]
-            TEntity model)
-        {
-            return base.Put(id, model);
-        }
-
-        protected override TKey SaveOrUpdate(TEntity model)
-        {
-            // Entity is fetched via ORM. So no need to set properties twice for update
-            if (model.Id.Equals(default(TKey)))
-            {
-                UnitOfWork.Add(model);
-            }
-
-            UnitOfWork.Commit();
-            return model.Id;
-        }
-    }
-
-
-    public abstract class RestControllerBase<TKey, TEntity, TSmartPaging, TInfo, TDetails>
-        : GetControllerBase<TKey, TEntity, TSmartPaging, TInfo, TDetails>
-        where TKey : IComparable, IComparable<TKey>, IEquatable<TKey>
-        where TSmartPaging : ISmartPaging<TEntity, TInfo>
-        where TEntity : class, IHasId<TKey>
-        where TInfo : class, IHasId<TKey>
+        where TEntity : class, IHasId
+        where TInfo : class
         where TDetails : class, IHasId<TKey>
     {
         protected readonly IUnitOfWork UnitOfWork;
@@ -85,6 +31,7 @@ namespace Force.AspNetCore.Mvc
         public virtual IActionResult Post([FromBody] TDetails model)
         {
             var id = SaveOrUpdate(model);
+            // ReSharper disable once Mvc.ActionNotResolved
             return CreatedAtAction("Get", new {id});
         }
 

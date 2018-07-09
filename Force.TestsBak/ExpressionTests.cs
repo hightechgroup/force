@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using DemoApp.Domain;
 using Force.Extensions;
 using Xunit;
 
@@ -22,5 +21,12 @@ namespace Force.Tests
             Assert.Equal(func1, func2);
             Assert.NotEqual(func1, func3);
         }
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        
+        public decimal Price { get; set; }
     }
 }

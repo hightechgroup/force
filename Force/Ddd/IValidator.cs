@@ -16,7 +16,7 @@ namespace Force.Ddd
             => results == null || results.All(x => x == ValidationResult.Success);
         
 
-        public static Result<T,ValidationFailure> Validate<T>(this T obj)
+        public static IEnumerable<ValidationResult> Validate<T>(this T obj)
         {
             var context = new ValidationContext(obj, serviceProvider: null, items: null);
             var results = new List<ValidationResult>();
@@ -26,17 +26,11 @@ namespace Force.Ddd
                 validateAllProperties: true
             );
 
-            return results.ToResult(obj);
+            return results;
         }
-        
-        public static Result<T, ValidationFailure> ToResult<T>(this IEnumerable<ValidationResult> results, T obj)
-            => results.IsValid()
-                ? new Result<T, ValidationFailure>(obj)
-                : new Result<T, ValidationFailure>(new ValidationFailure(results));
 
-        public static Result<T, ValidationFailure> Validate<T>(this T obj, params IValidator<T>[] validators)
-            => validators
-                .SelectMany(x => x.Validate(obj))
-                .ToResult(obj);
+        public static IEnumerable<ValidationResult> Validate<T>(this T obj, params IValidator<T>[] validators)
+            => validators.SelectMany(x => x.Validate(obj));
+
     }
 }

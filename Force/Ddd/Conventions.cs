@@ -40,15 +40,29 @@ namespace Force.Ddd
         
         public static IOrderedQueryable<TSubject> Sort(IQueryable<TSubject> query, string propertyName)
         {
+            (string, bool) GetSorting()
+            {
+                var arr = propertyName.Split('.');
+                if (arr.Length == 1)
+                    return (arr[0], false);
+                var sort = arr[1];
+                if (string.Equals(sort, "ASC", StringComparison.CurrentCultureIgnoreCase))
+                    return (arr[0], false);
+                if (string.Equals(sort, "DESC", StringComparison.CurrentCultureIgnoreCase))
+                    return (arr[0], true);
+                return (arr[0], false);
+            }
+
+            var (name, isDesc) = GetSorting();
+            propertyName = name;
+
             var property = FastTypeInfo<TSubject>
                 .PublicProperties
-                .FirstOrDefault(x => x.Name == propertyName);
+                .FirstOrDefault(x => string.Equals(x.Name, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
             if (property == null)
-            {
                 throw new InvalidOperationException($"There is no public property \"{propertyName}\" " +
                                                     $"in type \"{typeof(TSubject)}\"");
-            }
 
             var parameter = Expression.Parameter(typeof(TSubject));
             var body = Expression.Property(parameter, propertyName);
@@ -62,14 +76,18 @@ namespace Force.Ddd
 
             var expression = lambda.Invoke(null, new object[] {body, new[] {parameter}});
 
+            var methodName = isDesc ? "OrderByDescending" : "OrderBy";
+
             var orderBy = typeof(Queryable)
                 .GetMethods()
-                .First(x => x.Name == "OrderBy" && x.GetParameters().Length == 2)
+                .First(x => x.Name == methodName && x.GetParameters().Length == 2)
                 .MakeGenericMethod(typeof(TSubject), property.PropertyType);
 
             return (IOrderedQueryable<TSubject>) orderBy.Invoke(query, new object[] {query, expression});
         }
 
+
+        
         public static IQueryable<TSubject> Filter<TPredicate>(IQueryable<TSubject> query,
             TPredicate predicate,
             ComposeKind composeKind = ComposeKind.And)

@@ -29,18 +29,6 @@ namespace Force.AutoMapper
                .ById(id);
 
 
-        public static PagedResponse<TProjection> SmartPaging<TEntity, TProjection>(this IQueryable<TEntity> query, 
-            ISmartPaging<TEntity, TProjection> smartPaging, IConfigurationProvider configurationProvider = null)
-            where TEntity : class, IHasId
-            where TProjection : class, IHasId => query
-                .PipeToIf(_ => smartPaging.Spec != null, x => x.Where(smartPaging.Spec))
-                .ProjectToWithConfigurationOrFallback<TEntity, TProjection>(configurationProvider)
-                .PipeToIf(_ => smartPaging.Filter != null, x => x.Where(smartPaging.Filter))
-                .PipeToIf(_ => smartPaging.Order != null, x => x.OrderBy(smartPaging.Order))
-                .OrderByIdIfNotOrdered()
-                .ToPagedResponse(smartPaging);
-
-
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto, IMapper mapper = null)
             where TEntity : class, IHasId<TKey>
             where TKey : IEquatable<TKey>

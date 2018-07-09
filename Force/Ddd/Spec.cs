@@ -6,37 +6,38 @@ using Force.Infrastructure;
 
 namespace Force.Ddd
 {
-    public class Spec<T>
-        where T: class, IHasId
+    public class Spec<T>        
     {
         public static bool operator false(Spec<T> spec) => false;
         
         public static bool operator true(Spec<T> spec) => false;
         
         public static Spec<T> operator &(Spec<T> spec1, Spec<T> spec2)
-            => new Spec<T>(spec1.Expression.And(spec2.Expression));
+            => new Spec<T>(spec1._expression.And(spec2._expression));
 
         public static Spec<T> operator |(Spec<T> spec1, Spec<T> spec2)
-            => new Spec<T>(spec1.Expression.Or(spec2.Expression));
+            => new Spec<T>(spec1._expression.Or(spec2._expression));
 
         public static Spec<T> operator !(Spec<T> spec)
-            => new Spec<T>(spec.Expression.Not());
+            => new Spec<T>(spec._expression.Not());
         
-        public virtual Expression<Func<T, bool>> Expression { get; }
+        public static implicit operator Expression<Func<T, bool>>(Spec<T> spec)
+            => spec._expression;
+        
+        public static implicit operator Spec<T>(Expression<Func<T, bool>> expression)
+            => new Spec<T>(expression);
+
+        private readonly Expression<Func<T, bool>> _expression;
 
         public Spec(Expression<Func<T, bool>> expression)
         {
-            Expression = expression;
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
-                
-        public static explicit operator Func<T, bool>(Spec<T> spec)
-            => spec.IsSatisfiedBy;
 
-        public static implicit operator Expression<Func<T, bool>>(Spec<T> spec)
-            => spec.Expression;
+        public bool IsSatisfiedBy(T obj) => _expression.AsFunc()(obj);
 
-        public bool IsSatisfiedBy(T obj) => Expression.AsFunc()(obj);
+        public Spec<TParent> From<TParent>(Expression<Func<TParent, T>> mapFrom)
+            => _expression.From(mapFrom);
     }
     
     public static class SpecExtenions

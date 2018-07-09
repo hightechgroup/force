@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fasterflect.Netstandard" Version="1.0.8" />
-    <PackageReference Include="Mapster" Version="3.1.8" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoApp.Domain\DemoApp.Domain.csproj" />
-    <ProjectReference Include="..\Force\Force.csproj">
-      <Project>{FB262EF5-16F5-47ED-AA59-327E923875D4}</Project>
-      <Name>Force</Name>
-    </ProjectReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Force\Force.csproj" />
   </ItemGroup>
 </Project>
