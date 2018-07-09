@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -29,15 +30,42 @@ namespace Force.Ddd
         public static IOrderedQueryable<TSubject> AutoSort<TSubject>(this IQueryable<TSubject> query, string propertyName)
             => Conventions<TSubject>.Sort(query, propertyName);
     }
-    
+
+    public static class Conventions
+    {
+        public static ConventionalFilters Filters { get; } = new ConventionalFilters();
+    }
+
+    public class ConventionalFilters
+    {
+        private static MethodInfo StartsWith = typeof(string)
+            .GetMethod("StartsWith", new[] {typeof(string)});
+
+        private static Dictionary<Type, Func<MemberExpression, Expression, Expression>> _filters
+            = new Dictionary<Type, Func<MemberExpression, Expression, Expression>>()
+            {
+                { typeof(string),  (p, v) => Expression.Call(p, StartsWith, v) }
+            };
+        
+        internal ConventionalFilters()
+        {            
+        }
+
+        public Func<MemberExpression, Expression, Expression> this[Type key]
+        {
+            get => _filters.ContainsKey(key)
+                ? _filters[key]
+                : Expression.Equal;
+            set => _filters[key] = value ?? throw new ArgumentException(nameof(value));
+        }
+    }
+
     public static class Conventions<TSubject>
     {
         private static ConcurrentDictionary<string, Expression> _sorters 
             = new ConcurrentDictionary<string, Expression>();
 
-        private static MethodInfo StartsWith = typeof(string)
-            .GetMethod("StartsWith", new[] {typeof(string)});
-        
+
         public static IOrderedQueryable<TSubject> Sort(IQueryable<TSubject> query, string propertyName)
         {
             (string, bool) GetSorting()
@@ -118,14 +146,12 @@ namespace Force.Ddd
                 .Where(x => x.Value != null)
                 .Select(x =>
                 {
-                    Expression property = Expression.Property(parameter, x.Property);
+                    var property = Expression.Property(parameter, x.Property);
                     Expression value = Expression.Constant(x.Value);
 
                     value = Expression.Convert(value, property.Type);
-                    var body = property.Type == typeof(string)
-                                   ? (Expression)Expression.Call(property, StartsWith, value)
-                                   : Expression.Equal(property, value);
-
+                    var body = Conventions.Filters[property.Type](property, value);
+                        
                     return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
                 })
                 .ToArray();

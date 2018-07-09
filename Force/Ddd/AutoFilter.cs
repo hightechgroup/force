@@ -9,14 +9,17 @@ namespace Force.Ddd
         private readonly object _predicate;
         private readonly string _orderBy;
 
-        public AutoFilter(object predicate, string orderBy)
+        public AutoFilter(object predicate, string orderBy = null)
         {
             _predicate = predicate;
             _orderBy = orderBy;
         }
 
+        private IQueryable<T> DoFilter<TFilter>(IQueryable<T> queryable, TFilter predicate)
+            => queryable.AutoFilter(predicate);
+        
         public IQueryable<T> Filter(IQueryable<T> queryable)
-            => queryable.AutoFilter(_predicate);
+            => DoFilter(queryable, (dynamic)_predicate);
 
         public IOrderedQueryable<T> Order(IQueryable<T> queryable)
             => !string.IsNullOrEmpty(_orderBy)

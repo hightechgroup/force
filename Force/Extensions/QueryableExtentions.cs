@@ -24,11 +24,14 @@ namespace Force.Extensions
             return queryable.OrderByFirstProperty();
         }
 
-        public static IOrderedQueryable<T> FilterSortAndPaginate<T>(this IQueryable<T> queryable,
-            PagedQuery<T> query)
-            => queryable
-                .FilterAndSort(query)
-                .Paginate(query.Paging);
+        public static PagedResponse<T> FilterSortAndPaginate<T>(this IQueryable<T> queryable, PagedQuery<T> query)
+        {
+            var q = queryable.FilterAndSort(query);
+            var total = q.Count();
+            var totalPages = total / query.Paging.Take;
+
+            return new PagedResponse<T>(q.Paginate(query.Paging).ToList(), total, totalPages);
+        }
 
         public static IOrderedQueryable<T> OrderByFirstProperty<T>(this IQueryable<T> queryable)
             => typeof(IHasId).IsAssignableFrom(typeof(T))
