@@ -8,7 +8,7 @@ using Force.Extensions;
 namespace Force.Infrastructure
 {
     public delegate T ObjectActivator<out T>(params object[] args);
-    
+
     public static class FastTypeInfo<T>
     {
         private static Attribute[] _attributes;

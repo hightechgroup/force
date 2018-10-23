@@ -2,20 +2,20 @@
 
 namespace Force.Ddd
 {
-    public class Query<T>
+    public class Query<T>: IFilter<T>
     {
         public Query()
         {            
         }
         
-        public Query(Spec<T> spec, Sorter<T> sorter)
+        public Query(Spec<T> spec, Sorter<T> sorter = null)
         {
             Spec = spec;
             Sorter = sorter;
         }
 
-        public Spec<T> Spec { get; }
+        public virtual Spec<T> Spec { get; }
         
-        public Sorter<T> Sorter { get; }               
+        public virtual Sorter<T> Sorter { get; }               
     }
 }

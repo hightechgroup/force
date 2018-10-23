@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -27,7 +26,7 @@ namespace Force.Ddd
                 : Conventions<TSubject>.Sort(filtered, proprtyName);
         }
 
-        public static IOrderedQueryable<TSubject> AutoSort<TSubject>(this IQueryable<TSubject> query, string propertyName)
+        public static IOrderedQueryable<TSubject> OrderBy<TSubject>(this IQueryable<TSubject> query, string propertyName)
             => Conventions<TSubject>.Sort(query, propertyName);
     }
 
@@ -62,10 +61,6 @@ namespace Force.Ddd
 
     public static class Conventions<TSubject>
     {
-        private static ConcurrentDictionary<string, Expression> _sorters 
-            = new ConcurrentDictionary<string, Expression>();
-
-
         public static IOrderedQueryable<TSubject> Sort(IQueryable<TSubject> query, string propertyName)
         {
             (string, bool) GetSorting()
@@ -113,8 +108,6 @@ namespace Force.Ddd
 
             return (IOrderedQueryable<TSubject>) orderBy.Invoke(query, new object[] {query, expression});
         }
-
-
         
         public static IQueryable<TSubject> Filter<TPredicate>(IQueryable<TSubject> query,
             TPredicate predicate,

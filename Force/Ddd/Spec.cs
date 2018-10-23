@@ -42,9 +42,58 @@ namespace Force.Ddd
     
     public static class SpecExtenions
     {
-        public static Spec<T> AsSpec<T>(this Expression<Func<T, bool>> expr)
+        public static Spec<T> ToSpec<T>(this Expression<Func<T, bool>> expr)
             where T : class, IHasId
             => new Spec<T>(expr);
+
+        public static Spec<T> ToSpec<T>(this object predicate, ComposeKind composeKind = ComposeKind.And)
+        {
+            var filterProps = predicate.GetType()
+                .GetProperties()
+                .Where(x => x.CanRead && x.CanWrite)
+                .ToArray();
+
+            var filterPropNames = filterProps
+                .Select(x => x.Name)
+                .ToArray();
+
+            var modelType = typeof(T);
+            var stringType = typeof(string);
+            var dateTimeType = typeof(DateTime);
+            var dateTimeNullableType = typeof(DateTime?);
+
+            var parameter = Expression.Parameter(modelType);
+
+            var props = FastTypeInfo<T>
+                .PublicProperties
+                .Where(x => filterPropNames.Contains(x.Name))
+                .Select(x => new
+                {
+                    Property = x,
+                    Value = filterProps.Single(y => y.Name == x.Name).GetValue(predicate)
+                })
+                .Where(x => x.Value != null)
+                .Select(x =>
+                {
+                    var property = Expression.Property(parameter, x.Property);
+                    Expression value = Expression.Constant(x.Value);
+
+                    value = Expression.Convert(value, property.Type);
+                    var body = Conventions.Filters[property.Type](property, value);
+                        
+                    return Expression.Lambda<Func<T, bool>>(body, parameter);
+                })
+                .ToArray();
+
+            if (!props.Any())
+            {
+                return null;
+            }
+
+            return composeKind == ComposeKind.And
+                ? props.Aggregate((c, n) => c.And(n))
+                : props.Aggregate((c, n) => c.Or(n));
+        }
         
         public static bool Satisfy<T>(this T obj, Func<T, bool> spec)
         {

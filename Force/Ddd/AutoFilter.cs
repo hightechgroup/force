@@ -23,7 +23,7 @@ namespace Force.Ddd
 
         public IOrderedQueryable<T> Order(IQueryable<T> queryable)
             => !string.IsNullOrEmpty(_orderBy)
-                   ? queryable.AutoSort(_orderBy)
+                   ? ConventionsExtensions.OrderBy(queryable, _orderBy)
                    : queryable.OrderByFirstProperty();
     }
 }
