@@ -13,6 +13,9 @@
           <Version>7.0.1</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore">
+          <Version>2.2.0-preview3-35497</Version>
+        </PackageReference>
         <PackageReference Include="SimpleInjector">
           <Version>4.4.0</Version>
         </PackageReference>
@@ -22,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Force.AspNetCore.Mvc\Force.AspNetCore.Mvc.csproj" />
       <ProjectReference Include="..\Force\Force.csproj" />
     </ItemGroup>
 

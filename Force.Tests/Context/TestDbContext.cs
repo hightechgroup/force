@@ -7,6 +7,7 @@ namespace Force.Tests
     {
         public TestDbContext(DbContextOptions options) : base(options)
         {
+            
         }        
         
         public DbSet<Product> Products { get; set; }

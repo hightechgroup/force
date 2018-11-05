@@ -7,6 +7,9 @@ namespace Force.Ddd
         void Add<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
+        void Update<TEntity>(TEntity entity)
+            where TEntity : class, IHasId;
+        
         void Remove<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
@@ -16,5 +19,7 @@ namespace Force.Ddd
         IHasId Find(Type entityType, params object[] id);
 
         void Commit();
+
+        void Rollback();
     }
 }
