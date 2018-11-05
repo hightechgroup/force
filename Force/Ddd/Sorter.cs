@@ -22,9 +22,15 @@ namespace Force.Ddd
         public static implicit operator LambdaExpression(Sorter<T> sorter)
             => sorter._expression;
 
-        public IOrderedQueryable<T> Order(IQueryable<T> queryable)
+        public IOrderedQueryable<T> Sort(IQueryable<T> queryable)
             => _propertyName != null
                    ? queryable.OrderBy(_propertyName)
                    : (IOrderedQueryable<T>)((dynamic) queryable).OrderBy(_expression);
+    }
+
+    public static class SorterExtensions
+    {
+        public static IOrderedQueryable<T> SortWith<T>(this IQueryable<T> queryable, Sorter<T> sorter)
+            => sorter.Sort(queryable);
     }
 }

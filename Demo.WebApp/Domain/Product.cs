@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Force.Tests
+namespace Demo.WebApp.Domain
 {
     public class Product : NamedEntityBase
     {
@@ -11,7 +10,5 @@ namespace Force.Tests
         }
         
         public Category Category { get; protected set; }
-        
-        public ICollection<SaleItem> SaleItems { get; protected set; } = new HashSet<SaleItem>();
     }
 }

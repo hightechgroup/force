@@ -15,10 +15,8 @@ namespace Force.Ddd.Pagination
             => (IOrderedQueryable<T>)queryable
             .Skip((paging.Page - 1) * paging.Take)
             .Take(paging.Take)            ;
-        
-        public static IOrderedQueryable<T> Paginate<T>(this IOrderedQueryable<T> queryable, int page, int take)
-            => (IOrderedQueryable<T>)queryable
-            .Skip((page - 1) * take)
-            .Take(take);        
+
+        public static PagedResponse<T> ToPagedResponse<T>(this IOrderedQueryable<T> queryable, IPaging paging)
+            => new PagedResponse<T>(queryable, paging);
     }
 }

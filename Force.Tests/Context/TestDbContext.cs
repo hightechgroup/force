@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Demo.WebApp.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Force.Tests
 {

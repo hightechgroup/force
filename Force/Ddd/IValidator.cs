@@ -16,9 +16,9 @@ namespace Force.Ddd
             => results == null || results.All(x => x == ValidationResult.Success);
         
 
-        public static IEnumerable<ValidationResult> Validate<T>(this T obj)
+        public static IEnumerable<ValidationResult> Validate<T>(this T obj, IServiceProvider serviceProvider = null)
         {
-            var context = new ValidationContext(obj, serviceProvider: null, items: null);
+            var context = new ValidationContext(obj, serviceProvider, items: null);
             var results = new List<ValidationResult>();
             
             Validator.TryValidateObject(

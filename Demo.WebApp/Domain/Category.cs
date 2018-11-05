@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Force.Tests
+namespace Demo.WebApp.Domain
 {
     public class Category: NamedEntityBase
     {

@@ -18,7 +18,7 @@ namespace Force.Extensions
 
             if (query.Sorter != null)
             {
-                return query.Sorter.Order(queryable);
+                return query.Sorter.Sort(queryable);
             }
 
             return queryable.OrderByFirstProperty();

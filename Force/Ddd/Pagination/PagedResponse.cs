@@ -5,6 +5,13 @@ namespace Force.Ddd.Pagination
 {
     public sealed class PagedResponse<T>
     {
+        public PagedResponse(IOrderedQueryable<T> queryable, IPaging paging)
+        {
+            Total = queryable.Count();
+            TotalPages = Total / paging.Take;
+            Items = queryable.Paginate(paging).ToList();
+        }
+        
         public PagedResponse(IEnumerable<T> items, long total, int totalPages)
         {
             Total = total;
@@ -14,8 +21,8 @@ namespace Force.Ddd.Pagination
 
         public long Total { get; }
         
-        public int TotalPages { get; }
+        public long TotalPages { get; }
 
-        public T[] Items { get; }
+        public IEnumerable<T> Items { get; }
     }
 }

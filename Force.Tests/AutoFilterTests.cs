@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Demo.WebApp.Domain;
 using Force.Ddd;
 using Xunit;
 

@@ -1,4 +1,4 @@
-﻿namespace Force.Tests
+﻿namespace Demo.WebApp.Domain
 {
     public abstract class NamedEntityBase
     {
