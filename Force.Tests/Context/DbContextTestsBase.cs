@@ -24,8 +24,6 @@ namespace Force.Tests
                 {
                     if (!IsInitialized)
                     {
-                        DbContext.Products.Add(new Product(2, "2"));
-                        DbContext.Products.Add(new Product(1, "1"));
                         DbContext.SaveChanges();
                     }
 

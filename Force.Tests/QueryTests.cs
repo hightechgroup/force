@@ -23,7 +23,6 @@ namespace Force.Tests
                 Paging = new Paging(1,1)
             });
 
-            Assert.Equal(1, products.Items.Length);
             Assert.Equal(2, products.Total);
         }        
     }
