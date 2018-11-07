@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Pagination;
 
 namespace Demo.WebApp.Features.Products
 {
     public class ProductListQuery
-        : IFilter<ProductListDto>
+        : IQuery<PagedResponse<ProductListDto>>
+        , IFilter<ProductListDto>
         , ISorter<ProductListDto>
         , IPaging
         , IValidatableObject

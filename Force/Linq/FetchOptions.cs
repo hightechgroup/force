@@ -2,13 +2,13 @@
 
 namespace Force.Ddd
 {
-    public class Query<T>: IFilter<T>, ISorter<T>
+    public class FetchOptions<T>: IFilter<T>, ISorter<T>
     {
-        public Query()
+        public FetchOptions()
         {            
         }
         
-        public Query(Spec<T> spec, Sorter<T> sorter)
+        public FetchOptions(Spec<T> spec, Sorter<T> sorter)
         {
             Spec = spec;
             Sorter = sorter;

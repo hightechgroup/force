@@ -4,7 +4,7 @@ using Force.Ddd.Pagination;
 
 namespace Force.Ddd
 {
-    public class AutoPagedQuery<T>: PagedQuery<T>
+    public class AutoPagedFetchOptions<T>: PagedFetchOptions<T>
     {
         private static ValidationResult[] Empty = { };
         
@@ -20,7 +20,7 @@ namespace Force.Ddd
             ? _sorter ?? (_sorter = new Sorter<T>(OrderBy))
             : null;
 
-        public AutoPagedQuery()
+        public AutoPagedFetchOptions()
         {            
         }
     }

@@ -2,13 +2,13 @@
 
 namespace Force.Ddd.Pagination
 {
-    public class PagedQuery<T> : Query<T>, IPaging
+    public class PagedFetchOptions<T> : FetchOptions<T>, IPaging
     {
-        public PagedQuery()
+        public PagedFetchOptions()
         {            
         }
         
-        public PagedQuery(Spec<T> spec, Sorter<T> sorter): base(spec, sorter)
+        public PagedFetchOptions(Spec<T> spec, Sorter<T> sorter): base(spec, sorter)
         {
         }
 

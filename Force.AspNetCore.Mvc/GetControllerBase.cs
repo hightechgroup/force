@@ -24,10 +24,10 @@ namespace Force.AspNetCore.Mvc
         public abstract IQueryable<TDetails> ProjectDetails(IQueryable<TEntity> queryable);
 
         [HttpGet]
-        public virtual IActionResult Get([FromQuery] PagedQuery<TInfo> pagedQuery)
+        public virtual IActionResult Get([FromQuery] PagedFetchOptions<TInfo> pagedFetchOptions)
             => _queryable
                 .PipeTo(ProjectInfo)
-                .FilterSortAndPaginate(pagedQuery)
+                .FilterSortAndPaginate(pagedFetchOptions)
                 .PipeTo(Ok);
 
         [HttpGet("{id}")]

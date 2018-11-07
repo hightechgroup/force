@@ -68,10 +68,6 @@ namespace Force.Extensions
         public static IQueryable<T> WhereIfNotNull<T>(this IQueryable<T> query, object obj,
             Expression<Func<T, bool>> predicateIfTrue)
             => query.WhereIf(obj != null, predicateIfTrue);
-
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, IQueryableOrder<T> spec)
-            where T : class
-            => spec.Order(source);
        
 
         public static TEntity ById<TKey, TEntity>(this IQueryable<TEntity> queryable, TKey id)
