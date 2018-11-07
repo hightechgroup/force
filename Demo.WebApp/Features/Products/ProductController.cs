@@ -13,8 +13,7 @@ namespace Demo.WebApp.Features.Products
         public IActionResult Get([FromServices] IQueryable<Product> products, ProductListQuery productListQuery)
             => products
                 .ProjectTo<ProductListDto>()
-                .Where(productListQuery.Spec)
-                .SortWith(productListQuery.Sorter)
+                .FilterAndSort(productListQuery)
                 .ToList()
                 .PipeTo(Ok);
     }

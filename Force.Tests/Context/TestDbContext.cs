@@ -1,5 +1,4 @@
-﻿using Demo.WebApp.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Force.Tests
 {
@@ -11,7 +10,5 @@ namespace Force.Tests
         }        
         
         public DbSet<Product> Products { get; set; }
-        
-        public DbSet<Category> Categories { get; set; }
     }
 }

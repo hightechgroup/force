@@ -5,10 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="AutoMapper">
           <Version>7.0.1</Version>
         </PackageReference>
@@ -25,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Force.AspNetCore.Mvc\Force.AspNetCore.Mvc.csproj" />
       <ProjectReference Include="..\Force\Force.csproj" />
     </ItemGroup>
 

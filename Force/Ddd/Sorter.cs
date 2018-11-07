@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Force.Ddd
 {
-    public class Sorter<T>
+    public class Sorter<T>: ISorter<T>
     {
         private readonly string _propertyName;
         private readonly LambdaExpression _expression;
@@ -30,7 +30,7 @@ namespace Force.Ddd
 
     public static class SorterExtensions
     {
-        public static IOrderedQueryable<T> SortWith<T>(this IQueryable<T> queryable, Sorter<T> sorter)
+        public static IOrderedQueryable<T> Sort<T>(this IQueryable<T> queryable, ISorter<T> sorter)
             => sorter.Sort(queryable);
     }
 }

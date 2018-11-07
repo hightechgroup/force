@@ -32,10 +32,6 @@ namespace Force.AspNetCore.Mvc
             try
             {
                 var typeAccessor = TypeAccessor.Create(bindingContext.ModelType);
-                
-                // Не все называеют Id так. По идее лучше покопаться в конфигурации EF
-                // Если кто подскажет в комментариях где это буду благодарен
-
                 var id = Convert.ChangeType(value, typeAccessor.GetMembers().First(y => y.Name == "Id").Type);
                 var result = _getter(bindingContext.ModelType, id);
                 bindingContext.Result = ModelBindingResult.Success(result);

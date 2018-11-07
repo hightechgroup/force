@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Demo.WebApp.Domain;
 using Force.Ddd.Pagination;
 using Force.Extensions;
 using Xunit;
@@ -19,10 +18,7 @@ namespace Force.Tests
         [Fact]
         public void PagedQuery_FilterSortAndPaginate()
         {
-            var products = DbContext.Products.FilterSortAndPaginate(new PagedQuery<Product>()
-            {
-                Paging = new Paging(1,1)
-            });
+            var products = DbContext.Products.FilterSortAndPaginate(new PagedQuery<Product>());
 
             Assert.Equal(2, products.Total);
         }        

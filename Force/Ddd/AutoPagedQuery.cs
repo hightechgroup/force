@@ -14,9 +14,9 @@ namespace Force.Ddd
         
         public string OrderBy { get; set; }
 
-        public override Spec<T> Spec => _spec ?? (_spec = this.ToSpec<T>());
+        public Spec<T> Spec => _spec ?? (_spec = this.ToSpec<T>());
 
-        public override Sorter<T> Sorter => !string.IsNullOrEmpty(OrderBy) 
+        public Sorter<T> Sorter => !string.IsNullOrEmpty(OrderBy) 
             ? _sorter ?? (_sorter = new Sorter<T>(OrderBy))
             : null;
 

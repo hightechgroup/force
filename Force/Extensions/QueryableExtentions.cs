@@ -9,29 +9,17 @@ namespace Force.Extensions
 {
     public static class QueryableExtentions
     {
-        public static IOrderedQueryable<T> FilterAndSort<T>(this IQueryable<T> queryable, Query<T> query)
-        {
-            if (query.Spec != null)
-            {
-                queryable = queryable.Where(query.Spec);
-            }
+        public static IOrderedQueryable<T> FilterAndSort<T, TQuery>(this IQueryable<T> queryable, TQuery query)
+            where TQuery : IFilter<T>, ISorter<T>
+            => queryable
+                .Filter(query)
+                .Sort(query);
 
-            if (query.Sorter != null)
-            {
-                return query.Sorter.Sort(queryable);
-            }
-
-            return queryable.OrderByFirstProperty();
-        }
-
-        public static PagedResponse<T> FilterSortAndPaginate<T>(this IQueryable<T> queryable, PagedQuery<T> query)
-        {
-            var q = queryable.FilterAndSort(query);
-            var total = q.Count();
-            var totalPages = total / query.Paging.Take;
-
-            return new PagedResponse<T>(q.Paginate(query.Paging).ToList(), total, totalPages);
-        }
+        public static PagedResponse<T> FilterSortAndPaginate<T, TQuery>(this IQueryable<T> queryable, TQuery query)
+            where TQuery : IFilter<T>, ISorter<T>, IPaging
+            => queryable
+                .FilterAndSort(query)
+                .ToPagedResponse(query);
 
         public static IOrderedQueryable<T> OrderByFirstProperty<T>(this IQueryable<T> queryable)
             => typeof(IHasId).IsAssignableFrom(typeof(T))
