@@ -9,6 +9,15 @@ namespace Force.Extensions
     ///</summary>
     public static class StringExtensions
     {
+        public static string NullIfEmpty(this string str)
+            => string.IsNullOrEmpty(str) ? null : str;
+        
+        public static string SplitCamelCase(this string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", 
+                System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+        }
+        
         /// <summary>
         /// Indicates whether the specified string not null or an empty string.
         /// </summary>

@@ -1,39 +1,36 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Infrastructure;
+using Force.Ddd;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Domain
 {
     [JsonConverter(typeof(ValueTypeConverter))]
-    public class Email
+    [ModelBinder(typeof(EmailModelBinder))]
+    public class Email: StringValueObject
     {
         private static readonly EmailAddressAttribute Attr = new EmailAddressAttribute();
         
-        private readonly string _email;
-
-        public Email(string email)
+        public Email(string email): base(email)
         {
             if (!Attr.IsValid(email))
             {
                 throw new ArgumentException(nameof(email), $"\"{email}\" is not valid email");    
             }
-            
-            _email = email;
         }
 
-        public bool StartsWith(string value)
+        public static bool TryParse(string value, out Email email)
         {
-            return _email.StartsWith(value);
-        }
+            if (Attr.IsValid(value))
+            {
+                email = new Email(value);
+                return true;
+            }
 
-        public static implicit operator string (Email email)
-            => email.ToString();
-        
-        public static implicit operator Email (string email)
-            => new Email(email);     
-        
-        public override string ToString()
-            => _email;
+            email = null;
+            return false;
+        }
     }
 }

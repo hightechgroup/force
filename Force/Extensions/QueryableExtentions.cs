@@ -9,6 +9,16 @@ namespace Force.Extensions
 {
     public static class QueryableExtentions
     {
+        public static IQueryable<T> TryFilter<T>(this IQueryable<T> queryable, object maybeFilter)
+        {
+            if (maybeFilter is IFilter<T> filter)
+            {
+                queryable = queryable.Where(filter.Spec);
+            }
+
+            return queryable;
+        }
+        
         public static IOrderedQueryable<T> FilterAndSort<T, TQuery>(this IQueryable<T> queryable, TQuery query)
             where TQuery : IFilter<T>, ISorter<T>
             => queryable

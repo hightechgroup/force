@@ -7,25 +7,35 @@ namespace Force.Ddd
     public class Sorter<T>: ISorter<T>
     {
         private readonly string _propertyName;
-        private readonly LambdaExpression _expression;
 
-        public Sorter(LambdaExpression expression)
+        public Sorter(string propertyName)
+        {
+            _propertyName = propertyName;
+        }
+
+        public IOrderedQueryable<T> Sort(IQueryable<T> queryable)
+            => Conventions<T>.Sort(queryable, _propertyName);
+    }
+    
+    public class Sorter<T, TParam>: ISorter<T>
+    {
+        private readonly Expression<Func<T, TParam>> _expression;
+
+        public Sorter(Expression<Func<T, TParam>> expression)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
         public Sorter(string propertyName)
         {
-            _propertyName = propertyName ?? throw new ArgumentNullException(nameof(propertyName));
+            throw new NotImplementedException();
         }
         
-        public static implicit operator LambdaExpression(Sorter<T> sorter)
+        public static implicit operator Expression<Func<T, TParam>>(Sorter<T, TParam> sorter)
             => sorter._expression;
 
         public IOrderedQueryable<T> Sort(IQueryable<T> queryable)
-            => _propertyName != null
-                   ? queryable.OrderBy(_propertyName)
-                   : (IOrderedQueryable<T>)((dynamic) queryable).OrderBy(_expression);
+            => queryable.OrderBy(_expression);
     }
 
     public static class SorterExtensions

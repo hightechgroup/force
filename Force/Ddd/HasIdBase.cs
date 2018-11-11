@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Force.Ddd
 {
+    public abstract class HasIdBase: HasIdBase<int>
+    {}
+    
     public abstract class HasIdBase<TKey> : IHasId<TKey>
         where TKey: IEquatable<TKey>
     {

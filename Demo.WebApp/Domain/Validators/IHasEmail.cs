@@ -1,4 +1,4 @@
-namespace Demo.WebApp.Infrastructure.Validators
+namespace Demo.WebApp.Domain.Validators
 {
     public interface IHasEmail
     {

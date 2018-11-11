@@ -1,15 +1,27 @@
-﻿namespace Demo.WebApp.Domain
-{
-    public abstract class NamedEntityBase
-    {
-        protected NamedEntityBase(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Force.Extensions;
 
-        public int Id { get; protected set; }
+namespace Demo.WebApp.Domain
+{
+    public abstract class NamedEntityBase: EntityBase<int>
+    {
+        private static DefaultStringLengthAttribute _attr = new DefaultStringLengthAttribute();
         
+        protected NamedEntityBase()
+        {}
+        
+        protected NamedEntityBase(string name)
+        {
+            Name = name.NullIfEmpty() ?? throw new ArgumentNullException(nameof(name));
+            if (!_attr.IsValid(name))
+            {
+                throw new ArgumentException(_attr.ErrorMessage, nameof(name));
+            }
+        }
+        
+        [DefaultStringLengthAttribute]
+        [Required]
         public string Name { get; protected set; }
     }
 }

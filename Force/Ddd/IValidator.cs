@@ -12,8 +12,11 @@ namespace Force.Ddd
     
     public static class ValidationExtensions
     {
-        public static IEnumerable<ValidationResult> Validate<T>(this IValidator<T> validator, T obj) =>
-            validator.Validate(obj, new ValidationContext(obj));       
+        public static ValidatiorBuilder<T> Validate<T>(this T obj, Func<T, bool> validationRule, string errorMessage)
+            => new ValidatiorBuilder<T>(obj).Validate(validationRule, errorMessage);
+        
+        public static IEnumerable<ValidationResult> Validate<T>(this IValidator<T> validator, T obj) 
+            => validator.Validate(obj, new ValidationContext(obj));       
         
         public static bool IsValid(this IEnumerable<ValidationResult> results)
             => results == null || results.All(x => x == ValidationResult.Success);

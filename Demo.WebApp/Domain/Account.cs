@@ -1,12 +1,11 @@
 using Demo.WebApp.Infrastructure;
+using Force.Ddd;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Domain
 {
-    public class Account
+    public class Account: EntityBase<int>
     {
-        public long Id { get; set; }
-        
         public Email Email { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Demo.WebApp.Infrastructure.Validators;
 using Force.Ddd;
 using Microsoft.Extensions.DependencyInjection;
 

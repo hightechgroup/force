@@ -1,4 +1,5 @@
 using System;
+using Demo.WebApp.Domain;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Infrastructure
@@ -16,7 +17,8 @@ namespace Demo.WebApp.Infrastructure
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            Email.TryParse(reader.Value?.ToString(), out var email);
+            return email;
         }
 
         public override bool CanConvert(Type objectType)

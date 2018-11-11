@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Force.Ddd;
-using Force.Extensions;
 using Force.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper
 {
@@ -14,11 +14,11 @@ namespace Force.AutoMapper
         where TKey: IEquatable<TKey>
         where TEntity : class, IHasId<TKey>
     {
-        protected readonly IUnitOfWork UnitOfWork;
+        private readonly DbContext _dbContext;
 
-        public DtoToEntityTypeConverter(IUnitOfWork unitOfWork)
+        public DtoToEntityTypeConverter(DbContext dbContext)
         {
-            UnitOfWork = unitOfWork;
+            _dbContext = dbContext;
 
             var hasParameterlessCtor = typeof(TEntity)
                 .GetTypeInfo()
@@ -26,7 +26,7 @@ namespace Force.AutoMapper
 
             if (!hasParameterlessCtor)
                 throw new InvalidOperationException(
-                    "Generic argument TEntity should refer to class with parameterless constructor (public, protected or private)");
+                    "Generic argument TEntity must refer to class with parameterless constructor");
         }
 
         public virtual TEntity Convert(TDto source, TEntity destination, ResolutionContext context)
@@ -34,7 +34,7 @@ namespace Force.AutoMapper
             var sourceId = (source as IHasId)?.Id;
 
             var dest = destination ?? (sourceId != null
-                           ? UnitOfWork.Find<TEntity>(sourceId) ??
+                           ? _dbContext.Find<TEntity>(sourceId) ??
                              (TEntity) Activator.CreateInstance(typeof(TEntity), true)
                            : (TEntity) Activator.CreateInstance(typeof(TEntity), true));
 
@@ -46,6 +46,7 @@ namespace Force.AutoMapper
                 .PublicProperties
                 .ToArray();
 
+            var entry = _dbContext.Entry(dest);
             foreach (var propertyInfo in dp)
             {
                 var key = typeof(IHasId).GetTypeInfo().IsAssignableFrom(propertyInfo.PropertyType)
@@ -57,7 +58,8 @@ namespace Force.AutoMapper
                 if (key.EndsWith("ID", StringComparison.CurrentCultureIgnoreCase)
                     && typeof(IHasId).GetTypeInfo().IsAssignableFrom(propertyInfo.PropertyType))
                 {
-                    propertyInfo.SetValue(dest, UnitOfWork.Find(propertyInfo.PropertyType, sp[key].GetValue(source)));
+                    entry.Property(propertyInfo.Name).CurrentValue = sp[propertyInfo.Name].GetValue(source);
+                    //propertyInfo.SetValue(dest, _dbContext.Find(propertyInfo.PropertyType, sp[key].GetValue(source)));
                 }
                 else
                 {
@@ -75,7 +77,7 @@ namespace Force.AutoMapper
 
                             foreach (var id in ids)
                             {
-                                add.Invoke(collection, new object[] {UnitOfWork.Find(et, id)});
+                                add.Invoke(collection, new object[] {_dbContext.Find(et, id)});
                             }
                         }
                         else

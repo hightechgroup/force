@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Demo.WebApp.Controllers;
 using Demo.WebApp.Data;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Infrastructure;
 using Force.Cqrs;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo.WebApp.Features.Accounts
 {
@@ -12,6 +17,11 @@ namespace Demo.WebApp.Features.Accounts
     {
         private readonly IValidatableCommandHandler<UpdateAccountEmail> _updateAccountEmailHandler;
 
+        private static readonly Func<DemoAppDbContext, IEnumerable<Account>> CompiledQuery =
+            EF.CompileQuery((DemoAppDbContext c) => c
+                .Set<Account>()
+                .AsNoTracking());
+        
         //IValidatableCommandHandler<UpdateAccountEmail> updateAccountEmailHandler
         public AccountController()
         {
@@ -22,6 +32,16 @@ namespace Demo.WebApp.Features.Accounts
         public IActionResult Update([FromBody] UpdateAccountEmail command)
             => _updateAccountEmailHandler.ToResult(command);
 
+        [HttpGet("test")]
+        public IActionResult Test([FromServices] DemoAppDbContext demoAppDbContext, [FromQuery][Required]Email email)
+        {
+            return Ok(new
+            {
+                email,
+                state = ModelState.IsValid
+            });
+        }
+        
         [HttpGet]
         public IActionResult Get([FromServices] DemoAppDbContext demoAppDbContext)
         {

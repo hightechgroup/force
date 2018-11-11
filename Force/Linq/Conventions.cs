@@ -61,7 +61,7 @@ namespace Force.Ddd
 
     public static class Conventions<TSubject>
     {
-        public static IOrderedQueryable<TSubject> Sort(IQueryable<TSubject> query, string propertyName)
+        public static IOrderedQueryable<TSubject> Sort(IQueryable<TSubject> queryable, string propertyName)
         {
             (string, bool) GetSorting()
             {
@@ -106,7 +106,7 @@ namespace Force.Ddd
                 .First(x => x.Name == methodName && x.GetParameters().Length == 2)
                 .MakeGenericMethod(typeof(TSubject), property.PropertyType);
 
-            return (IOrderedQueryable<TSubject>) orderBy.Invoke(query, new object[] {query, expression});
+            return (IOrderedQueryable<TSubject>) orderBy.Invoke(queryable, new object[] {queryable, expression});
         }
         
         public static IQueryable<TSubject> Filter<TPredicate>(IQueryable<TSubject> query,

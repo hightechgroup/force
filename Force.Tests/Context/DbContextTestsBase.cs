@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Demo.WebApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Force.Tests
 {
@@ -8,14 +9,14 @@ namespace Force.Tests
         
         public static object Locker = new object();
         
-        protected readonly TestDbContext DbContext;
+        protected readonly DemoAppDbContext DbContext;
             
         protected DbContextTestsBase()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<TestDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<DemoAppDbContext>();
             optionsBuilder.UseInMemoryDatabase("Force");
 
-            DbContext = new TestDbContext(optionsBuilder.Options);
+            DbContext = new DemoAppDbContext(optionsBuilder.Options);
 
             
             if (!IsInitialized)

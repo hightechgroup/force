@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Force.Infrastructure;
 
 namespace Force.Extensions
 {
     public static class FunctionalExtensions
-    {
+    {       
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);
-
 
         public static TSource PipeToIf<TSource>(
             this TSource source, Func<TSource, bool> predicate, Func<TSource, TSource> func)

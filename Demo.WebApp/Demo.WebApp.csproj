@@ -8,9 +8,18 @@
         <PackageReference Include="AutoMapper">
           <Version>7.0.1</Version>
         </PackageReference>
+        <PackageReference Include="EFCore.BulkExtensions">
+          <Version>2.2.2</Version>
+        </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore">
+          <Version>2.1.3</Version>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore">
           <Version>2.2.0-preview3-35497</Version>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies">
+          <Version>2.1.4</Version>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
           <Version>2.2.0-preview3-35497</Version>
@@ -21,10 +30,26 @@
         <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core">
           <Version>4.4.1</Version>
         </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore">
+          <Version>4.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger">
+          <Version>4.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen">
+          <Version>4.0.1</Version>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI">
+          <Version>4.0.1</Version>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Force\Force.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations" />
     </ItemGroup>
 
 </Project>

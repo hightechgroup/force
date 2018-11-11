@@ -1,7 +1,7 @@
 using Force;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo.WebApp
+namespace Demo.WebApp.Infrastructure
 {
     public static class Extensions
     {
