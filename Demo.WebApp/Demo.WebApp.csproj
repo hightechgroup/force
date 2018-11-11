@@ -45,6 +45,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Force.AutoMapper\Force.AutoMapper.csproj" />
       <ProjectReference Include="..\Force\Force.csproj" />
     </ItemGroup>
 

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Demo.WebApp.Data;
+using Demo.WebApp.Domain;
+using Demo.WebApp.Features.Posts;
 using Demo.WebApp.Infrastructure;
+using Force.AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +33,10 @@ namespace Demo.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             AutomapperConfigurator.Configure(GetType().Assembly);
-
+            services.AddDbContext<DemoAppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<DbContext, DemoAppDbContext>();
+            services.AddScoped<LinqQueryHandler<PostListQuery, Post, PostListDto>>();
+            
             services.AddMvc(options =>
                 {
                     // add custom binder to beginning of collection
@@ -43,7 +49,7 @@ namespace Demo.WebApp
                 c.SwaggerDoc("v1", new Info { Title = "API", Version = "v1" });
             });
             
-            services.AddDbContext<DemoAppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("Default")));
+         
         }
 
 
