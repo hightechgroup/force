@@ -1,9 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Demo.WebApp.Data;
 using Demo.WebApp.Domain;
 using Demo.WebApp.Features.Posts;
 using Demo.WebApp.Infrastructure;
+using Demo.WebApp.Infrastructure.Decorators;
+using Force;
 using Force.AutoMapper;
+using Force.Cqrs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,7 +41,12 @@ namespace Demo.WebApp
             AutomapperConfigurator.Configure(GetType().Assembly);
             services.AddDbContext<DemoAppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<DbContext, DemoAppDbContext>();
-            services.AddScoped<LinqQueryHandler<PostListQuery, Post, PostListDto>>();
+            services.AddScoped<IQueryHandler<PostListQuery, IEnumerable<PostListDto>>, LinqQueryHandler<PostListQuery, Post, PostListDto>>();
+            services.AddScoped<IHandler<IEnumerable<ImportPost>, IEnumerable<ValidationResult>>>(x =>
+                new ValidatorDecorator<IEnumerable<ImportPost>>(new ImportPostsHandler(), new []
+                {
+                    new ImportPostValidator()
+                }));
             
             services.AddMvc(options =>
                 {

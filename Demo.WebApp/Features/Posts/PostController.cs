@@ -1,12 +1,9 @@
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Controllers;
-using Demo.WebApp.Data;
-using Demo.WebApp.Domain;
 using Demo.WebApp.Infrastructure;
-using Force.AutoMapper;
-using Force.Extensions;
+using Force;
+using Force.Cqrs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.WebApp.Features.Posts
@@ -15,18 +12,22 @@ namespace Demo.WebApp.Features.Posts
     {
         [HttpGet]
         public IActionResult Get(
-            [FromServices] LinqQueryHandler<PostListQuery, Post, PostListDto> linqQueryHandler,
+            [FromServices] IQueryHandler<PostListQuery, IEnumerable<PostListDto>> linqQueryHandlerpostListHandler,
             [FromQuery] PostListQuery query)
-            => linqQueryHandler.ToResult(query);
+            => linqQueryHandlerpostListHandler.ToResult(query);
 
-        [HttpPost("import")]
-        public IActionResult Import([FromBody]ImportPost[] posts)
+        [HttpGet("import")]
+        public IActionResult Import(
+            [FromServices] IHandler<IEnumerable<ImportPost>, IEnumerable<ValidationResult>> handler)
         {
-            return Ok(new
-            {
-                posts,
-                ModelState = ModelState.IsValid
-            });
+            var res = handler.Handle(new List<ImportPost>());
+            return Ok(res);
+            //[FromBody]ImportPost[] posts
+//            return Ok(new
+//            {
+//                posts,
+//                ModelState = ModelState.IsValid
+//            });
         }
       
     }
