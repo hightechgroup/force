@@ -1,31 +1,39 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Force;
 using Force.Ddd;
 
 namespace Demo.WebApp.Infrastructure.Decorators
 {
-    public class ValidatorDecorator<T>: IHandler<T, IEnumerable<ValidationResult>>
+    public class ValidatorDecorator<TIn, TOut>: HandlerDecoratorBase<TIn, TOut>
     {
-        private readonly IHandler<T> _decorated;
-        private readonly IEnumerable<IValidator<T>> _validators;
+        private readonly IEnumerable<IValidator<TIn>> _validators;
 
-        public ValidatorDecorator(IHandler<T> decorated, 
-            IEnumerable<IValidator<T>> validators)
+        public ValidatorDecorator(IHandler<TIn, TOut> decorated, IEnumerable<IValidator<TIn>> validators) 
+            : base(decorated)
         {
-            _decorated = decorated;
             _validators = validators;
         }
 
-        public IEnumerable<ValidationResult> Handle(T input)
+        public override TOut Handle(TIn input)
         {
             var res = _validators.Validate(input);
-            if (res.IsValid())
+            if (!res.IsValid())
             {
-                _decorated.Handle(input);
+                if (typeof(TOut) == typeof(IEnumerable<ValidationResult>))
+                {
+                    return (TOut) res;
+                }
+
+                var message = res
+                    .Select(x => x.ErrorMessage)
+                    .Aggregate((c, n) => $"{c}{Environment.NewLine}{n}");
+                throw new ValidationException(message);
             }
 
-            return res;
+            return Decorated.Handle(input);
         }
     }
 }

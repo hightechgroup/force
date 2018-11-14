@@ -8,7 +8,7 @@ namespace Demo.WebApp.Domain
     {
         private readonly List<CommentAdded> _commentAddedEvents = new List<CommentAdded>();
         
-        public IEnumerable GetDomainEvents()
+        public IEnumerable<IDomainEvent> GetDomainEvents()
         {
             foreach (var commentAdded in _commentAddedEvents)
             {

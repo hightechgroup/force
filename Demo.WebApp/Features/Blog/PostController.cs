@@ -22,12 +22,7 @@ namespace Demo.WebApp.Features.Posts
         {
             var res = handler.Handle(new List<ImportPost>());
             return Ok(res);
-            //[FromBody]ImportPost[] posts
-//            return Ok(new
-//            {
-//                posts,
-//                ModelState = ModelState.IsValid
-//            });
+
         }
       
     }

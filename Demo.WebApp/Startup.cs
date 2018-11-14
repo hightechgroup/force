@@ -41,13 +41,7 @@ namespace Demo.WebApp
             AutomapperConfigurator.Configure(GetType().Assembly);
             services.AddDbContext<DemoAppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<DbContext, DemoAppDbContext>();
-            services.AddScoped<IQueryHandler<PostListQuery, IEnumerable<PostListDto>>, LinqQueryHandler<PostListQuery, Post, PostListDto>>();
-            services.AddScoped<IHandler<IEnumerable<ImportPost>, IEnumerable<ValidationResult>>>(x =>
-                new ValidatorDecorator<IEnumerable<ImportPost>>(new ImportPostsHandler(), new []
-                {
-                    new ImportPostValidator()
-                }));
-            
+
             services.AddMvc(options =>
                 {
                     // add custom binder to beginning of collection

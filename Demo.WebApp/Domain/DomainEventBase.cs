@@ -1,8 +1,9 @@
 using System;
+using Force.Ddd;
 
 namespace Demo.WebApp.Domain
 {
-    public abstract class DomainEventBase
+    public abstract class DomainEventBase: IDomainEvent
     {
         public DateTime Happened { get; protected set; } = DateTime.UtcNow;
         

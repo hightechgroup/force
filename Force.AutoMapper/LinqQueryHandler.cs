@@ -13,16 +13,15 @@ namespace Force.AutoMapper
         where TQuery : IQuery<IEnumerable<TProjection>>, IFilter<TProjection>, ISorter<TProjection>
         where TEntity : class
     {
-        private readonly DbContext _dbContext;
+        private IQueryable<TEntity> _entities;
 
-        public LinqQueryHandler(DbContext dbContext)
+        public LinqQueryHandler(IQueryable<TEntity> entities)
         {
-            _dbContext = dbContext;
+            _entities = entities;
         }
 
         public IEnumerable<TProjection> Handle(TQuery query)
-            => _dbContext
-                .Set<TEntity>()
+            => _entities
                 .TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)

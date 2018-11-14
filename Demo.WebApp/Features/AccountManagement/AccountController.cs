@@ -15,7 +15,7 @@ namespace Demo.WebApp.Features.Accounts
 {
     public class AccountController: ApiControllerBase
     {
-        private readonly IValidatableCommandHandler<UpdateAccountEmail> _updateAccountEmailHandler;
+        private readonly IValidatableCommandHandler<UpdateUserEmail> _updateAccountEmailHandler;
 
         private static readonly Func<DemoAppDbContext, IEnumerable<Account>> CompiledQuery =
             EF.CompileQuery((DemoAppDbContext c) => c
@@ -29,7 +29,7 @@ namespace Demo.WebApp.Features.Accounts
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateAccountEmail command)
+        public IActionResult Update([FromBody] UpdateUserEmail command)
             => _updateAccountEmailHandler.ToResult(command);
 
         [HttpGet("test")]

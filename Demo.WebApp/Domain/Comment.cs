@@ -34,10 +34,10 @@ namespace Demo.WebApp.Domain
         public void Update(string text)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
-            this.RaiseDomainEvent(_commentUpdatedEvents, new CommentUpdated(this));
+            this.Raise(_commentUpdatedEvents, new CommentUpdated(this));
         }
 
-        public IEnumerable GetDomainEvents()
+        public IEnumerable<IDomainEvent> GetDomainEvents()
             => _commentUpdatedEvents;
     }
 }
