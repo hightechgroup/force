@@ -15,6 +15,8 @@ namespace Demo.WebApp.Data
 
         public DbSet<Hub> Hubs { get; set; }
         
+        public DbSet<Account> Accounts { get; set; }
+
         public DemoAppDbContext(DbContextOptions options) : base(options)
         {            
         }
@@ -27,9 +29,7 @@ namespace Demo.WebApp.Data
                     .Log(CoreEventId.IncludeIgnoredWarning)
                     .Throw(RelationalEventId.QueryClientEvaluationWarning));
         }
-
-        private static string DefaultText = "123";
-        
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //This will singularize all table names

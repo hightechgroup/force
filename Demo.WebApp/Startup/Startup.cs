@@ -1,15 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using Demo.WebApp.Data;
-using Demo.WebApp.Domain;
-using Demo.WebApp.Features.Posts;
+﻿using Demo.WebApp.Data;
 using Demo.WebApp.Infrastructure;
-using Demo.WebApp.Infrastructure.Decorators;
-using Force;
-using Force.AutoMapper;
-using Force.Cqrs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +14,7 @@ using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Demo.WebApp
+namespace Demo.WebApp.Startup
 {
     public class Startup
     {
@@ -48,20 +38,30 @@ namespace Demo.WebApp
                     options.ModelBinderProviders.Insert(0, new IdModelBinderProvider());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
+            IntegrateSimpleInjector(services);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "API", Version = "v1" });
             });
-            
-         
         }
-
-
 
         #region SI
         
         private Container container = new Container();
+
+        private void InitializeContainer(IApplicationBuilder app)
+        {
+            // Add application presentation components:
+            container.RegisterMvcControllers(app);
+            container.RegisterMvcViewComponents(app);
+
+            // Allow Simple Injector to resolve services from ASP.NET Core.
+            container.AutoCrossWireAspNetComponents(app);
+            
+            container.RegisterQueryables<DemoAppDbContext>();
+            container.Verify();
+        }
         
         private void IntegrateSimpleInjector(IServiceCollection services) {
             container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
@@ -91,6 +91,7 @@ namespace Demo.WebApp
                 app.UseHsts();
             }
 
+            InitializeContainer(app);            
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 

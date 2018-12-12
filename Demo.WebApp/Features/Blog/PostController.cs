@@ -1,29 +1,29 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Demo.WebApp.Controllers;
-using Demo.WebApp.Infrastructure;
-using Force;
-using Force.Cqrs;
+using Demo.WebApp.Domain;
+using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Blog
 {
     public class PostController: ApiControllerBase
     {
-        [HttpGet]
-        public IActionResult Get(
-            [FromServices] IQueryHandler<PostListQuery, IEnumerable<PostListDto>> linqQueryHandlerpostListHandler,
-            [FromQuery] PostListQuery query)
-            => linqQueryHandlerpostListHandler.ToResult(query);
+        private readonly IQueryable<Post> _posts;
 
-        [HttpGet("import")]
-        public IActionResult Import(
-            [FromServices] IHandler<IEnumerable<ImportPost>, IEnumerable<ValidationResult>> handler)
+        public PostController(IQueryable<Post> posts)
         {
-            var res = handler.Handle(new List<ImportPost>());
-            return Ok(res);
-
+            _posts = posts;
         }
-      
+
+        [HttpGet]
+        public async Task<ActionResult<int>> Get([FromQuery]PostListQuery query)
+            => (await _posts
+                    .ProjectTo<PostListDto>()
+                    .FilterAndSort(query)
+                    .ToListAsync())
+                    .PipeTo(Ok);      
     }
 }

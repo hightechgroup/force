@@ -3,7 +3,7 @@ using Demo.WebApp.Domain;
 using Force.Cqrs;
 using Force.Ddd;
 
-namespace Demo.WebApp.Features.Accounts
+namespace Demo.WebApp.Features.AccountManagement
 {
     public class UpdateUserEmail: IValidatableCommand
     {    

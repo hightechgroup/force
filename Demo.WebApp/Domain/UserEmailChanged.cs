@@ -5,6 +5,9 @@ namespace Demo.WebApp.Domain
 {
     public class UserEmailChanged : IDomainEvent
     {
+        protected UserEmailChanged()
+        {}
+        
         public UserEmailChanged(User user, Email from, Email to)
         {
             User = user ?? throw new ArgumentNullException(nameof(user));

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Demo.WebApp.Domain;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Pagination;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Blog
 {
     public class PostListQuery
         : IQuery<IEnumerable<PostListDto>>
@@ -17,6 +18,9 @@ namespace Demo.WebApp.Features.Posts
     {
         private Spec<PostListDto> _spec;
 
+        [Required]
+        public string A { get; set; }
+        
         public int Page { get; set; }
         
         public int Take { get; set; }

@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Demo.WebApp.Controllers
 {
     [Route("api/[controller]")]
-    //[Validate]
-    //[ApiController]
+    [ApiController]
     public abstract class ApiControllerBase: ControllerBase
     {
     }

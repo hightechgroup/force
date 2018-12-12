@@ -35,7 +35,7 @@ namespace Demo.WebApp.Domain
             get => _email;
             set
             {
-                if (value != _email)
+                if (_email != null && value != _email)
                 {
                     _domainEventStore.Raise(new UserEmailChanged(this, _email, value));
                 }

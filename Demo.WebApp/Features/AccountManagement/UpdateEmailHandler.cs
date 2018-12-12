@@ -2,7 +2,7 @@ using System.Linq;
 using Demo.WebApp.Domain;
 using Force;
 
-namespace Demo.WebApp.Features.Accounts
+namespace Demo.WebApp.Features.AccountManagement
 {
     public class UpdateEmailHandler: IHandler<UpdateUserEmail>
     {
