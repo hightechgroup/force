@@ -60,6 +60,7 @@ namespace Demo.WebApp.Startup
             container.AutoCrossWireAspNetComponents(app);
             
             container.RegisterQueryables<DemoAppDbContext>();
+            container.RegisterQueryHandlers(GetType().Assembly);
             container.Verify();
         }
         

@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Force.Ddd;
 using Force.Ddd.Pagination;
 
 namespace Force.Extensions
 {
     public static class QueryableExtentions
-    {
+    {       
         public static IQueryable<T> TryFilter<T>(this IQueryable<T> queryable, object maybeFilter)
         {
             if (maybeFilter is IFilter<T> filter)
