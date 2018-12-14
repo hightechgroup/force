@@ -47,10 +47,16 @@
     <ItemGroup>
       <ProjectReference Include="..\Force.AutoMapper\Force.AutoMapper.csproj" />
       <ProjectReference Include="..\Force\Force.csproj" />
+      <ProjectReference Include="..\XlsSeed\XlsSeed.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="seed.xlsx" />
+      <Content Include="seed.xlsx" />
     </ItemGroup>
 
 </Project>

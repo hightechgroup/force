@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.WebApp.Migrations
 {
     [DbContext(typeof(DemoAppDbContext))]
-    [Migration("20181111170322_Initial")]
-    partial class Initial
+    [Migration("20181214114629_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,8 @@ namespace Demo.WebApp.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<string>("Url");
+
                     b.HasKey("Id");
 
                     b.ToTable("Hub");
@@ -118,6 +120,8 @@ namespace Demo.WebApp.Migrations
                     b.Property<string>("Text")
                         .IsRequired();
 
+                    b.Property<string>("Url");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HubId");
@@ -131,16 +135,22 @@ namespace Demo.WebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FirstName");
+                    b.Property<DateTime>("Created");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime?>("LastUpdated");
 
                     b.HasKey("Id");
 
                     b.ToTable("User");
 
                     b.HasData(
-                        new { Id = 1, FirstName = "Max", LastName = "Arshinov" }
+                        new { Id = 1, Created = new DateTime(2018, 12, 14, 11, 46, 28, 785, DateTimeKind.Utc), FirstName = "Max", LastName = "Arshinov" }
                     );
                 });
 

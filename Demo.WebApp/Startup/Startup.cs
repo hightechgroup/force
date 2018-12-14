@@ -44,6 +44,7 @@ namespace Demo.WebApp.Startup
             {
                 c.SwaggerDoc("v1", new Info { Title = "API", Version = "v1" });
             });
+            
         }
 
         #region SI
@@ -83,6 +84,14 @@ namespace Demo.WebApp.Startup
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var ob = new DbContextOptionsBuilder<DemoAppDbContext>();
+            ob.UseSqlServer(Configuration.GetConnectionString("Default"));
+            
+            using (var dbContext = new DemoAppDbContext(ob.Options))
+            {
+                Seed.Run(dbContext);
+            }            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Demo.WebApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,8 @@ namespace Demo.WebApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 255, nullable: false)
+                    Name = table.Column<string>(maxLength: 255, nullable: false),
+                    Url = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,8 +44,10 @@ namespace Demo.WebApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    Created = table.Column<DateTime>(nullable: false),
+                    LastUpdated = table.Column<DateTime>(nullable: true),
+                    FirstName = table.Column<string>(maxLength: 255, nullable: true),
+                    LastName = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,6 +62,7 @@ namespace Demo.WebApp.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     HubId = table.Column<int>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: true),
@@ -133,13 +137,13 @@ namespace Demo.WebApp.Migrations
 
             migrationBuilder.InsertData(
                 table: "Hub",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "DotNext Moscow 2018" });
+                columns: new[] { "Id", "Name", "Url" },
+                values: new object[] { 1, "DotNext Moscow 2018", null });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "FirstName", "LastName" },
-                values: new object[] { 1, "Max", "Arshinov" });
+                columns: new[] { "Id", "Created", "FirstName", "LastName", "LastUpdated" },
+                values: new object[] { 1, new DateTime(2018, 12, 14, 11, 46, 28, 785, DateTimeKind.Utc), "Max", "Arshinov", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_ParentId",

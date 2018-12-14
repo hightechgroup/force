@@ -90,3 +90,4 @@ project.lock.json
 /DemoApp.Web/wwwroot/bootstrap.css
 /DemoApp.Web/wwwroot/index.html
 /.idea
+/Demo.WebApp/~$seed.xlsx
