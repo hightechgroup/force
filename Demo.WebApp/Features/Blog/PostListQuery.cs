@@ -19,14 +19,11 @@ namespace Demo.WebApp.Features.Blog
     {
         private Spec<PostListDto> _spec;
 
-        //[Required]
-        public string A { get; set; }
-
         public int Page { get; set; } = 1;
 
         public int Take { get; set; } = 10;
         
-        public Spec<PostListDto> Spec => _spec ?? (_spec = new Spec<PostListDto>(x => true));
+        Spec<PostListDto> IFilter<PostListDto>.Spec => _spec ?? (_spec = new Spec<PostListDto>(x => true));
 
         Spec<Post> IFilter<Post>.Spec => CanBePublishedSpec<Post>.Published;
 

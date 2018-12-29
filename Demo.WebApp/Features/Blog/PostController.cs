@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demo.WebApp.Controllers;
+using Demo.WebApp.Infrastructure;
 using Force.Cqrs;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
