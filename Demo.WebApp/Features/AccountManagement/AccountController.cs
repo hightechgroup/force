@@ -11,7 +11,7 @@ using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Demo.WebApp.Features.Accounts
+namespace Demo.WebApp.Features.AccountManagement
 {
     public class AccountController: ApiControllerBase
     {

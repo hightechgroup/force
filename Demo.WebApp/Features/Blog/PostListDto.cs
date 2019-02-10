@@ -5,7 +5,7 @@ using Demo.WebApp.Infrastructure;
 using Force.Ddd;
 using Newtonsoft.Json;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Blog
 {
     public class PostListDto : HasIdBase
     {

@@ -5,7 +5,7 @@ using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.Pagination;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Blog
 {
     public class PostListQuery
         : IQuery<IEnumerable<PostListDto>>

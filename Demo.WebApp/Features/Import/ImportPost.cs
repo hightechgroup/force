@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Domain;
-using Force.Ddd;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Import
 {
     public class ImportPost
     {

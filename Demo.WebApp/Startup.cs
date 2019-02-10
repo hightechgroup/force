@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Demo.WebApp.Data;
 using Demo.WebApp.Domain;
-using Demo.WebApp.Features.Posts;
 using Demo.WebApp.Infrastructure;
 using Demo.WebApp.Infrastructure.Decorators;
 using Force;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Force.Ddd;
 
-namespace Demo.WebApp.Features.Posts
+namespace Demo.WebApp.Features.Import
 {
     public class ImportPostValidator: IValidator<IEnumerable<ImportPost>>
     {

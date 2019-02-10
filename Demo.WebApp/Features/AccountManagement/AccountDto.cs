@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Domain;
 
-namespace Demo.WebApp.Features.Accounts
+namespace Demo.WebApp.Features.AccountManagement
 {
     public class AccountDto
     {
