@@ -8,6 +8,12 @@ using Force.Ddd.Pagination;
 
 namespace Force.Extensions
 {
+    public static class FilterExtensions
+    {
+        public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, IFilter<T> filter)
+            => queryable.Where(filter.Spec);
+    }
+    
     public static class QueryableExtentions
     {       
         public static IQueryable<T> TryFilter<T>(this IQueryable<T> queryable, object maybeFilter)
