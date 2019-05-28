@@ -6,7 +6,8 @@ using Demo.WebApp.Domain;
 using Force.AutoMapper;
 using Force.Cqrs;
 using Force.Ddd;
-using Force.Ddd.Pagination;
+using Force.Linq;
+using Force.Pagination;
 
 namespace Demo.WebApp.Features.Blog
 {

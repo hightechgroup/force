@@ -13,11 +13,8 @@ namespace Force.Ddd
         void Remove<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
-        TEntity Find<TEntity>(params object[] id)
-            where TEntity : class, IHasId;
-
-        IHasId Find(Type entityType, params object[] id);
-
+        TEntity Find<TEntity>(params object[] id);
+            
         void Commit();
 
         void Rollback();

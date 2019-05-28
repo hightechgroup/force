@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Force.Ddd
+namespace Force.Linq
 {
     public interface ISorter<T>
     {

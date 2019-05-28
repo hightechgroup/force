@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Force.Ddd;
-using Force.Ddd.Pagination;
 using Force.Extensions;
+using Force.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper

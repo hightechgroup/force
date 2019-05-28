@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Force.Extensions;
 
-namespace Force.Ddd
+namespace Force.Linq
 {
     public class AutoFilter<T>
         where T : class

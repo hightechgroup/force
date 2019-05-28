@@ -27,6 +27,9 @@
         <PackageReference Include="MiniProfiler.AspNetCore.Mvc">
           <Version>4.0.138</Version>
         </PackageReference>
+        <PackageReference Include="Scrutor">
+          <Version>3.0.2</Version>
+        </PackageReference>
         <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core">
           <Version>4.4.1</Version>
         </PackageReference>

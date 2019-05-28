@@ -1,6 +1,6 @@
 using System;
 
-namespace Force.Ddd
+namespace Force.Ddd.DomainEvents
 {
     public interface IDomainEvent
     {

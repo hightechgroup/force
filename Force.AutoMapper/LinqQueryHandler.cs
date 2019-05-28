@@ -5,6 +5,7 @@ using AutoMapper.QueryableExtensions;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Extensions;
+using Force.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper

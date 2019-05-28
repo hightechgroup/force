@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Force.Ddd;
-using Force.Ddd.Pagination;
 using Force.Extensions;
+using Force.Pagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Force.AspNetCore.Mvc

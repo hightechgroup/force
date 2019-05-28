@@ -1,5 +1,6 @@
 using Force;
 using Force.Ddd;
+using Force.Ddd.DomainEvents;
 
 namespace Demo.WebApp.Infrastructure
 {

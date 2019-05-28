@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Force.Ddd.Pagination
+namespace Force.Pagination
 {
     public sealed class PagedResponse<T>
     {

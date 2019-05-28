@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Force.Ddd
+namespace Force.Linq
 {
     public class Sorter<T>: ISorter<T>
     {

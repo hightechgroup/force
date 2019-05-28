@@ -1,26 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Force.Ddd.Pagination
+namespace Force.Pagination
 {
-    public class PagedEnumerable<T>: IEnumerable<T>
+    public class PagedEnumerable
     {
-        private IEnumerable<T> _enumerable;
-        
-        public PagedEnumerable(IEnumerable<T> enumerable, long total)
+        public IEnumerable Items { get; protected set; }
+
+        public long Total { get; protected set;}
+
+        public PagedEnumerable(IEnumerable items, long total)
         {
             Total = total;
-            _enumerable = enumerable;
-
+            Items = items;
         }
 
-        public long Total { get; }
+    }
+    public class PagedEnumerable<T>: PagedEnumerable, IEnumerable<T>
+    {
+        public new IEnumerable<T> Items { get; }
+
+        public PagedEnumerable(IEnumerable<T> items, long total)
+            // ReSharper disable once PossibleMultipleEnumeration
+            : base(items, total)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            Items = items;
+        }
+
+        public PagedEnumerable(params T[] items)
+            : base(items, items.Length)        
+        {
+            Items = items;
+        }
 
         public IEnumerator<T> GetEnumerator()
-            => _enumerable.GetEnumerator();
+            => Items.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
-            => _enumerable.GetEnumerator();
+            => Items.GetEnumerator();
     }
 }

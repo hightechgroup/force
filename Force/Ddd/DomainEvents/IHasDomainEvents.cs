@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 
-namespace Force.Ddd
+namespace Force.Ddd.DomainEvents
 {
     public interface IHasDomainEvents: IHasDomainEvents<IDomainEvent>
     {

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Force.Ddd;
-using Force.Ddd.Pagination;
+using Force.Linq;
+using Force.Pagination;
 
 namespace Force.Extensions
 {

@@ -38,7 +38,11 @@ namespace Demo.WebApp.Startup
                     // add custom binder to beginning of collection
                     options.ModelBinderProviders.Insert(0, new IdModelBinderProvider());
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new PagedEnumerableJsonConverter());
+                });
 
             IntegrateSimpleInjector(services);
             services.AddSwaggerGen(c =>

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Force.Ddd.Pagination
+namespace Force.Pagination
 {
     public interface IPaging
     {
