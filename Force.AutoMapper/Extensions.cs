@@ -13,7 +13,7 @@ namespace Force.AutoMapper
 {
     public static class Extensions
     {
-        public static async Task<IEnumerable<T>> TryPaginate<T>(this IQueryable<T> queryable, object maybePaging)
+        public static async Task<IEnumerable<T>> TryPaginateAsync<T>(this IQueryable<T> queryable, object maybePaging)
         {
             if (maybePaging is IPaging paging)
             {

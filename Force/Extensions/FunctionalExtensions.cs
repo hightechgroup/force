@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Force.Infrastructure;
 
 namespace Force.Extensions
@@ -10,6 +11,10 @@ namespace Force.Extensions
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);
+
+        public static async Task<TResult> PipeToAsync<TSource, TResult>(
+            this Task<TSource> source, Func<TSource, TResult> func)
+            => func(await source);
 
         public static TSource PipeToIf<TSource>(
             this TSource source, Func<TSource, bool> predicate, Func<TSource, TSource> func)

@@ -27,6 +27,6 @@ namespace Force.AutoMapper
                 .TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
-                .TryPaginate(query);
+                .TryPaginateAsync(query);
     }
 }

@@ -19,6 +19,8 @@ namespace Demo.WebApp.Features.Blog
 
         [HttpGet]
         public async Task<ActionResult<int>> Get([FromQuery] PostListQuery query)
-            => (await _postListQueryHandler.Handle(query)).PipeTo(Ok);
+            => await _postListQueryHandler
+                .Handle(query)
+                .PipeToAsync(Ok);
     }
 }
