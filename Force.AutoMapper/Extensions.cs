@@ -13,6 +13,18 @@ namespace Force.AutoMapper
 {
     public static class Extensions
     {
+        public static IEnumerable<T> TryPaginate<T>(this IQueryable<T> queryable, object maybePaging)
+        {
+            if (maybePaging is IPaging paging)
+            {
+                var orderedQueryable = (queryable as IOrderedQueryable<T>) ?? queryable.OrderByFirstProperty();
+                var list = (orderedQueryable.Paginate(paging)).ToList(); 
+                return new PagedEnumerable<T>(list, queryable.Count());
+            }
+
+            return queryable.ToList();
+        }
+        
         public static async Task<IEnumerable<T>> TryPaginateAsync<T>(this IQueryable<T> queryable, object maybePaging)
         {
             if (maybePaging is IPaging paging)

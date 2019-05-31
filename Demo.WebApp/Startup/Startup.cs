@@ -29,6 +29,10 @@ namespace Demo.WebApp.Startup
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddMiniProfiler(options => options.RouteBasePath = "/profiler") // http://localhost:5000/profiler/results-index
+                .AddEntityFramework();
+            
             AutomapperConfigurator.Configure(GetType().Assembly);
             services.AddDbContext<DemoAppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<DbContext, DemoAppDbContext>();
@@ -108,6 +112,7 @@ namespace Demo.WebApp.Startup
 
             InitializeContainer(app);            
             app.UseSwagger();
+            app.UseMiniProfiler();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.

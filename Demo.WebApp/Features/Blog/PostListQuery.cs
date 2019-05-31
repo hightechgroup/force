@@ -12,7 +12,7 @@ using Force.Pagination;
 namespace Demo.WebApp.Features.Blog
 {
     public class PostListQuery
-        : IQuery<Task<IEnumerable<PostListDto>>>
+        : IQuery<IEnumerable<PostListDto>>
         , IFilter<PostListDto>
         , IFilter<Post>
         , ISorter<PostListDto>

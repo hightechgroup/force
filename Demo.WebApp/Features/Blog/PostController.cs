@@ -1,26 +1,35 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Demo.WebApp.Controllers;
-using Demo.WebApp.Infrastructure;
-using Force.Cqrs;
+using Demo.WebApp.Data;
+using Demo.WebApp.Domain;
+using Force.AspNetCore.Mvc;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Demo.WebApp.Features.Blog
 {
     public class PostController: ApiControllerBase
     {
-        private readonly IQueryHandler<PostListQuery, Task<IEnumerable<PostListDto>>> _postListQueryHandler;
-
-        public PostController(IQueryHandler<PostListQuery, Task<IEnumerable<PostListDto>>> postListQueryHandler)
-        {
-            _postListQueryHandler = postListQueryHandler;
-        }
+        //[HttpGet]
+        public ActionResult<IEnumerable<PostListDto>> Get([FromQuery] PostListQuery query)
+            => this.FetchEnumerable(query);
+        
+        static readonly Func<DbContext, IEnumerable<PostListDto>> Compiled = EF.CompileQuery(
+            (DbContext db) => db
+                .Set<Post>()
+                .Select(x => new PostListDto()
+                {
+                    Id = x.Id, 
+                    Title = x.Name
+                }));
 
         [HttpGet]
-        public async Task<ActionResult<int>> Get([FromQuery] PostListQuery query)
-            => await _postListQueryHandler
-                .Handle(query)
-                .PipeToAsync(Ok);
+        public ActionResult<IEnumerable<PostListDto>> Get([FromServices] DbContext dbContext)
+            => Compiled.Invoke(dbContext).PipeTo(Ok);
+
     }
 }

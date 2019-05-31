@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using AutoMapper.Extensions;
 using Demo.WebApp.Domain;
 using Demo.WebApp.Infrastructure;
 using Force.AutoMapper;
@@ -8,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Demo.WebApp.Features.Blog
 {
-    [AutoMap(typeof(Post))]
+    [Projection(typeof(Post))]
     public class PostListDto : HasIdBase
     {
         public string Title { get; set; }

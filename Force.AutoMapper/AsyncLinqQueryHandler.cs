@@ -3,30 +3,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Force.Cqrs;
-using Force.Ddd;
 using Force.Extensions;
 using Force.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper
 {
-    public class LinqQueryHandler<TEntity, TQuery, TProjection>
-        : IQueryHandler<TQuery, IEnumerable<TProjection>>
+    public class AsyncLinqQueryHandler<TEntity, TQuery, TProjection>
+        : IQueryHandler<TQuery, Task<IEnumerable<TProjection>>>
+        where TQuery : IQuery<Task<IEnumerable<TProjection>>>, IFilter<TProjection>, ISorter<TProjection>
         where TEntity : class
-        where TQuery : IQuery<IEnumerable<TProjection>>, IFilter<TProjection>, ISorter<TProjection>
     {
         private readonly IQueryable<TEntity> _entities;
 
-        public LinqQueryHandler(IQueryable<TEntity> entities)
+        public AsyncLinqQueryHandler(IQueryable<TEntity> entities)
         {
             _entities = entities;
         }
 
-        public IEnumerable<TProjection> Handle(TQuery query)
-            => _entities
+        public async Task<IEnumerable<TProjection>> Handle(TQuery query)
+            => await _entities
                 .TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
-                .TryPaginate(query);
+                .TryPaginateAsync(query);
     }
 }

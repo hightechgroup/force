@@ -1,1 +1,6 @@
-Blog
+<h2>Blog</h2>
+<ul *ngIf="data">
+  <li *ngFor="let d of data.items">
+    {{d.title}} <small>{{d.subtitle}}</small>
+  </li>
+</ul>
