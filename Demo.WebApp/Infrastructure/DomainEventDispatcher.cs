@@ -1,13 +1,23 @@
+using System;
+using System.Collections.Generic;
 using Force;
-using Force.Ddd;
 
 namespace Demo.WebApp.Infrastructure
 {
-    public class DomainEventDispatcher: IHandler<IDomainEvent>
+    public class DomainEventDispatcher: IHandler<object>
     {
-        public void Handle(IDomainEvent input)
+        private Dictionary<Type, IEnumerable<dynamic>> _handlers
+            = new Dictionary<Type, IEnumerable<dynamic>>();
+        
+        public void Handle(object input)
         {
-            throw new System.NotImplementedException();
+            var type = input.GetType();
+            if (!_handlers.ContainsKey(type)) return;
+            
+            foreach (var handler in _handlers[type])
+            {
+                handler.Invoke(input);
+            }
         }
     }
 }
