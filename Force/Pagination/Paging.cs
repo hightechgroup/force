@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Force.Ddd.Pagination
+namespace Force.Pagination
 {
     public class Paging : IPaging
     {

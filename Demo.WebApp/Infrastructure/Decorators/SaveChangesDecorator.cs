@@ -1,6 +1,7 @@
 using System.Linq;
 using Force;
 using Force.Ddd;
+using Force.Ddd.DomainEvents;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.WebApp.Infrastructure.Decorators

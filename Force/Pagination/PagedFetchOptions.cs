@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Force.Ddd;
+using Force.Linq;
 
-namespace Force.Ddd.Pagination
+namespace Force.Pagination
 {
     public class PagedFetchOptions<T> : FetchOptions<T>, IPaging
     {

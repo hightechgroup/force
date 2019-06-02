@@ -1,8 +1,9 @@
 using AutoMapper.QueryableExtensions;
 using Force.Cqrs;
 using Force.Ddd;
-using Force.Ddd.Pagination;
 using Force.Extensions;
+using Force.Linq;
+using Force.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper

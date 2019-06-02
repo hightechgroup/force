@@ -19,6 +19,8 @@ namespace Force.AutoMapper
             Entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
 
+        public static implicit operator T(Aggregate<T> aggregate) => aggregate.Entity;
+
         public IQueryable<T> Query => _dbContext.Set<T>();
 
         public Aggregate<TR> Reference<TR>(Expression<Func<T, TR>> selector) 

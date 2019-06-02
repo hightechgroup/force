@@ -1,5 +1,6 @@
 using System;
 using Force;
+using Force.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Demo.WebApp.Infrastructure.Decorators
@@ -19,9 +20,12 @@ namespace Demo.WebApp.Infrastructure.Decorators
 
         public override TOut Handle(TIn input)
         {
-            var output = Decorated.Handle(input);
-            _logger.LogInformation($"{_decoratedType}: {input} => {output}");
-            return output;
+            return Decorated.Invoke(input, (i, h) =>
+            {
+                var output = Decorated.Handle(input);
+                _logger.LogInformation($"{_decoratedType}: {input} => {output}");
+                return output;
+            });
         }
     }
 }

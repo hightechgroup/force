@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Force.Ddd;
-using Force.Ddd.Pagination;
 
 namespace Force.Extensions
 {

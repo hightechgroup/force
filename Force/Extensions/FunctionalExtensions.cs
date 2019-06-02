@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Force.Infrastructure;
 
 namespace Force.Extensions
@@ -10,6 +11,10 @@ namespace Force.Extensions
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);
+
+        public static async Task<TResult> PipeToAsync<TSource, TResult>(
+            this Task<TSource> source, Func<TSource, TResult> func)
+            => func(await source);
 
         public static TSource PipeToIf<TSource>(
             this TSource source, Func<TSource, bool> predicate, Func<TSource, TSource> func)
@@ -34,25 +39,6 @@ namespace Force.Extensions
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition ? ifTrue(o) : ifFalse(o);
 
-        public static T DoIf<T>(this T obj, Func<T, bool> condition, Action<T> action)
-        {
-            if (condition(obj))
-            {
-                action(obj);
-            }
-
-            return obj;
-        }
-
-        public static T DoIfNotNull<T>(this T obj, Action<T> action)
-        {
-            if (obj != null)
-            {
-                action(obj);
-            }
-
-            return obj;
-        }
         
         public static Func<TA, TR> Memoize<TA, TR>(this Func<TA, TR> f)
         {
@@ -67,6 +53,23 @@ namespace Force.Extensions
             {
                 me[item.Key] = item.Value;
             }
-        }       
+        }
+
+        public static void Invoke<T>(this IHandler<T> handler, T input, Action<T, IHandler<T>> decorator)
+        {
+            decorator(input, handler);
+        }
+        
+        public static TOut Invoke<TIn, TOut>(this IHandler<TIn, TOut> handler, TIn input,
+            Func<TIn, IHandler<TIn, TOut>, TOut> decorator)
+        {
+            return decorator(input, handler);
+        }
+        
+        public static void Invoke<TIn, TOut>(this IHandler<TIn, TOut> handler, TIn input,
+            Action<TIn, IHandler<TIn, TOut>> decorator)
+        {
+            decorator(input, handler);
+        }
     }
 }

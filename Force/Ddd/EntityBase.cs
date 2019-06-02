@@ -7,7 +7,7 @@ namespace Demo.WebApp.Domain
 {
     public abstract class EntityBase : EntityBase<int>
     {
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override EntityBase<int> WithId(int id)
         {
             if (id <= 0)
@@ -26,7 +26,7 @@ namespace Demo.WebApp.Domain
         
         public TKey Id { get; protected set; }
 
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual EntityBase<TKey> WithId(TKey id)
         {
             if (Object.Equals(id, default(TKey)))

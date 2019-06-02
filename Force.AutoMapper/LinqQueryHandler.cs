@@ -1,19 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Extensions;
+using Force.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper
 {
-    public class LinqQueryHandler<TQuery, TEntity, TProjection>
+    public class LinqQueryHandler<TEntity, TQuery, TProjection>
         : IQueryHandler<TQuery, IEnumerable<TProjection>>
-        where TQuery : IQuery<IEnumerable<TProjection>>, IFilter<TProjection>, ISorter<TProjection>
         where TEntity : class
+        where TQuery : IQuery<IEnumerable<TProjection>>, IFilter<TProjection>, ISorter<TProjection>
     {
-        private IQueryable<TEntity> _entities;
+        private readonly IQueryable<TEntity> _entities;
 
         public LinqQueryHandler(IQueryable<TEntity> entities)
         {
@@ -25,6 +27,6 @@ namespace Force.AutoMapper
                 .TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
-                .ToList();        
+                .TryPaginate(query);
     }
 }

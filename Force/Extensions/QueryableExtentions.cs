@@ -2,13 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Force.Ddd;
-using Force.Ddd.Pagination;
+using Force.Linq;
+using Force.Pagination;
 
 namespace Force.Extensions
 {
-    public static class QueryableExtentions
+    public static class FilterExtensions
     {
+        public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, IFilter<T> filter)
+            => queryable.Where(filter.Spec);
+    }
+    
+    public static class QueryableExtentions
+    {       
         public static IQueryable<T> TryFilter<T>(this IQueryable<T> queryable, object maybeFilter)
         {
             if (maybeFilter is IFilter<T> filter)

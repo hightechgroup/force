@@ -15,13 +15,16 @@ namespace Demo.WebApp.Domain
         protected Post()
         {}
         
-        public Post(string name, string text, Hub hub) : base(name)
+        public Post(string name, string text, string url, Hub hub) : base(name)
         {
             Text = text.NullIfEmpty() ?? throw new ArgumentNullException(nameof(text));
+            Url = url ?? throw new ArgumentNullException(nameof(url));
             Hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
         
         public virtual Hub Hub { get; protected set; }
+
+        public virtual string Url { get; protected set; }
 
         [Required]
         public string Text { get; set; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Force.Ddd;
+using Force.Ddd.DomainEvents;
 using Force.Extensions;
 
 namespace Demo.WebApp.Domain
@@ -35,7 +36,7 @@ namespace Demo.WebApp.Domain
             get => _email;
             set
             {
-                if (value != _email)
+                if (_email != null && value != _email)
                 {
                     _domainEventStore.Raise(new UserEmailChanged(this, _email, value));
                 }

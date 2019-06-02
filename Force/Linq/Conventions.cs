@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Force.Infrastructure;
 
-namespace Force.Ddd
+namespace Force.Linq
 {
     public enum ComposeKind
     {

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Force.Ddd.Pagination;
 using Force.Extensions;
 using Xunit;
 

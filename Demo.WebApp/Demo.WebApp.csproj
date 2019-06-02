@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -11,6 +11,9 @@
         <PackageReference Include="EFCore.BulkExtensions">
           <Version>2.2.2</Version>
         </PackageReference>
+        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.138" />
+        <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.138" />
+        
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore">
           <Version>2.1.3</Version>
@@ -24,14 +27,11 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
           <Version>2.2.0-preview3-35497</Version>
         </PackageReference>
-        <PackageReference Include="MiniProfiler">
-          <Version>4.0.138</Version>
-        </PackageReference>
         <PackageReference Include="MiniProfiler.AspNetCore.Mvc">
           <Version>4.0.138</Version>
         </PackageReference>
-        <PackageReference Include="SimpleInjector">
-          <Version>4.4.0</Version>
+        <PackageReference Include="Scrutor">
+          <Version>3.0.2</Version>
         </PackageReference>
         <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core">
           <Version>4.4.1</Version>
@@ -51,12 +51,20 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Force.AspNetCore.Mvc\Force.AspNetCore.Mvc.csproj" />
       <ProjectReference Include="..\Force.AutoMapper\Force.AutoMapper.csproj" />
       <ProjectReference Include="..\Force\Force.csproj" />
+      <ProjectReference Include="..\XlsSeed\XlsSeed.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ClientApp" />
       <Folder Include="Migrations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="seed.xlsx" />
+      <Content Include="seed.xlsx" />
     </ItemGroup>
 
 </Project>

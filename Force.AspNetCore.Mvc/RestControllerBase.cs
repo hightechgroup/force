@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Force.AspNetCore.Mvc;
 using Force.Ddd;
-using Force.Ddd.Pagination;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
