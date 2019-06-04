@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Force.Benchmarks.TypeBenchmark</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.2, OS=Windows 10.0.17763.503 (1809/October2018Update/Redstone5)
+Intel Core i7-7700 CPU 3.60GHz (Kaby Lake), 1 CPU, 8 logical and 4 physical cores
+.NET Core SDK=2.2.300
+  [Host]     : .NET Core 2.1.11 (CoreCLR 4.6.27617.04, CoreFX 4.6.27617.02), 64bit RyuJIT
+  DefaultJob : .NET Core 2.1.11 (CoreCLR 4.6.27617.04, CoreFX 4.6.27617.02), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>                Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
+</tr>
+</thead><tbody><tr><td>ConcurrentDictionaryGetOrAdd</td><td>23.765 ns</td><td>0.5323 ns</td><td>1.4391 ns</td><td>23.339 ns</td>
+</tr><tr><td>ActivatorInvoke</td><td>14.655 ns</td><td>0.5502 ns</td><td>1.6136 ns</td><td>14.301 ns</td>
+</tr><tr><td>GetSignature</td><td>14.504 ns</td><td>0.3448 ns</td><td>0.3225 ns</td><td>14.505 ns</td>
+</tr><tr><td>TypeCreate</td><td>60.024 ns</td><td>0.8248 ns</td><td>0.7312 ns</td><td>60.031 ns</td>
+</tr><tr><td>ActivatorCreate</td><td>478.759 ns</td><td>5.5268 ns</td><td>4.6152 ns</td><td>477.169 ns</td>
+</tr><tr><td>Constructor</td><td>3.975 ns</td><td>0.1239 ns</td><td>0.1737 ns</td><td>3.905 ns</td>
+</tr></tbody></table>
+</body>
+</html>

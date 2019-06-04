@@ -63,6 +63,11 @@ namespace Force.Ddd
         {
             Value = value;
         }
+        
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
 
         public static implicit operator T(ValueObject<T> value)
             => value.Value;
@@ -74,11 +79,6 @@ namespace Force.Ddd
         {
         }
 
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Value;
-        }
-        
         public bool StartsWith(string value)
         {
             return Value.StartsWith(value);

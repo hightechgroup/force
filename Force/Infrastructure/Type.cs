@@ -9,7 +9,7 @@ namespace Force.Infrastructure
 {
     public delegate T ObjectActivator<out T>(params object[] args);
 
-    public static class FastTypeInfo<T>
+    public static class Type<T>
     {
         private static Attribute[] _attributes;
 
@@ -19,9 +19,9 @@ namespace Force.Infrastructure
         
         private static ConstructorInfo[] _constructors;
 
-        private static ConcurrentDictionary<string, ObjectActivator<T>> _activators;
+        private static ConcurrentDictionary<long, ObjectActivator<T>> _activators;
         
-        static FastTypeInfo()
+        static Type()
         {
             var type = typeof(T);
             _attributes = type.GetCustomAttributes().ToArray();
@@ -36,7 +36,7 @@ namespace Force.Infrastructure
                 .ToArray();
             
             _constructors = typeof(T).GetConstructors();
-            _activators = new ConcurrentDictionary<string, ObjectActivator<T>>();
+            _activators = new ConcurrentDictionary<long, ObjectActivator<T>>();
         }
 
         public static PropertyInfo[] PublicProperties => _properties;
@@ -55,30 +55,40 @@ namespace Force.Infrastructure
 
         #region Create
 
-        public static T Create(params object[] args)
+        public static T CreateInstance(params object[] args)
             => _activators.GetOrAdd(
                 GetSignature(args),
-                GetActivator(GetConstructorInfo(args)))
+                x => GetActivator(GetConstructorInfo(args)))
                     .Invoke(args);
 
-        private static string GetSignature(object[] args)
-            => args
-                .Select(x => x.GetType().ToString())
-                .Join(",");
+        public static long GetSignature(object[] args)
+        {
+            long hc = 0;
+            unchecked
+            {
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var arg in args)
+                {
+                    hc = hc* 23 + (arg?.GetHashCode() ?? 0);
+                }
+            }
+
+            return hc;
+        }
         
-        private static ConstructorInfo GetConstructorInfo(object[] args)
+        public static ConstructorInfo GetConstructorInfo(object[] args)
         {
             for (var i = 0; i < _constructors.Length; i++)
             {
-                var consturctor = _constructors[i];
-                var ctrParams = consturctor.GetParameters();
+                var constructor = _constructors[i];
+                var ctrParams = constructor.GetParameters();
                 if (ctrParams.Length != args.Length)
                 {
                     continue;
                 }
 
                 var flag = true;
-                for (var j = 0; j < args.Length; i++)
+                for (var j = 0; j < args.Length; j++)
                 {
                     if (ctrParams[j].ParameterType != args[j].GetType())
                     {
@@ -92,7 +102,7 @@ namespace Force.Infrastructure
                     continue;
                 }
 
-                return consturctor;
+                return constructor;
             }
 
             var signature = GetSignature(args);
@@ -101,7 +111,7 @@ namespace Force.Infrastructure
                 $"Constructor ({signature}) is not found for {typeof(T)}");
         }
         
-        private static ObjectActivator<T> GetActivator(ConstructorInfo ctor)
+        public static ObjectActivator<T> GetActivator(ConstructorInfo ctor)
         {
             var type = ctor.DeclaringType;
             var paramsInfo = ctor.GetParameters();                  

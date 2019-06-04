@@ -65,7 +65,7 @@ namespace Force.Ddd
 
             var parameter = Expression.Parameter(modelType);
 
-            var props = FastTypeInfo<T>
+            var props = Type<T>
                 .PublicProperties
                 .Where(x => filterPropNames.Contains(x.Name))
                 .Select(x => new
