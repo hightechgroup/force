@@ -13,14 +13,14 @@ namespace Demo.WebApp.Domain
         
         private DomainEventStore _domainEventStore = new DomainEventStore();
         
-        private Email _email { get; set; } // проверить
+        private string _email { get; set; } // проверить
         
         public static readonly Expression<Func<User, string>> FullNameExpression = x => $"{x.FirstName} {x.LastName}";
         
         protected User()
         {}
         
-        public User(Email email, string firstName, string lastName)
+        public User(string email, string firstName, string lastName)
         {
             Created = DateTime.UtcNow;
             Email = email ?? throw new ArgumentNullException(nameof(email));
@@ -31,14 +31,14 @@ namespace Demo.WebApp.Domain
         
         public DateTime? LastUpdated { get; protected set; }
 
-        public Email Email
+        public string Email
         {
             get => _email;
             set
             {
                 if (_email != null && value != _email)
                 {
-                    _domainEventStore.Raise(new UserEmailChanged(this, _email, value));
+                    //_domainEventStore.Raise(new UserEmailChanged(this, _email, value));
                 }
 
                 _email = value;

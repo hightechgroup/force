@@ -1,15 +1,13 @@
 using System;
 using Demo.WebApp.Domain;
+using Force.Ddd;
+using Force.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Infrastructure
 {
     public class ValueTypeConverter: JsonConverter
     {
-        public ValueTypeConverter()
-        {
-        }
-        
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {            
             writer.WriteValue(value?.ToString());
@@ -17,11 +15,11 @@ namespace Demo.WebApp.Infrastructure
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            Email.TryParse(reader.Value?.ToString(), out var email);
-            return email;
+            ValueObject.TryParse(reader.Value?.ToString(), out var value);
+            return value;
         }
 
         public override bool CanConvert(Type objectType)
-            => true;
+            => objectType.IsAssignableToGenericType(typeof(ValueObject<>));
     }
 }

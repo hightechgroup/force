@@ -45,18 +45,10 @@ namespace Demo.WebApp.Data
                 }
             }
 
-            var converter = new ValueConverter<Email, string>(
-                v => v,
-                v => new Email(v));
-
             modelBuilder
                 .Ignore<Email>()
                 .Ignore<CommentAdded>();
 
-            modelBuilder
-                .Entity<Account>()
-                .Property(e => e.Email)
-                .HasConversion(converter);
 
             var cu = modelBuilder.Entity<CommentUpdated>();
 
@@ -66,9 +58,9 @@ namespace Demo.WebApp.Data
             var hub = new Hub("DotNext Moscow 2018");
             hub.WithId(1);
             
-            modelBuilder
-                .Entity<User>()
-                .HasData(new User(new Email("max@hightech.group"), "Max", "Arshinov").WithId(1));
+            //modelBuilder
+            //    .Entity<User>()
+            //    .HasData(new User(new Email("max@hightech.group"), "Max", "Arshinov").WithId(1));
 
             modelBuilder
                 .Entity<Hub>()

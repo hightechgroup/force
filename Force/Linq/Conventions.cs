@@ -18,7 +18,7 @@ namespace Force.Linq
             this IQueryable<TSubject> query, TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
         {
             var filtered = Conventions<TSubject>.Filter(query, predicate, composeKind);
-            var orderBy = FastTypeInfo<TPredicate>.PublicProperties.FirstOrDefault(x => x.Name == "OrderBy");
+            var orderBy = Type<TPredicate>.PublicProperties.FirstOrDefault(x => x.Name == "OrderBy");
             var proprtyName = orderBy?.GetValue(predicate, null) as string;
             
             return proprtyName == null
@@ -79,7 +79,7 @@ namespace Force.Linq
             var (name, isDesc) = GetSorting();
             propertyName = name;
 
-            var property = FastTypeInfo<TSubject>
+            var property = Type<TSubject>
                 .PublicProperties
                 .FirstOrDefault(x => string.Equals(x.Name, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
@@ -90,7 +90,7 @@ namespace Force.Linq
             var parameter = Expression.Parameter(typeof(TSubject));
             var body = Expression.Property(parameter, propertyName);
 
-            var lambda = FastTypeInfo<Expression>
+            var lambda = Type<Expression>
                 .PublicMethods
                 .First(x => x.Name == "Lambda");
 
@@ -113,7 +113,7 @@ namespace Force.Linq
             TPredicate predicate,
             ComposeKind composeKind = ComposeKind.And)
         {
-            var filterProps = FastTypeInfo<TPredicate>
+            var filterProps = Type<TPredicate>
                 .PublicProperties
                 .ToArray();
 
@@ -128,7 +128,7 @@ namespace Force.Linq
 
             var parameter = Expression.Parameter(modelType);
 
-            var props = FastTypeInfo<TSubject>
+            var props = Type<TSubject>
                 .PublicProperties
                 .Where(x => filterPropNames.Contains(x.Name))
                 .Select(x => new

@@ -4,7 +4,7 @@ namespace Force.Infrastructure
 {
     public static class TypeExtensions
     {
-        public static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
         {
             var interfaceTypes = givenType.GetInterfaces();
 

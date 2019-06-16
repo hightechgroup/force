@@ -98,7 +98,7 @@ namespace Demo.WebApp.Startup
             
             using (var dbContext = new DemoAppDbContext(ob.Options))
             {
-                Seed.Run(dbContext);
+                //Seed.Run(dbContext);
             }            
 
             if (env.IsDevelopment())
@@ -121,7 +121,7 @@ namespace Demo.WebApp.Startup
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
             
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
             
             app.UseSpa(spa =>
@@ -133,7 +133,7 @@ namespace Demo.WebApp.Startup
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    //spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }

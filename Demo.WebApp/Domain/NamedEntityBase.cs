@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Force.Ddd;
 using Force.Extensions;
 
 namespace Demo.WebApp.Domain

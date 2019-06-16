@@ -14,7 +14,7 @@ namespace Demo.WebApp.Features.AccountManagement
         public void Handle(UpdateUserEmail command)
         {
             var user = command.UserId.Entity;
-            user.Email = command.Email;
+            //user.Email = command.Email;
         }
     }
 }

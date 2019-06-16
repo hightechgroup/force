@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace Force.Infrastructure
 {
     public delegate T ObjectActivator<out T>(params object[] args);
 
-    public static class FastTypeInfo<T>
+    public static class Type<T>
     {
         private static Attribute[] _attributes;
 
@@ -19,9 +20,9 @@ namespace Force.Infrastructure
         
         private static ConstructorInfo[] _constructors;
 
-        private static ConcurrentDictionary<string, ObjectActivator<T>> _activators;
+        private static Dictionary<string, ObjectActivator<T>> _activators;
         
-        static FastTypeInfo()
+        static Type()
         {
             var type = typeof(T);
             _attributes = type.GetCustomAttributes().ToArray();
@@ -36,7 +37,7 @@ namespace Force.Infrastructure
                 .ToArray();
             
             _constructors = typeof(T).GetConstructors();
-            _activators = new ConcurrentDictionary<string, ObjectActivator<T>>();
+            _activators = new Dictionary<string, ObjectActivator<T>>();
         }
 
         public static PropertyInfo[] PublicProperties => _properties;
@@ -56,15 +57,14 @@ namespace Force.Infrastructure
         #region Create
 
         public static T Create(params object[] args)
-            => _activators.GetOrAdd(
-                GetSignature(args),
-                GetActivator(GetConstructorInfo(args)))
-                    .Invoke(args);
+            => throw new NotImplementedException();
 
         private static string GetSignature(object[] args)
-            => args
-                .Select(x => x.GetType().ToString())
-                .Join(",");
+            => args.Any()
+                ? args
+                    .Select(x => x.GetType().ToString())
+                    .Join(",")
+                : "";
         
         private static ConstructorInfo GetConstructorInfo(object[] args)
         {
@@ -103,6 +103,7 @@ namespace Force.Infrastructure
         
         private static ObjectActivator<T> GetActivator(ConstructorInfo ctor)
         {
+            Console.WriteLine("Get Activator");
             var type = ctor.DeclaringType;
             var paramsInfo = ctor.GetParameters();                  
 
@@ -135,6 +136,19 @@ namespace Force.Infrastructure
             //compile it
             var compiled = (ObjectActivator<T>)lambda.Compile();
             return compiled;
+        }
+
+        public static bool TryCreateMethod(string methodName, out Delegate method)
+        {
+            var mi = PublicMethods.FirstOrDefault(x => x.Name == methodName);
+            if (mi == null)
+            {
+                method = null;
+                return false;
+            }
+
+            method = CreateMethod(mi);
+            return true;
         }
         
         public static Delegate CreateMethod(MethodInfo method)

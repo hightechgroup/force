@@ -6,6 +6,6 @@ namespace Demo.WebApp.Domain
 {
     public class Account: EntityBase<int>
     {
-        public Email Email { get; set; }
+        //public Email Email { get; set; }
     }
 }

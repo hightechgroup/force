@@ -7,13 +7,14 @@ using Newtonsoft.Json;
 
 namespace Demo.WebApp.Domain
 {
-    [JsonConverter(typeof(ValueTypeConverter))]
-    [ModelBinder(typeof(EmailModelBinder))]
-    public class Email: StringValueObject
+    //[JsonConverter(typeof(ValueTypeConverter))]
+    //[ModelBinder(typeof(EmailModelBinder))]
+    public class Email
+        //: ValueObject<string>
     {
         private static readonly EmailAddressAttribute Attr = new EmailAddressAttribute();
         
-        public Email(string email): base(email)
+        public Email(string email)//: base(email)
         {
             if (!Attr.IsValid(email))
             {

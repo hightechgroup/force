@@ -1,14 +1,16 @@
 using System.Threading.Tasks;
 using Demo.WebApp.Domain;
+using Force.Ddd;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Demo.WebApp.Infrastructure
 {
-    public class EmailModelBinder: IModelBinder
+    public class ValueTypeModelBinder: IModelBinder
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            var valueProviderResult = bindingContext.ValueProvider.GetValue("email");
+            var fieldName = bindingContext.ModelName;
+            var valueProviderResult = bindingContext.ValueProvider.GetValue(fieldName);
             
             if (valueProviderResult == ValueProviderResult.None)
             {
@@ -16,9 +18,9 @@ namespace Demo.WebApp.Infrastructure
                 
             }
             
-            if (Email.TryParse(valueProviderResult.FirstValue, out var email))
+            if (ValueObject.TryParse(valueProviderResult.FirstValue, out var value))
             {
-                bindingContext.Result = ModelBindingResult.Success(email);
+                bindingContext.Result = ModelBindingResult.Success(value);
             }
             
             return Task.CompletedTask;
