@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Force.Infrastructure;
 
 namespace Force.Linq
@@ -11,52 +9,10 @@ namespace Force.Linq
     {
         And, Or
     }
-    
-    public static class ConventionsExtensions
-    {
-        public static IQueryable<TSubject> AutoFilter<TSubject, TPredicate>(
-            this IQueryable<TSubject> query, TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
-        {
-            var filtered = Conventions<TSubject>.Filter(query, predicate, composeKind);
-            var orderBy = Type<TPredicate>.PublicProperties.FirstOrDefault(x => x.Name == "OrderBy");
-            var proprtyName = orderBy?.GetValue(predicate, null) as string;
-            
-            return proprtyName == null
-                ? filtered
-                : Conventions<TSubject>.Sort(filtered, proprtyName);
-        }
-
-        public static IOrderedQueryable<TSubject> OrderBy<TSubject>(this IQueryable<TSubject> query, string propertyName)
-            => Conventions<TSubject>.Sort(query, propertyName);
-    }
 
     public static class Conventions
     {
         public static ConventionalFilters Filters { get; } = new ConventionalFilters();
-    }
-
-    public class ConventionalFilters
-    {
-        private static MethodInfo StartsWith = typeof(string)
-            .GetMethod("StartsWith", new[] {typeof(string)});
-
-        private static Dictionary<Type, Func<MemberExpression, Expression, Expression>> _filters
-            = new Dictionary<Type, Func<MemberExpression, Expression, Expression>>()
-            {
-                { typeof(string),  (p, v) => Expression.Call(p, StartsWith, v) }
-            };
-        
-        internal ConventionalFilters()
-        {            
-        }
-
-        public Func<MemberExpression, Expression, Expression> this[Type key]
-        {
-            get => _filters.ContainsKey(key)
-                ? _filters[key]
-                : Expression.Equal;
-            set => _filters[key] = value ?? throw new ArgumentException(nameof(value));
-        }
     }
 
     public static class Conventions<TSubject>
@@ -134,7 +90,7 @@ namespace Force.Linq
                 .Select(x => new
                 {
                     Property = x,
-                    Value = filterProps.Single(y => y.Name == x.Name).GetValue(predicate)
+                    Value = filterProps.First(y => y.Name == x.Name).GetValue(predicate)
                 })
                 .Where(x => x.Value != null)
                 .Select(x =>
@@ -147,7 +103,7 @@ namespace Force.Linq
                         
                     return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
                 })
-                .ToArray();
+                .ToList();
 
             if (!props.Any())
             {

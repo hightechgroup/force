@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Force.Extensions;
 
 namespace Force.Linq
@@ -11,7 +12,7 @@ namespace Force.Linq
 
         public AutoFilter(object predicate, string orderBy = null)
         {
-            _predicate = predicate;
+            _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
             _orderBy = orderBy;
         }
 

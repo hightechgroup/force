@@ -30,12 +30,14 @@ namespace Force.Ddd
 
         private readonly Expression<Func<T, bool>> _expression;
 
+        private Func<T, bool> _func;
+        
         public Spec(Expression<Func<T, bool>> expression)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
-        public bool IsSatisfiedBy(T obj) => _expression.AsFunc()(obj);
+        public bool IsSatisfiedBy(T obj) => (_func ?? (_func = _expression.AsFunc()))(obj);
 
         public Spec<TParent> From<TParent>(Expression<Func<TParent, T>> mapFrom)
             => _expression.From(mapFrom);

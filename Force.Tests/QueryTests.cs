@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using Force.Extensions;
+using Force.Tests.Context;
 using Xunit;
 
 namespace Force.Tests
 {
-    public class QueryTests: DbContextTestsBase
+    public class QueryTests: DbContextFixture
     {
         [Fact]
         public void PagedQuery_FilterAndSort()

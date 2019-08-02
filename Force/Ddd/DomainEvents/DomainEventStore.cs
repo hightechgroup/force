@@ -7,8 +7,6 @@ namespace Force.Ddd.DomainEvents
     {
         public List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
-        private IEnumerable<IDomainEvent> Events => _domainEvents;
-
         public void Raise(IDomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);

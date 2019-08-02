@@ -180,7 +180,8 @@ namespace Force.Infrastructure
 
             var propertyGetterExpression = Expression.Property(paramExpression, propertyName);
 
-            var result = Expression.Lambda<Func<TObject, TProperty>>(propertyGetterExpression, paramExpression)
+            var result = Expression
+                .Lambda<Func<TObject, TProperty>>(propertyGetterExpression, paramExpression)
                 .Compile();
 
             return result;
@@ -194,7 +195,8 @@ namespace Force.Infrastructure
             var result = Expression.Lambda<Action<TObject, TProperty>>
             (
                 Expression.Assign(propertyGetterExpression, paramExpression2), paramExpression, paramExpression2
-            ).Compile();
+            )
+            .Compile();
             
             return result;
         }        

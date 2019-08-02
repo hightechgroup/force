@@ -68,19 +68,7 @@ namespace Force.AutoMapper
 
             return entity.Id;
         }
-
-        public static void Update<TKey, TEntity, TDto>(this IUnitOfWork uow, TKey id,
-            TDto dto, IMapper mapper = null)
-            where TEntity : class, IHasId<TKey>
-            where TKey : IEquatable<TKey>
-        {
-            var mapperInstance = mapper ?? Mapper.Instance;
-
-            var entity = uow.Find<TEntity>(id);
-            mapperInstance.Map(dto, entity);
-            uow.Commit();
-        }
-
+        
         public static TDest Map<TDest>(this object obj, IMapper mapper = null)
             => (mapper ?? Mapper.Instance).Map<TDest>(obj);
     }

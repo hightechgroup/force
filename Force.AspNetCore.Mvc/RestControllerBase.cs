@@ -44,12 +44,13 @@ namespace Force.AspNetCore.Mvc
         [HttpDelete("{id}")]
         public virtual IActionResult Delete(TKey id)
         {
-            var entity = UnitOfWork.Find<TEntity>(id);
-
-            UnitOfWork.Remove(entity);
-            UnitOfWork.Commit();
-
-            return Ok(new {success = true});
+            throw new NotImplementedException();
+//            var entity = UnitOfWork.Find<TEntity>(id);
+//
+//            UnitOfWork.Remove(entity);
+//            UnitOfWork.Commit();
+//
+//            return Ok(new {success = true});
         }
     }
 }

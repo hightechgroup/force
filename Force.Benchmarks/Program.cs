@@ -8,7 +8,7 @@ namespace Force.Benchmarks
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<TypeBenchmark>();
+            var summary = BenchmarkRunner.Run<TypeVsReflectionBenchmark>();
         }
     }
 }
