@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Force.Linq;
 using Force.Tests.Context;
@@ -16,12 +15,42 @@ namespace Force.Tests.Expressions
         {
             _dbContextFixture = dbContextFixture;
         }
+
+        [Fact]
+        public void Order()
+        {
+            var filter = new AutoFilter<Product>(new ProductFilter(), "Name DESC");
+
+            var res = filter
+                .Order(_dbContextFixture.DbContext.Products)
+                .ToList();
+
+            bool flag = true;
+            string current = null;
+            foreach (var p in res)
+            {
+                if (current == null)
+                {
+                    current = p.Name;
+                    continue;
+                }
+
+                flag = string.Compare(p.Name, current) <= 0;
+                if (!flag)
+                {
+                    break;
+                }
+            }
+            
+            Assert.True(flag);
+        }
         
         [Theory]
         [MemberData(nameof(Data))]
         public void Filter(TestCase<ProductFilter, List<Product>> testCase)
         {
             var filter = new AutoFilter<Product>(testCase.Input);
+            
             var res = filter
                 .Filter(_dbContextFixture.DbContext.Products)
                 .ToList();
@@ -46,7 +75,14 @@ namespace Force.Tests.Expressions
                 Id = 2,
                 Name = "2"
             }, x => !x.Any())
-
+            .Add(new ProductFilter()
+            {
+                Id = 2,
+            }, x => x.Any())
+            .Add(new ProductFilter()
+            {
+                Name = "a"
+            }, x => x.Any() && x.All(y => y.Name.ToLower().StartsWith("a")))        
         ;
     }
 }

@@ -17,7 +17,7 @@ namespace Force.Linq
         }
 
         private IQueryable<T> DoFilter<TFilter>(IQueryable<T> queryable, TFilter predicate)
-            => queryable.AutoFilter(predicate);
+            => queryable.FilterAndSort(predicate);
         
         public IQueryable<T> Filter(IQueryable<T> queryable)
             => DoFilter(queryable, (dynamic)_predicate);

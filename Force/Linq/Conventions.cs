@@ -21,7 +21,7 @@ namespace Force.Linq
         {
             (string, bool) GetSorting()
             {
-                var arr = propertyName.Split('.');
+                var arr = propertyName.Split(new[]{".", " "}, StringSplitOptions.RemoveEmptyEntries);
                 if (arr.Length == 1)
                     return (arr[0], false);
                 var sort = arr[1];

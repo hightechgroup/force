@@ -17,6 +17,19 @@ namespace Force.Tests.Context
                 Id = 1,
                 Name = "1"
             });
+            
+            DbContext.Products.Add(new Product()
+            {
+                Id = 2,
+                Name = "123"
+            });
+            
+            DbContext.Products.Add(new Product()
+            {
+                Id = 3,
+                Name = "Abc"
+            });
+
             DbContext.SaveChanges();
         }
     }

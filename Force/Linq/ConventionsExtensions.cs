@@ -5,7 +5,7 @@ namespace Force.Linq
 {
     public static class ConventionsExtensions
     {
-        public static IQueryable<TSubject> AutoFilter<TSubject, TPredicate>(
+        public static IQueryable<TSubject> FilterAndSort<TSubject, TPredicate>(
             this IQueryable<TSubject> query, TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
         {
             var filtered = Conventions<TSubject>.Filter(query, predicate, composeKind);
