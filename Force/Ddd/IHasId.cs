@@ -18,7 +18,7 @@ namespace Force.Ddd
         public static bool IsNew<TKey>(this IHasId<TKey> obj)
             where TKey : IEquatable<TKey>
         {
-            return obj.Id == null || obj.Id.Equals(default(TKey));
+            return obj.Id == null || obj.Id.Equals(default);
         }
     }
 }

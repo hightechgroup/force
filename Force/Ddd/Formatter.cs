@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Force.Expressions;
 using Force.Extensions;
 
 namespace Force.Ddd

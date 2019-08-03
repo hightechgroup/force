@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Force.Pagination
+namespace Force.Linq.Pagination
 {
     public class PagedEnumerable
     {
@@ -19,6 +20,11 @@ namespace Force.Pagination
     public class PagedEnumerable<T>: PagedEnumerable, IEnumerable<T>
     {
         public new IEnumerable<T> Items { get; }
+
+        public PagedEnumerable(IOrderedQueryable<T> queryable, IPaging paging)
+            : base(queryable.Paginate(paging).ToList(), queryable.Count())
+        {
+        }
 
         public PagedEnumerable(IEnumerable<T> items, long total)
             // ReSharper disable once PossibleMultipleEnumeration

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Force.Cqrs;
 using Force.Ddd.DomainEvents;
 
 namespace Force.Ddd

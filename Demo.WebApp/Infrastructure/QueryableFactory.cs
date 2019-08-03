@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Force;
+using Force.Ddd;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.WebApp.Infrastructure

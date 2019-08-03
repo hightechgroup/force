@@ -1,5 +1,5 @@
 using Demo.WebApp.Controllers;
-using Force.Pagination;
+using Force.Linq.Pagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.WebApp.Features

@@ -1,5 +1,6 @@
 using System;
 using Force;
+using Force.Cqrs;
 using StackExchange.Profiling;
 
 namespace Demo.WebApp.Infrastructure.Decorators

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace Force.Infrastructure
     {
         private static Attribute[] _attributes;
 
-        private static PropertyInfo[] _properties;
+        private static Dictionary<string, PropertyInfo> _properties;
 
         private static MethodInfo[] _methods;
         
@@ -29,7 +30,7 @@ namespace Force.Infrastructure
             _properties = type
                 .GetProperties()
                 .Where(x => x.CanRead && x.CanWrite)
-                .ToArray();
+                .ToDictionary(x => x.Name, x => x);
 
             _methods = type.GetMethods()
                 .Where(x => x.IsPublic && !x.IsAbstract)
@@ -39,7 +40,7 @@ namespace Force.Infrastructure
             _activators = new ConcurrentDictionary<long, ObjectActivator<T>>();
         }
 
-        public static PropertyInfo[] PublicProperties => _properties;
+        public static Dictionary<string, PropertyInfo> PublicProperties => _properties;
 
         public static MethodInfo[] PublicMethods => _methods;
 

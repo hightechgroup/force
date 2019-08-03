@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Force.Pagination
+namespace Force.Linq.Pagination
 {
     public interface IPaging
     {
@@ -16,7 +16,7 @@ namespace Force.Pagination
             .Skip((paging.Page - 1) * paging.Take)
             .Take(paging.Take);
 
-        public static PagedResponse<T> ToPagedResponse<T>(this IOrderedQueryable<T> queryable, IPaging paging)
-            => new PagedResponse<T>(queryable, paging);
+        public static PagedEnumerable<T> ToPagedEnumerable<T>(this IOrderedQueryable<T> queryable, IPaging paging)
+            => new PagedEnumerable<T>(queryable, paging);
     }
 }

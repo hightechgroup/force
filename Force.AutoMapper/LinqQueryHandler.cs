@@ -24,7 +24,7 @@ namespace Force.AutoMapper
 
         public IEnumerable<TProjection> Handle(TQuery query)
             => _entities
-                .TryFilter(query)
+                //.TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
                 .TryPaginate(query);

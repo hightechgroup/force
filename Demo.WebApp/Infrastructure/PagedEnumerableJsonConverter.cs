@@ -1,5 +1,5 @@
 using System;
-using Force.Pagination;
+using Force.Linq.Pagination;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Infrastructure

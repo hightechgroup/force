@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Force;
+using Force.Cqrs;
 
 namespace Demo.WebApp.Features.Import
 {

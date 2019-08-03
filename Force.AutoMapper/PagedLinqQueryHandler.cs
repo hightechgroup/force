@@ -3,14 +3,18 @@ using Force.Cqrs;
 using Force.Ddd;
 using Force.Extensions;
 using Force.Linq;
-using Force.Pagination;
+using Force.Linq.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper
 {
     public class PagedLinqQueryHandler<TQuery, TEntity, TProjection>
-        : IQueryHandler<TQuery, PagedResponse<TProjection>>
-        where TQuery : IQuery<PagedResponse<TProjection>>, IFilter<TProjection>, ISorter<TProjection>, IPaging
+        : IQueryHandler<TQuery, PagedEnumerable<TProjection>>
+        where TQuery 
+            : IQuery<PagedEnumerable<TProjection>>
+            , IFilter<TProjection>
+            , ISorter<TProjection>
+            , IPaging
         where TEntity : class
     {
         private readonly DbContext _dbContext;
@@ -20,12 +24,12 @@ namespace Force.AutoMapper
             _dbContext = dbContext;
         }
 
-        public PagedResponse<TProjection> Handle(TQuery query)
+        public PagedEnumerable<TProjection> Handle(TQuery query)
             => _dbContext
                 .Set<TEntity>()
-                .TryFilter(query)
+                //.TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
-                .ToPagedResponse(query);
+                .ToPagedEnumerable(query);
     }
 }

@@ -6,7 +6,8 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Force.Ddd;
 using Force.Extensions;
-using Force.Pagination;
+using Force.Linq;
+using Force.Linq.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.AutoMapper
@@ -15,26 +16,29 @@ namespace Force.AutoMapper
     {
         public static IEnumerable<T> TryPaginate<T>(this IQueryable<T> queryable, object maybePaging)
         {
-            if (maybePaging is IPaging paging)
-            {
-                var orderedQueryable = (queryable as IOrderedQueryable<T>) ?? queryable.OrderByFirstProperty();
-                var list = (orderedQueryable.Paginate(paging)).ToList(); 
-                return new PagedEnumerable<T>(list, queryable.Count());
-            }
-
-            return queryable.ToList();
+            throw new NotImplementedException();
+//            if (maybePaging is IPaging paging)
+//            {
+//                var orderedQueryable = (queryable as IOrderedQueryable<T>) ?? queryable.OrderByFirstProperty();
+//                var list = (orderedQueryable.Paginate(paging)).ToList(); 
+//                return new PagedEnumerable<T>(list, queryable.Count());
+//            }
+//
+//            return queryable.ToList();
         }
         
         public static async Task<IEnumerable<T>> TryPaginateAsync<T>(this IQueryable<T> queryable, object maybePaging)
         {
-            if (maybePaging is IPaging paging)
-            {
-                var orderedQueryable = (queryable as IOrderedQueryable<T>) ?? queryable.OrderByFirstProperty();
-                var list = await (orderedQueryable.Paginate(paging)).ToListAsync(); 
-                return new PagedEnumerable<T>(list, queryable.Count());
-            }
+            throw new NotImplementedException();
 
-            return await queryable.ToListAsync();
+//            if (maybePaging is IPaging paging)
+//            {
+//                var orderedQueryable = (queryable as IOrderedQueryable<T>) ?? queryable.OrderByFirstProperty();
+//                var list = await (orderedQueryable.Paginate(paging)).ToListAsync(); 
+//                return new PagedEnumerable<T>(list, queryable.Count());
+//            }
+//
+//            return await queryable.ToListAsync();
         }
         
         internal static IQueryable<TProjection> ProjectToWithConfigurationOrFallback<TEntity, TProjection>(this IQueryable<TEntity> queryable,
@@ -46,15 +50,6 @@ namespace Force.AutoMapper
                     x => x.ProjectTo<TProjection>(configurationProvider),
                     x => x.ProjectTo<TProjection>());
         
-        public static TProjection ProjectById<TKey, TEntity, TProjection>(
-            this IQueryable<TEntity> query, TKey id, IConfigurationProvider configurationProvider = null)
-            where TKey : IEquatable<TKey>
-            where TProjection : class, IHasId<TKey>
-            where TEntity : class, IHasId<TKey>
-            => query
-               .ProjectToWithConfigurationOrFallback<TEntity, TProjection>(configurationProvider)
-               .ById(id);
-
 
         public static TKey Create<TKey, TDto, TEntity>(this IUnitOfWork uow, TDto dto, IMapper mapper = null)
             where TEntity : class, IHasId<TKey>

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Force
+namespace Force.Ddd
 {
     public interface IPermissionFilter<T>
     {

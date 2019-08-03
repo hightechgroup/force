@@ -2,7 +2,7 @@
 using System.Linq;
 using Force.Ddd;
 using Force.Extensions;
-using Force.Pagination;
+using Force.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Force.AspNetCore.Mvc
@@ -23,12 +23,12 @@ namespace Force.AspNetCore.Mvc
 
         public abstract IQueryable<TDetails> ProjectDetails(IQueryable<TEntity> queryable);
 
-        [HttpGet]
-        public virtual IActionResult Get([FromQuery] PagedFetchOptions<TInfo> pagedFetchOptions)
-            => _queryable
-                .PipeTo(ProjectInfo)
-                .FilterSortAndPaginate(pagedFetchOptions)
-                .PipeTo(Ok);
+//        [HttpGet]
+//        public virtual IActionResult Get([FromQuery] PagedFetchOptions<TInfo> pagedFetchOptions)
+//            => _queryable
+//                .PipeTo(ProjectInfo)
+//                .FilterSortAndPaginate(pagedFetchOptions)
+//                .PipeTo(Ok);
 
         [HttpGet("{id}")]
         public virtual IActionResult Get(TKey id)

@@ -7,7 +7,7 @@ using Force.AutoMapper;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Linq;
-using Force.Pagination;
+using Force.Linq.Pagination;
 
 namespace Demo.WebApp.Features.Blog
 {

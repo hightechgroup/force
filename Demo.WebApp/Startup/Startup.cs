@@ -69,8 +69,8 @@ namespace Demo.WebApp.Startup
             // Allow Simple Injector to resolve services from ASP.NET Core.
             container.AutoCrossWireAspNetComponents(app);
             
-            container.RegisterQueryables<DemoAppDbContext>();
-            container.RegisterQueryHandlers(GetType().Assembly);
+//            container.RegisterQueryables<DemoAppDbContext>();
+//            container.RegisterQueryHandlers(GetType().Assembly);
             container.Verify();
         }
         

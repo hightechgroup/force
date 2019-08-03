@@ -1,6 +1,7 @@
 using System.Linq;
 using Demo.WebApp.Domain;
 using Force;
+using Force.Cqrs;
 
 namespace Demo.WebApp.Features.AccountManagement
 {

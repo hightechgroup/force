@@ -6,7 +6,7 @@ namespace Demo.WebApp.Features.Import
 {
     public class ImportPostValidator: IValidator<IEnumerable<ImportPost>>
     {
-        public IEnumerable<ValidationResult> Validate(IEnumerable<ImportPost> obj, ValidationContext validationContext)
+        public IEnumerable<ValidationResult> Validate(IEnumerable<ImportPost> obj)
         {
             return new[] {new ValidationResult("error message")};
         }

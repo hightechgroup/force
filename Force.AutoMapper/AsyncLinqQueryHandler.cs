@@ -5,7 +5,6 @@ using AutoMapper.QueryableExtensions;
 using Force.Cqrs;
 using Force.Extensions;
 using Force.Linq;
-
 namespace Force.AutoMapper
 {
     public class AsyncLinqQueryHandler<TEntity, TQuery, TProjection>
@@ -22,7 +21,7 @@ namespace Force.AutoMapper
 
         public async Task<IEnumerable<TProjection>> Handle(TQuery query)
             => await _entities
-                .TryFilter(query)
+                //.TryFilter(query)
                 .ProjectTo<TProjection>()
                 .FilterAndSort(query)
                 .TryPaginateAsync(query);

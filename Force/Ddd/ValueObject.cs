@@ -72,19 +72,4 @@ namespace Force.Ddd
         public static implicit operator T(ValueObject<T> value)
             => value.Value;
     }
-
-    public class StringValueObject : ValueObject<string>
-    {
-        public StringValueObject(string value) : base(value)
-        {
-        }
-
-        public bool StartsWith(string value)
-        {
-            return Value.StartsWith(value);
-        }
-
-        public override string ToString()
-            => Value;
-    }
 }

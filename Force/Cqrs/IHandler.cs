@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace Force
+﻿namespace Force.Cqrs
 {
     public interface IHandler<in TIn>
     {

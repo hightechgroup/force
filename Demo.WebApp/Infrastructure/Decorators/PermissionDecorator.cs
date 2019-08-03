@@ -1,5 +1,6 @@
 using System.Security;
 using Force;
+using Force.Cqrs;
 
 namespace Demo.WebApp.Infrastructure.Decorators
 {

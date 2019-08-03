@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Force;
+using Force.Cqrs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.WebApp.Infrastructure

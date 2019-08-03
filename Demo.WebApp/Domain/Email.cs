@@ -9,7 +9,7 @@ namespace Demo.WebApp.Domain
 {
     [JsonConverter(typeof(ValueTypeConverter))]
     [ModelBinder(typeof(EmailModelBinder))]
-    public class Email: StringValueObject
+    public class Email: ValueObject<string>
     {
         private static readonly EmailAddressAttribute Attr = new EmailAddressAttribute();
         

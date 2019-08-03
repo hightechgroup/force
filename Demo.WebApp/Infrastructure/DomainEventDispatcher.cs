@@ -1,4 +1,5 @@
 using Force;
+using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
 

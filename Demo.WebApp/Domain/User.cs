@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
+using Force.Expressions;
 using Force.Extensions;
 
 namespace Demo.WebApp.Domain

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Force.Extensions
+namespace Force.Cqrs
 {
     public static class HandlerExtensions
     {

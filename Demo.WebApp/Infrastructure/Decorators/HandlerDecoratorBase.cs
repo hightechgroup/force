@@ -1,4 +1,5 @@
 using Force;
+using Force.Cqrs;
 
 namespace Demo.WebApp.Infrastructure.Decorators
 {   
