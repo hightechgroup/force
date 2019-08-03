@@ -7,18 +7,16 @@ using Xunit;
 
 namespace Force.Tests.Expressions
 {
-    public class QueryableTests : IClassFixture<DbContextFixture>
+    public class QueryableTests : DbFixtureTestsBase
     {
-        private readonly DbContextFixture _dbContextFixture;
-
         static QueryableTests()
         {
             FilterConventions.Initialize(x => { });
         }
         
         public QueryableTests(DbContextFixture dbContextFixture)
+            :base(dbContextFixture)
         {
-            _dbContextFixture = dbContextFixture;
         }
 
         [Theory]
@@ -27,7 +25,7 @@ namespace Force.Tests.Expressions
         {
             Sorter<Product>.TryParse(testCase.Input, out var sorter);
             
-            var res =_dbContextFixture
+            var res =DbContextFixture
                 .DbContext
                 .Products
                 .Sort(sorter) 
@@ -66,7 +64,7 @@ namespace Force.Tests.Expressions
         public void FilterByConvention(TestCase<ProductFilter, List<Product>> testCase)
         {
             var res = 
-                _dbContextFixture
+                DbContextFixture
                 .DbContext
                 .Products
                 .FilterByConvention(testCase.Input)
