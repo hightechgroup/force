@@ -24,7 +24,7 @@ namespace Force.Tests
             var e2 = sw.Elapsed;
 
             Assert.Equal(func1, func2);
-            Assert.True(e2 * 10 < e1);
+            Assert.True(e2 * 5 < e1);
         }
     }
 }

@@ -19,44 +19,32 @@ namespace Force.Tests.Expressions
         {
         }
 
+        [Fact]
+        public void A()
+        {
+            DbContext
+                .Products
+                .WhereIf(true, x => true)
+                .FilterAndSort(new ProductFilter())
+                .OrderById()
+                .FirstOrDefaultById(1, x => new ProductListItem()
+                {
+                    Id = x.Id
+                });
+        }
+        
         [Theory]
         [MemberData(nameof(OrderData))]
         public void Order(TestCase<string, List<Product>> testCase)
         {
             Sorter<Product>.TryParse(testCase.Input, out var sorter);
             
-            var res =DbContextFixture
-                .DbContext
+            var res = DbContext
                 .Products
                 .Sort(sorter) 
                 .ToList();
             
             testCase.Assert(res);
-        }
-
-        private static bool CheckOrder(List<Product> res, bool asc)
-        {
-            bool flag = true;
-            string current = null;
-            foreach (var p in res)
-            {
-                if (current == null)
-                {
-                    current = p.Name;
-                    continue;
-                }
-
-                flag = asc 
-                    ? string.Compare(p.Name, current) >= 0
-                    : string.Compare(p.Name, current) <= 0;
-                
-                if (!flag)
-                {
-                    break;
-                }
-            }
-
-            return flag;
         }
 
         [Theory]
@@ -75,12 +63,12 @@ namespace Force.Tests.Expressions
 
         public static IEnumerable<object[]> OrderData => TestCaseBuilder
             .For<string, List<Product>>()
-            .Add("Name", x => CheckOrder(x, true))
-            .Add("Name asc", x => CheckOrder(x, true))
-            .Add("Name.asc", x => CheckOrder(x, true))
-            .Add("naMe AsC", x => CheckOrder(x, true))
-            .Add("Name desc", x => CheckOrder(x, false))
-            .Add("naMe.DesC", x => CheckOrder(x, false));
+            .Add("Name", x => OrderChecker.CheckOrder(x, true))
+            .Add("Name asc", x => OrderChecker.CheckOrder(x, true))
+            .Add("Name.asc", x => OrderChecker.CheckOrder(x, true))
+            .Add("naMe AsC", x => OrderChecker.CheckOrder(x, true))
+            .Add("Name desc", x => OrderChecker.CheckOrder(x, false))
+            .Add("naMe.DesC", x => OrderChecker.CheckOrder(x, false));
 
         public static IEnumerable<object[]> FilterData => TestCaseBuilder
             .For<ProductFilter, List<Product>>()

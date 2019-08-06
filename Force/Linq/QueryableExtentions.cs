@@ -168,8 +168,8 @@ namespace Force.Linq
             where TEntity : class, IHasId<TKey>
             => queryable.FirstOrDefault(x => x.Id.Equals(id));
         
-        public static TProjection FirstOrDefaultById<TKey, TEntity, TProjection>(this IQueryable<TEntity> queryable, TKey id,
-            Expression<Func<TEntity, TProjection>> projectionExpression)
+        public static TProjection FirstOrDefaultById<TKey, TEntity, TProjection>(this IQueryable<TEntity> queryable, 
+            TKey id, Expression<Func<TEntity, TProjection>> projectionExpression)
             where TKey : IEquatable<TKey>
             where TEntity : class, IHasId<TKey>
             where TProjection : class, IHasId<TKey>
