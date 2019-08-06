@@ -18,11 +18,6 @@ namespace Force.Infrastructure
         public static Expression<Func<T, bool>> False<T>() { return param => false; }
 
         /// <summary>
-        /// Creates a predicate expression from the specified lambda expression.
-        /// </summary>
-        public static Expression<Func<T, bool>> Create<T>(Expression<Func<T, bool>> predicate) { return predicate; }
-
-        /// <summary>
         /// Combines the first predicate with the second using the logical "and".
         /// </summary>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)

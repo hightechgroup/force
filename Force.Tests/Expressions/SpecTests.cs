@@ -28,6 +28,12 @@ namespace Force.Tests.Expressions
         }
 
         [Fact]
+        public void Not()
+        {
+            var s3 = !spec1;
+        }
+
+        [Fact]
         public void And()
         {
             TestAnd((s1, s2) => s1 & s2);

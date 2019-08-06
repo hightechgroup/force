@@ -175,31 +175,24 @@ namespace Force.Infrastructure
         
         #endregion
         
-        public static Func<TObject, TProperty> PropertyGetter<TObject, TProperty>(string propertyName)
+        public static Expression<Func<T, TProperty>> PropertyGetter<TProperty>(string propertyName)
         {
-            var paramExpression = Expression.Parameter(typeof(TObject), "value");
-
+            var paramExpression = Expression.Parameter(typeof(T), "value");
             var propertyGetterExpression = Expression.Property(paramExpression, propertyName);
-
-            var result = Expression
-                .Lambda<Func<TObject, TProperty>>(propertyGetterExpression, paramExpression)
-                .Compile();
-
-            return result;
+            return Expression
+                .Lambda<Func<T, TProperty>>(propertyGetterExpression, paramExpression);
         }
 
-        public static Action<TObject, TProperty> PropertySetter<TObject, TProperty>(string propertyName)
+        public static Expression<Action<T, TProperty>> PropertySetter<TProperty>(string propertyName)
         {            
-            var paramExpression = Expression.Parameter(typeof(TObject));
+            var paramExpression = Expression.Parameter(typeof(T));
             var paramExpression2 = Expression.Parameter(typeof(TProperty), propertyName);
             var propertyGetterExpression = Expression.Property(paramExpression, propertyName);
-            var result = Expression.Lambda<Action<TObject, TProperty>>
+            return Expression.Lambda<Action<T, TProperty>>
             (
-                Expression.Assign(propertyGetterExpression, paramExpression2), paramExpression, paramExpression2
-            )
-            .Compile();
-            
-            return result;
+                Expression.Assign(propertyGetterExpression, paramExpression2),
+                paramExpression, paramExpression2
+            );
         }        
     }
 }
