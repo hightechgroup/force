@@ -1,7 +1,7 @@
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using Force.Infrastructure;
+using Force.Reflection;
 
 namespace Force.Benchmarks
 {

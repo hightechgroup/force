@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using Force.Expressions;
 using Force.Extensions;
-using Force.Infrastructure;
 
 namespace Force.Ddd
 {

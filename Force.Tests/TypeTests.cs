@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Force.Ddd;
-using Force.Infrastructure;
+using Force.Reflection;
 using Xunit;
 
 namespace Force.Tests

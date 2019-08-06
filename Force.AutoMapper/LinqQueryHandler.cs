@@ -13,6 +13,7 @@ namespace Force.AutoMapper
     public class LinqQueryHandler<TEntity, TQuery, TProjection>
         : IQueryHandler<TQuery, IEnumerable<TProjection>>
         where TEntity : class
+        where TProjection: IHasId
         where TQuery : IQuery<IEnumerable<TProjection>>, IFilter<TProjection>, ISorter<TProjection>
     {
         private readonly IQueryable<TEntity> _entities;

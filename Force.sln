@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.Benchmarks", "Force.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XlsSeed", "XlsSeed\XlsSeed.csproj", "{D1121E79-24D4-4A94-86A0-E7EBD22D96A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.AspNetCore.Mvc.Tests", "Force.AspNetCore.Mvc.Tests\Force.AspNetCore.Mvc.Tests.csproj", "{1C409555-EF7F-415C-974D-766DCEAEF258}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D1121E79-24D4-4A94-86A0-E7EBD22D96A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1121E79-24D4-4A94-86A0-E7EBD22D96A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1121E79-24D4-4A94-86A0-E7EBD22D96A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C409555-EF7F-415C-974D-766DCEAEF258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C409555-EF7F-415C-974D-766DCEAEF258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C409555-EF7F-415C-974D-766DCEAEF258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C409555-EF7F-415C-974D-766DCEAEF258}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

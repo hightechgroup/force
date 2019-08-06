@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using Force.Infrastructure;
+using Force.Reflection;
 
 namespace Force.Linq
 {

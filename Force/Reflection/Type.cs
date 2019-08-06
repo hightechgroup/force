@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Force.Extensions;
 
-namespace Force.Infrastructure
+namespace Force.Reflection
 {
     public delegate T ObjectActivator<out T>(params object[] args);
 
@@ -147,32 +146,7 @@ namespace Force.Infrastructure
             var compiled = (ObjectActivator<T>)lambda.Compile();
             return compiled;
         }
-        
-        public static Delegate CreateMethod(MethodInfo method)
-        {
-            if (method == null)
-            {
-                throw new ArgumentNullException(nameof(method));
-            }
 
-            if (!method.IsStatic)
-            {
-                throw new ArgumentException("The provided method must be static.", nameof(method));
-            }
-
-            if (method.IsGenericMethod)
-            {
-                throw new ArgumentException("The provided method must not be generic.", nameof(method));
-            }
-
-            var parameters = method.GetParameters()
-                .Select(p => Expression.Parameter(p.ParameterType, p.Name))
-                .ToArray();
-            
-            var call = Expression.Call(null, method, parameters);
-            return Expression.Lambda(call, parameters).Compile();
-        }
-        
         #endregion
         
         public static Expression<Func<T, TProperty>> PropertyGetter<TProperty>(string propertyName)

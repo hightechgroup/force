@@ -4,7 +4,7 @@ using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using Force.Ddd;
-using Force.Infrastructure;
+using Force.Reflection;
 
 namespace Force.Benchmarks
 {

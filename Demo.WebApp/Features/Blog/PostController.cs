@@ -14,22 +14,8 @@ namespace Demo.WebApp.Features.Blog
 {
     public class PostController: ApiControllerBase
     {
-        //[HttpGet]
+       [HttpGet]
         public ActionResult<IEnumerable<PostListDto>> Get([FromQuery] PostListQuery query)
             => this.FetchEnumerable(query);
-        
-        static readonly Func<DbContext, IEnumerable<PostListDto>> Compiled = EF.CompileQuery(
-            (DbContext db) => db
-                .Set<Post>()
-                .Select(x => new PostListDto()
-                {
-                    Id = x.Id, 
-                    Title = x.Name
-                }));
-
-        [HttpGet]
-        public ActionResult<IEnumerable<PostListDto>> Get([FromServices] DbContext dbContext)
-            => Compiled.Invoke(dbContext).PipeTo(Ok);
-
     }
 }

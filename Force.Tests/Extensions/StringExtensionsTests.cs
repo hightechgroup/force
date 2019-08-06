@@ -9,7 +9,12 @@ namespace Force.Tests.Extensions
         [Fact]
         public void A()
         {
-            "".NullIfEmpty().SplitCamelCase();
+            ""
+                .NullIfEmpty()
+                .PipeTo(x => " ")
+                .ToUnderscoreCase()
+                .SplitCamelCase()
+                .HasValue();
         }
     }
 }
