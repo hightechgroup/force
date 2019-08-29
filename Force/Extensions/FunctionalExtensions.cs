@@ -26,14 +26,5 @@ namespace Force.Extensions
         public static TOutput EitherOr<TInput, TOutput>(this TInput o, bool condition,
             Func<TInput, TOutput> ifTrue, Func<TInput, TOutput> ifFalse)
             => condition ? ifTrue(o) : ifFalse(o);
-        
-        
-        public static void Merge<TKey, TValue>(this IDictionary<TKey, TValue> me, IDictionary<TKey, TValue> merge)
-        {
-            foreach (var item in merge)
-            {
-                me[item.Key] = item.Value;
-            }
-        }
     }
 }
