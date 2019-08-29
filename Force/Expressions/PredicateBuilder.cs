@@ -8,16 +8,6 @@ namespace Force.Expressions
     public static class PredicateBuilder
     {
         /// <summary>
-        /// Creates a predicate that evaluates to true.
-        /// </summary>
-        public static Expression<Func<T, bool>> True<T>() { return param => true; }
-
-        /// <summary>
-        /// Creates a predicate that evaluates to false.
-        /// </summary>
-        public static Expression<Func<T, bool>> False<T>() { return param => false; }
-
-        /// <summary>
         /// Combines the first predicate with the second using the logical "and".
         /// </summary>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)

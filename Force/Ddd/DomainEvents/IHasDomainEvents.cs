@@ -11,13 +11,4 @@ namespace Force.Ddd.DomainEvents
     {
         IEnumerable<T> GetDomainEvents();
     }
-
-    public static class HasDomainEventsExtensions
-    {
-        public static void Raise<T>(this IHasDomainEvents hasDomainEvent, 
-            ICollection<T> domainEvents, T domainEvent)
-        {
-            domainEvents.Add(domainEvent);
-        }
-    }
 }

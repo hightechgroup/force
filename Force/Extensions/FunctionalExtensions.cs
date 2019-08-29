@@ -14,16 +14,6 @@ namespace Force.Extensions
         public static async Task<TResult> AwaitAndPipeTo<TSource, TResult>(
             this Task<TSource> source, Func<TSource, TResult> func)
             => func(await source);
-
-        public static TSource PipeToIf<TSource>(
-            this TSource source, Func<TSource, bool> predicate, Func<TSource, TSource> func)
-            => predicate(source)
-                ? func(source)
-                : source;
-        
-        public static Func<TSource, TResult> Compose<TSource, TIntermediate, TResult>(
-            this Func<TSource, TIntermediate> func1, Func<TIntermediate, TResult> func2)
-            => x => func2(func1(x));
         
         public static TOutput EitherOr<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
             Func<TInput, TOutput> ifFalse)

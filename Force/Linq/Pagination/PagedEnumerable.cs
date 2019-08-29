@@ -34,12 +34,6 @@ namespace Force.Linq.Pagination
             Items = items;
         }
 
-        public PagedEnumerable(params T[] items)
-            : base(items, items.Length)        
-        {
-            Items = items;
-        }
-
         public IEnumerator<T> GetEnumerator()
             => Items.GetEnumerator();
 

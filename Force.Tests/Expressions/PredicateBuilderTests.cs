@@ -1,4 +1,4 @@
-namespace Force.Tests.Infrastructure
+namespace Force.Tests.Expressions
 {
     public class PredicateBuilderTests
     {

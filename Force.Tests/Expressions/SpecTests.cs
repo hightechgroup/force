@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Force.Ddd;
 using Force.Tests.Context;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Expressions
@@ -15,7 +16,7 @@ namespace Force.Tests.Expressions
         {
         }
         
-        private void TestAnd(Func<Spec<Product>,Spec<Product>,Spec<Product>> andFunc)
+        private void TestComposed(Func<Spec<Product>,Spec<Product>,Spec<Product>> andFunc)
         {
             var and = andFunc(spec1, spec2);
             var res = DbContext
@@ -28,21 +29,41 @@ namespace Force.Tests.Expressions
         }
 
         [Fact]
+        public void From()
+        {
+            var s = new Spec<Category>(x => true);
+            var from = s.From<Product>(x => x.Category);
+        }
+        
+        [Fact]
         public void Not()
         {
             var s3 = !spec1;
         }
 
         [Fact]
+        public void Or()
+        {
+            TestComposed((s1, s2) => s1 | s2);
+        }
+        
+        
+        [Fact]
+        public void DoubleOr()
+        {
+            TestComposed((s1, s2) => s1 || s2);
+        }
+        
+        [Fact]
         public void And()
         {
-            TestAnd((s1, s2) => s1 & s2);
+            TestComposed((s1, s2) => s1 & s2);
         }
         
         [Fact]
         public void DoubleAnd()
         {
-            TestAnd((s1, s2) => s1 && s2);
+            TestComposed((s1, s2) => s1 && s2);
         }
 
         [Fact]

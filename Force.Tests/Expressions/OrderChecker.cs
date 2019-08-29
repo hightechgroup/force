@@ -1,31 +1,33 @@
-using System;
 using System.Collections.Generic;
-using Force.Tests.Expressions;
+using static System.String;
 
-static internal class OrderChecker
+namespace Force.Tests.Expressions
 {
-    public static bool CheckOrder(List<Product> res, bool asc)
+    internal static class OrderChecker
     {
-        bool flag = true;
-        string current = null;
-        foreach (var p in res)
+        public static bool CheckOrder(List<Product> res, bool asc)
         {
-            if (current == null)
+            bool flag = true;
+            string current = null;
+            foreach (var p in res)
             {
-                current = p.Name;
-                continue;
-            }
+                if (current == null)
+                {
+                    current = p.Name;
+                    continue;
+                }
 
-            flag = asc 
-                ? String.Compare(p.Name, current) >= 0
-                : String.Compare(p.Name, current) <= 0;
+                flag = asc 
+                    ? CompareOrdinal(p.Name, current) >= 0
+                    : CompareOrdinal(p.Name, current) <= 0;
                 
-            if (!flag)
-            {
-                break;
+                if (!flag)
+                {
+                    break;
+                }
             }
-        }
 
-        return flag;
+            return flag;
+        }
     }
 }

@@ -22,7 +22,15 @@ namespace Force.Extensions
                 .GetCustomAttributes(typeof(DisplayAttribute), false)
                 .FirstOrDefault();
 
-            return displayName != null ? displayName.Name : value.ToString().SplitCamelCase();
+            return displayName != null 
+                ? displayName.Name 
+                : SplitCamelCase(value.ToString());
+        }
+        
+        internal static string SplitCamelCase(string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, "([A-Z])", " $1", 
+                System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
         }
     }
 }

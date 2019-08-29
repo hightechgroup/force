@@ -70,14 +70,14 @@ namespace Force.Linq
 
             var paramUser = resultSelector.Parameters.First();
 
-            ParameterExpression paramNew = Expression.Parameter(typeof(LeftJoinIntermediate<TOuter, TInner>), "t");
-            MemberExpression propExpr = Expression.Property(paramNew, "OneOuter");
+            var paramNew = Expression.Parameter(typeof(LeftJoinIntermediate<TOuter, TInner>), "t");
+            var propExpr = Expression.Property(paramNew, "OneOuter");
 
-            LambdaExpression selectManyResultSelector = Expression.Lambda(
+            var selectManyResultSelector = Expression.Lambda(
                 new Replacer(paramUser, propExpr).Visit(resultSelector.Body), paramNew,
                 resultSelector.Parameters.Skip(1).First());
 
-            MethodCallExpression exprSelectMany = Expression.Call(selectMany, exprGroupJoin,
+            var exprSelectMany = Expression.Call(selectMany, exprGroupJoin,
                 selectManyCollectionSelector, selectManyResultSelector);
 
             return outer.Provider.CreateQuery<TResult>(exprSelectMany);

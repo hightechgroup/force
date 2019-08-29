@@ -1,15 +1,31 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Force.Ddd;
 using Force.Extensions;
 using Xunit;
 
 namespace Force.Tests.Extensions
 {
-    public class ExtensionTests
+    public class FunctionalExtensionsTests
     {
         [Fact]
-        public void EitherOr()
+        public async Task AwaitAndPipeTo()
+        {
+            var res = await Task.FromResult(1).AwaitAndPipeTo(x => x + 1);
+            Assert.Equal(2, res);
+        }
+
+        [Fact]
+        public void EitherOr_Func()
+        {
+            var a = true;
+            a.EitherOr(x => !x, x => !x);
+            a.EitherOr(x => !x, x => !x, x => !x);
+        }
+        
+        [Fact]
+        public void EitherOr_Value()
         {
             var a = true;
             a.EitherOr(a, x => !x, x => x);

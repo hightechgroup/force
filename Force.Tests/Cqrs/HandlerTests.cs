@@ -10,8 +10,8 @@ namespace Force.Tests.Cqrs
         public void PipeTo()
         {
             var handler = new IntToStringHandler();
-            var res = 1
-                .PipeTo(handler)
+            var res = handler
+                .Handle(1)
                 .PipeTo(x => x + "!");
             
             Assert.Equal("1!", res);
@@ -21,8 +21,8 @@ namespace Force.Tests.Cqrs
         public void ToFunc()
         {
             var handler = new IntToStringHandler();
-            var res = 1
-                .PipeTo(handler.ToFunc())
+            var res = handler
+                .Handle(1)
                 .PipeTo(x => x + "!");
             
             Assert.Equal("1!", res);
