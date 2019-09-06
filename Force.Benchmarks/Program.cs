@@ -1,6 +1,4 @@
-﻿using System;
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 
 namespace Force.Benchmarks
 {
@@ -8,7 +6,7 @@ namespace Force.Benchmarks
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<TypeVsReflectionBenchmark>();
+            var summary = BenchmarkRunner.Run<InvariantBenchmarks>();
         }
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Force.Extensions
 {
     public static class FunctionalExtensions
-    {       
+    {
+        public static void EnsureInvariant(this object obj, bool validateAllProperties = true)
+        {
+            Validator.ValidateObject(obj, new ValidationContext(obj), validateAllProperties);
+        }
+        
         public static TResult PipeTo<TSource, TResult>(
             this TSource source, Func<TSource, TResult> func)
             => func(source);

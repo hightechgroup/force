@@ -13,7 +13,9 @@ namespace Demo.WebApp.Domain
         
         protected NamedEntityBase(string name)
         {
-            Name = name.NullIfEmpty() ?? throw new ArgumentNullException(nameof(name));
+            Name = !string.IsNullOrEmpty(name) 
+                   ? name
+                   : throw new ArgumentNullException(nameof(name));
             if (!_attr.IsValid(name))
             {
                 throw new ArgumentException(_attr.ErrorMessage, nameof(name));

@@ -9,7 +9,7 @@ namespace Demo.WebApp.Features
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(new PagedEnumerable<string>("string"));
+            return Ok();
         }
     }
 }
