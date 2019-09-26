@@ -17,7 +17,7 @@ namespace Demo.WebApp.Domain.Entities.Blog
         
         public Post(string name, string text, string url, Hub hub) : base(name)
         {
-            Text = string.IsNullOrEmpty(text)
+            Text = !string.IsNullOrEmpty(text) 
                 ? text
                 : throw new ArgumentNullException(nameof(text));
             Url = url ?? throw new ArgumentNullException(nameof(url));

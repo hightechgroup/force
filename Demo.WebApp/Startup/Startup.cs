@@ -11,9 +11,6 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleInjector;
-using SimpleInjector.Integration.AspNetCore.Mvc;
-using SimpleInjector.Lifestyles;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Demo.WebApp.Startup
@@ -48,8 +45,7 @@ namespace Demo.WebApp.Startup
                 {
                     options.SerializerSettings.Converters.Add(new PagedEnumerableJsonConverter());
                 });
-
-            IntegrateSimpleInjector(services);
+            
             services.AddSwaggerGen(c =>
             {
                 var f = c.DocumentFilterDescriptors;
@@ -68,40 +64,6 @@ namespace Demo.WebApp.Startup
             });
             
         }
-
-        #region SI
-        
-        private Container container = new Container();
-
-        private void InitializeContainer(IApplicationBuilder app)
-        {
-            // Add application presentation components:
-            container.RegisterMvcControllers(app);
-            container.RegisterMvcViewComponents(app);
-
-            // Allow Simple Injector to resolve services from ASP.NET Core.
-            container.AutoCrossWireAspNetComponents(app);
-            
-//            container.RegisterQueryables<DemoAppDbContext>();
-//            container.RegisterQueryHandlers(GetType().Assembly);
-            container.Verify();
-        }
-        
-        private void IntegrateSimpleInjector(IServiceCollection services) {
-            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddSingleton<IControllerActivator>(
-                new SimpleInjectorControllerActivator(container));
-            services.AddSingleton<IViewComponentActivator>(
-                new SimpleInjectorViewComponentActivator(container));
-
-            services.EnableSimpleInjectorCrossWiring(container);
-            services.UseSimpleInjectorAspNetRequestScoping(container);
-        }
-        
-        #endregion
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -122,8 +84,7 @@ namespace Demo.WebApp.Startup
             {
                 app.UseHsts();
             }
-
-            InitializeContainer(app);            
+            
             app.UseSwagger();
             app.UseMiniProfiler();
 
