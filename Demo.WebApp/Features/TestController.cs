@@ -1,4 +1,4 @@
-using Demo.WebApp.Controllers;
+using Demo.WebApp.Infrastructure;
 using Force.Linq.Pagination;
 using Microsoft.AspNetCore.Mvc;
 

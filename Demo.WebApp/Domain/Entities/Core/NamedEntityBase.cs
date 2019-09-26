@@ -1,8 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Force.Extensions;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Core
 {
     public abstract class NamedEntityBase: EntityBase<int>
     {
@@ -23,7 +22,7 @@ namespace Demo.WebApp.Domain
             }
         }
         
-        [DefaultStringLengthAttribute]
+        [DefaultStringLength]
         [Required]
         public string Name { get; protected set; }
     }

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Demo.WebApp.Domain.Entities.Core;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
 using Force.Expressions;
-using Force.Extensions;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Account
 {
     public class User: EntityBase, IAuditable, IHasDomainEvents
     {     

@@ -1,5 +1,6 @@
 using System;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 using Newtonsoft.Json;
 
 namespace Demo.WebApp.Infrastructure

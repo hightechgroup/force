@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using Force.Ddd;
+using Demo.WebApp.Features.Blog;
 using Force.Ddd.DomainEvents;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Blog
 {
     public partial class Post: IHasDomainEvents
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 
 namespace Demo.WebApp.Features.Import
 {

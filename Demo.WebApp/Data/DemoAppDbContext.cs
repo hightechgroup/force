@@ -1,5 +1,9 @@
 using System;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
+using Demo.WebApp.Domain.Entities.Blog;
+using Demo.WebApp.Domain.Entities.Core;
+using Demo.WebApp.Features.Blog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;

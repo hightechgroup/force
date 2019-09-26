@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Blog;
+using Demo.WebApp.Domain.Entities.Core;
 using Force.AutoMapper;
 using Force.Cqrs;
 using Force.Ddd;

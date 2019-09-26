@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Demo.WebApp.Controllers;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Infrastructure;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

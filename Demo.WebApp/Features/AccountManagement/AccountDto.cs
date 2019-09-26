@@ -1,4 +1,5 @@
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 
 namespace Demo.WebApp.Features.AccountManagement
 {

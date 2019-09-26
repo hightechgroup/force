@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Demo.WebApp.Controllers;
 using Demo.WebApp.Data;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Infrastructure;
 using Force.AspNetCore.Mvc;
 using Force.Extensions;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using Demo.WebApp.Domain.Entities.Account;
 using Force.Ddd;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Features.Blog
 {
     public class AddComment
     {       

@@ -5,7 +5,7 @@ using Force.Ddd;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Account
 {
     [JsonConverter(typeof(ValueTypeConverter))]
     [ModelBinder(typeof(EmailModelBinder))]

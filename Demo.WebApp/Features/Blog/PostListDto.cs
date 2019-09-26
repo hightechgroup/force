@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using AutoMapper.Extensions;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Blog;
 using Demo.WebApp.Infrastructure;
 using Force.AutoMapper;
 using Force.Ddd;

@@ -1,4 +1,4 @@
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Core
 {
     public interface IHasText
     {

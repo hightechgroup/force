@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Force.Ddd;
-using Force.Extensions;
+using Demo.WebApp.Domain.Entities.Core;
+using Demo.WebApp.Features.Blog;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Blog
 {
     public partial class Post
         : NamedEntityBase

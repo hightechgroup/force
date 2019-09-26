@@ -1,4 +1,6 @@
-namespace Demo.WebApp.Domain
+using Demo.WebApp.Domain.Entities.Core;
+
+namespace Demo.WebApp.Domain.Entities.Blog
 {
     public class Hub: NamedEntityBase
     {

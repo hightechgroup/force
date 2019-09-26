@@ -1,6 +1,8 @@
 using System;
+using Demo.WebApp.Domain.Entities.Blog;
+using Demo.WebApp.Domain.Entities.Core;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Features.Blog
 {
     public class CommentAdded: DomainEventBase
     {

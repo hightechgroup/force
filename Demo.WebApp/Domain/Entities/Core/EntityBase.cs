@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel;
-using System.Data.Odbc;
 using Force.Ddd;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Core
 {
     public abstract class EntityBase : EntityBase<int>
     {

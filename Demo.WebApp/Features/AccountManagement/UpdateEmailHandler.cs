@@ -1,5 +1,6 @@
 using System.Linq;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 using Force;
 using Force.Cqrs;
 

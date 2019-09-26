@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 using Force.Cqrs;
 using Force.Ddd;
 

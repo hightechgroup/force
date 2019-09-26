@@ -1,10 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Force.Ddd;
+using Demo.WebApp.Domain.Entities.Account;
+using Demo.WebApp.Domain.Entities.Core;
+using Demo.WebApp.Features.Blog;
 using Force.Ddd.DomainEvents;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Blog
 {
     public class Comment
         : EntityBase

@@ -1,8 +1,7 @@
 using System;
-using Force.Ddd;
 using Force.Ddd.DomainEvents;
 
-namespace Demo.WebApp.Domain
+namespace Demo.WebApp.Domain.Entities.Core
 {
     public abstract class DomainEventBase: IDomainEvent
     {

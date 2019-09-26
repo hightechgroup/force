@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Demo.WebApp.Domain;
+using Demo.WebApp.Domain.Entities.Account;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Demo.WebApp.Infrastructure
