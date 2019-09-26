@@ -17,14 +17,14 @@ namespace Force.Tests
             
             sw.Start();
             var func1 = expr.AsFunc();
-            var e1 = sw.Elapsed;
+            var e1 = ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
             sw.Restart();
             
             var func2 = expr.AsFunc();
-            var e2 = sw.Elapsed;
+            var e2 = ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
 
             Assert.Equal(func1, func2);
-            Assert.True(e2 * 5 < e1);
+            Assert.True(e2 < 50000 && e2 * 10 < e1, $"Compile: {e1} | Cache: {e2}");
         }
     }
 }

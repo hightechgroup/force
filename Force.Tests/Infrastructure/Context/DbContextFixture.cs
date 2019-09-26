@@ -1,4 +1,5 @@
 ﻿using Force.Tests.Expressions;
+using Force.Tests.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Force.Tests.Context

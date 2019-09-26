@@ -1,6 +1,9 @@
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Force.Ddd;
 using Force.Tests.Context;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Expressions
@@ -19,6 +22,9 @@ namespace Force.Tests.Expressions
                 .Products
                 .Select<Product, string>(formatter)
                 .ToList();
+            
+            var cf = new Formatter<Category>(x => x.Id.ToString());
+            Expression<Func<Product, string>> e = cf.From((Product p) => p.Category);
 
             Assert.True(res.All(x => x.Any() && x.StartsWith("Product Name is: ")));
         }

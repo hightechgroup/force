@@ -1,5 +1,6 @@
 using Force.Ddd;
 using Force.Tests.Expressions;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Ddd

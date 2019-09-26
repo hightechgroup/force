@@ -1,6 +1,7 @@
 using System.Linq;
 using Force.Linq;
 using Force.Tests.Context;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Expressions

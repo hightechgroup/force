@@ -1,6 +1,7 @@
 using System.Linq;
 using Force.Ddd;
 using Force.Linq;
+using Force.Tests.Infrastructure.Context;
 
 namespace Force.Tests.Expressions
 {

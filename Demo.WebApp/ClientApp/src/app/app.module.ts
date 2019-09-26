@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import {BlogComponent} from "./blog/blog.component";
 
 @NgModule({
@@ -17,8 +16,7 @@ import {BlogComponent} from "./blog/blog.component";
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    BlogComponent,
-    FetchDataComponent
+    BlogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -27,7 +25,6 @@ import {BlogComponent} from "./blog/blog.component";
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'blog', component: BlogComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
   providers: [],

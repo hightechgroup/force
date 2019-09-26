@@ -18,6 +18,9 @@ namespace Force.Tests.Ddd
                 from r11 in r1 
                 from r22 in r2     
                 select r11 + r22;
+
+            var f = b.IsFaulted;
+            Assert.True(f);
         }
     }
 }

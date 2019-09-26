@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Force.Linq.Pagination
 {
-    public class PagedEnumerable
+    public class PagedEnumerable: IEnumerable
     {
         public IEnumerable Items { get; protected set; }
 
@@ -16,6 +16,7 @@ namespace Force.Linq.Pagination
             Items = items;
         }
 
+        public IEnumerator GetEnumerator() => Items.GetEnumerator();
     }
     public class PagedEnumerable<T>: PagedEnumerable, IEnumerable<T>
     {
@@ -34,10 +35,7 @@ namespace Force.Linq.Pagination
             Items = items;
         }
 
-        public IEnumerator<T> GetEnumerator()
-            => Items.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
+        public new IEnumerator<T> GetEnumerator()
             => Items.GetEnumerator();
     }
 }

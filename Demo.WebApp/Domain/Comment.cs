@@ -11,6 +11,8 @@ namespace Demo.WebApp.Domain
         , IHasDomainEvents
         , IHasText
     {
+        private DomainEventStore _domainEventStore = new DomainEventStore();
+        
         protected Comment()
         {}
         
@@ -21,9 +23,7 @@ namespace Demo.WebApp.Domain
             Text = text;
             Parent = parent;
         }
-                
-        private readonly List<CommentUpdated> _commentUpdatedEvents = new List<CommentUpdated>();
-                
+        
         public virtual Post Post { get; protected set; }
         
         public virtual User User { get; protected set; }
@@ -35,10 +35,9 @@ namespace Demo.WebApp.Domain
         public void Update(string text)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
-            this.Raise(_commentUpdatedEvents, new CommentUpdated(this));
+            _domainEventStore.Raise(new CommentUpdated(this));
         }
 
-        public IEnumerable<IDomainEvent> GetDomainEvents()
-            => _commentUpdatedEvents;
+        public IEnumerable<IDomainEvent> GetDomainEvents() => _domainEventStore;
     }
 }

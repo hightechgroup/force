@@ -37,7 +37,8 @@ namespace Force.Tests.Extensions
         public void ValidationResultsExtensions()
         {
             IEnumerable<ValidationResult> results = new List<ValidationResult>();
-            results.IsValid();
+            var r = results.IsValid();
+            Assert.NotNull(r);
         }
         
         [Fact]

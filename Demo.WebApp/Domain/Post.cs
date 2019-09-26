@@ -17,7 +17,9 @@ namespace Demo.WebApp.Domain
         
         public Post(string name, string text, string url, Hub hub) : base(name)
         {
-            Text = text.NullIfEmpty() ?? throw new ArgumentNullException(nameof(text));
+            Text = string.IsNullOrEmpty(text)
+                ? text
+                : throw new ArgumentNullException(nameof(text));
             Url = url ?? throw new ArgumentNullException(nameof(url));
             Hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }

@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using Force.Ddd;
-using Force.Tests.Infrastructure.Context;
 
-namespace Force.Tests.Expressions
+namespace Force.Tests.Infrastructure.Context
 {
+    [Display(Name = "Product")]
     public class Product : HasIdBase
     {
         public Category Category { get; set; }

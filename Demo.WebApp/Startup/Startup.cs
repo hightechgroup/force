@@ -52,7 +52,19 @@ namespace Demo.WebApp.Startup
             IntegrateSimpleInjector(services);
             services.AddSwaggerGen(c =>
             {
+                var f = c.DocumentFilterDescriptors;
+                var p = c.ParameterFilterDescriptors;
+                
                 c.SwaggerDoc("v1", new Info { Title = "API", Version = "v1" });
+                c.SchemaFilter<SampleSchemaFilter>();
+//                c.MapType<string>(() => new Schema
+//                {
+//                    Type = "string!!",
+//                    Format = "FFF",
+//                    Default = "Default",
+//                    Description = "Desc",
+//                    Extensions = { {"key", "value"}}
+//                });
             });
             
         }

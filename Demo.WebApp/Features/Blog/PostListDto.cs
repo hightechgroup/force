@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using AutoMapper.Extensions;
 using Demo.WebApp.Domain;
@@ -9,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace Demo.WebApp.Features.Blog
 {
+    [Display(Name = "Tada")]
     [Projection(typeof(Post))]
     public class PostListDto : HasIdBase
     {
