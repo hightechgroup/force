@@ -1,8 +1,6 @@
-﻿using Force.Tests.Expressions;
-using Force.Tests.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Force.Tests.Context
+namespace Force.Tests.Infrastructure.Context
 {
     public class DbContextFixture
     {

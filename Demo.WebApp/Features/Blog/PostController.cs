@@ -16,7 +16,7 @@ namespace Demo.WebApp.Features.Blog
     public class PostController: ApiControllerBase
     {
        [HttpGet]
-        public ActionResult<IEnumerable<PostListDto>> Get([FromQuery] PostListQuery query)
+        public ActionResult<IEnumerable<PostListItem>> Get([FromQuery] GetPostList query)
             => this.FetchEnumerable(query);
     }
 }

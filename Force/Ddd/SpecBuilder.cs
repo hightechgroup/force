@@ -11,8 +11,8 @@ namespace Force.Ddd
 {
     public static class SpecBuilder<TSubject>
     {
-        public static Spec<TSubject> TryBuild<TPredicate>(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
-            => SpecBuilder<TSubject, TPredicate>.TryBuild(predicate, composeKind);
+        public static Spec<TSubject> Build<TPredicate>(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
+            => SpecBuilder<TSubject, TPredicate>.Build(predicate, composeKind);
     }
     
     public static class SpecBuilder<TSubject, TPredicate>
@@ -33,13 +33,8 @@ namespace Force.Ddd
         }
 
         
-        public static Spec<TSubject> TryBuild(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
+        public static Spec<TSubject> Build(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
         {
-            if (FilterConventions.Instance == null)
-            {
-                throw new InvalidOperationException("You must call FilterConventions.Initialize first");
-            }
-            
             var parameter = Expression.Parameter(typeof(TSubject));
 
             var props = SubjectPropertiesToFilter
@@ -56,7 +51,7 @@ namespace Force.Ddd
 
             if (!props.Any())
             {
-                return null;
+                return new Spec<TSubject>(x => true);
             }
 
             var expr = composeKind == ComposeKind.And

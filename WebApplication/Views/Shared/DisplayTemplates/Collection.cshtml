@@ -1,0 +1,27 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@{
+    Type type = Model.GetType();
+    string dn = null;
+    var ei = type
+        .GetInterfaces()
+        .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+        
+    if (ei != null)
+    {
+        var gt = ei.GetGenericArguments().First();
+        dn = gt.GetCustomAttribute<DisplayAttribute>()?.Name ?? gt.Name;
+    }
+
+    var id = 0;
+}
+@if (dn != null)
+{
+    <h2>@dn List</h2>
+}
+<ul>
+    @foreach (var m in Model)
+    {
+        <li>@Html.ActionLink((string)m.ToString(), "Display", new {Id = id})</li>
+    }
+</ul>

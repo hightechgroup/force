@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Force.Ddd;
-using Force.Tests.Context;
 using Force.Tests.Infrastructure.Context;
 using Xunit;
 

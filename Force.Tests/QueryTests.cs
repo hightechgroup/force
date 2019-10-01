@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Force.Extensions;
-using Force.Tests.Context;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests

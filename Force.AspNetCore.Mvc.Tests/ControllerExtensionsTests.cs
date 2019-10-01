@@ -10,7 +10,7 @@ namespace Force.AspNetCore.Mvc.Tests
         public void Test1()
         {
             var postController = new PostController();
-            var postQuery = new PostListQuery();
+            var postQuery = new GetPostList();
             var res = postController.Get(postQuery);
         }
     }

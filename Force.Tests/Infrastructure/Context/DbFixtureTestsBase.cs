@@ -1,8 +1,6 @@
-using Force.Tests.Context;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace Force.Tests.Expressions
+namespace Force.Tests.Infrastructure.Context
 {
     public class DbFixtureTestsBase : IClassFixture<DbContextFixture>
     {

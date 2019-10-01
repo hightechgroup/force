@@ -87,18 +87,18 @@ namespace Force.Linq
 
         #region Filter
 
-        public static IQueryable<T> FilterByConvention<T>(this IQueryable<T> queryable, object filter, 
+        public static IQueryable<T> FilterByConventions<T>(this IQueryable<T> queryable, object filter, 
             ComposeKind composeKind = ComposeKind.And)
         {
             if (filter == null) throw new ArgumentNullException(nameof(filter));
-            var spec = (Spec<T>)SpecBuilder<T>.TryBuild((dynamic) filter, composeKind);
+            var spec = (Spec<T>)SpecBuilder<T>.Build((dynamic) filter, composeKind);
             return spec != null
                 ? queryable.Where(spec)
                 : queryable;
         }
-        
+
         public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, IFilter<T> filter)
-            => queryable.Where(filter.Spec);
+            => filter.Filter(queryable);
         
         public static IOrderedQueryable<T> FilterAndSort<T, TQuery>(this IQueryable<T> queryable, TQuery query)
             where TQuery : IFilter<T>, ISorter<T>

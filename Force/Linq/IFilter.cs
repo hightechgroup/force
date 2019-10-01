@@ -3,8 +3,8 @@ using Force.Ddd;
 
 namespace Force.Linq
 {
-    public interface IFilter<T>    
+    public interface IFilter<T>
     {
-        Spec<T> Spec { get; }
+        IQueryable<T> Filter(IQueryable<T> queryable);
     }
 }

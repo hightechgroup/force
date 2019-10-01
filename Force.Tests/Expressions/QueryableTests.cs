@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Force.Linq;
-using Force.Tests.Context;
 using Force.Tests.Infrastructure;
 using Force.Tests.Infrastructure.Context;
 using Xunit;
@@ -50,13 +49,13 @@ namespace Force.Tests.Expressions
 
         [Theory]
         [MemberData(nameof(FilterData))]
-        public void FilterByConvention(TestCase<ProductFilter, List<Product>> testCase)
+        public void FilterByConventions(TestCase<ProductFilter, List<Product>> testCase)
         {
             var res = 
                 DbContextFixture
                 .DbContext
                 .Products
-                .FilterByConvention(testCase.Input)
+                .FilterByConventions(testCase.Input)
                 .ToList();
 
             testCase.Assert(res);

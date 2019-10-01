@@ -1,9 +1,8 @@
 using System.Linq;
 using Force.Ddd;
 using Force.Linq;
-using Force.Tests.Infrastructure.Context;
 
-namespace Force.Tests.Expressions
+namespace Force.Tests.Infrastructure.Context
 {
     public class ProductFilter
         : IFilter<Product>
@@ -14,10 +13,13 @@ namespace Force.Tests.Expressions
         public string Name { get; set; }
         
         public string OrderBy { get; set; }
-        
-        public Spec<Product> Spec => new Spec<Product>(x => true);
 
         public IOrderedQueryable<Product> Sort(IQueryable<Product> queryable)
             => queryable.OrderBy(x => x.Id);
+
+        public IQueryable<Product> Filter(IQueryable<Product> queryable)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

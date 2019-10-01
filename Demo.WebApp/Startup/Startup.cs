@@ -1,6 +1,7 @@
 ﻿using Demo.WebApp.Data;
 using Demo.WebApp.Infrastructure;
 using Force.AspNetCore.Mvc;
+using Force.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -73,6 +74,7 @@ namespace Demo.WebApp.Startup
             
             using (var dbContext = new DemoAppDbContext(ob.Options))
             {
+                dbContext.Database.Migrate();
                 Seed.Run(dbContext);
             }            
 
