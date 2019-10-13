@@ -18,11 +18,11 @@ namespace Force.Cqrs
 
         public bool Asc { get; set; } = true;
 
-        public IOrderedQueryable<T> Sort(IQueryable<T> queryable) => Asc
+        public virtual IOrderedQueryable<T> Sort(IQueryable<T> queryable) => Asc
             ? queryable.OrderBy(Order)
             : queryable.OrderByDescending(Order);
 
-        public IQueryable<T> Filter(IQueryable<T> queryable)
+        public virtual IQueryable<T> Filter(IQueryable<T> queryable)
         {
             var spec = SpecBuilder<T>.Build(this);
             return queryable.Where(spec);

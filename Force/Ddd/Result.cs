@@ -31,6 +31,21 @@ namespace Force.Ddd
             => _isSuccess ? success(_success) : failure(_failure);
     }
     
+    public class Result<T>: Result<T, string>
+    {
+        public Result(T success) : base(success)
+        {
+        }
+
+        public Result(string failure) : base(failure)
+        {
+        }
+        
+        public Result(Exception e) : base(e.Message)
+        {
+        }
+    }
+
     public static class ResultExtensions
     {
         public static Result<TDestination, TFailure> Select<TFailure, TSource, TDestination>(

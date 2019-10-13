@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApplication.Features.Cart.Entities;
 
 namespace WebApplication.Data
 {
@@ -12,5 +10,13 @@ namespace WebApplication.Data
             : base(options)
         {
         }
+        
+        public DbSet<Cart> Carts { get; set; }
+        
+        public DbSet<ActiveCart> ActiveCarts { get; set; }
+        
+        public DbSet<OrderedCart> OrderedCarts { get; set; }
+        
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

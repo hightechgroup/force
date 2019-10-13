@@ -3,31 +3,28 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
         <UserSecretsId>aspnet-WebApplication-0090A8AF-CE76-45F3-A0AC-AB4FF3F62E97</UserSecretsId>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
-
     <ItemGroup>
-        <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0-preview9.19424.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0-preview9.19424.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0-preview9.19424.4" />
+        <PackageReference Include="Mapster" Version="4.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview9.19423.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview9.19423.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+        <PackageReference Include="Scrutor" Version="3.1.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0-rc4" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Force.AutoMapper\Force.AutoMapper.csproj" />
+      <ProjectReference Include="..\Force\Force.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Account\Login.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Home\DisplayTemplates\Product.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Cart" />
-      <Folder Include="Features\Product" />
-      <Folder Include="Views\Home\DisplayTemplates" />
+      <Folder Include="Filters" />
     </ItemGroup>
 
 </Project>

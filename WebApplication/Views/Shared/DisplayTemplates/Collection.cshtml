@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using System.Reflection
+@using TypeExtensions = Force.Reflection.TypeExtensions
 @{
     Type type = Model.GetType();
     string dn = null;
@@ -12,8 +13,6 @@
         var gt = ei.GetGenericArguments().First();
         dn = gt.GetCustomAttribute<DisplayAttribute>()?.Name ?? gt.Name;
     }
-
-    var id = 0;
 }
 @if (dn != null)
 {
@@ -22,6 +21,16 @@
 <ul>
     @foreach (var m in Model)
     {
-        <li>@Html.ActionLink((string)m.ToString(), "Display", new {Id = id})</li>
+        if (m == null)
+        {
+            continue;
+        }
+        
+        object id = 0;
+        TypeExtensions.TryGetValue(m, "Id", out id);
+        if (id != null)
+        {
+            <li>@Html.ActionLink((string) m.ToString(), "Display", new {Id = id})</li>
+        }
     }
 </ul>

@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using WebApplication.Models;
 
-namespace WebApplication.Models
+namespace WebApplication.Features.Category
 {
-    [Display(Name = "Product!!!")]
-    public class Product
+    public class Product: HasNameBase
     {
-        public string Name { get; set; }
-        
-        public override string ToString() => Name;
+        public decimal Price { get; set; }
     }
 }
