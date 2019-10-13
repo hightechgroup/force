@@ -14,7 +14,12 @@ namespace WebApplication.Features.Cart.Entities
 
         public OrderedCart Order()
         {
-            throw new NotImplementedException();
+            var ordered = new OrderedCart()
+            {
+                Id = this.Id
+            };
+
+            return ordered;
         }
 
         public ActiveCart() : base(CartState.Active)

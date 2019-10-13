@@ -12,7 +12,7 @@ namespace WebApplication.Features.Cart
     {
         public IActionResult Index([FromServices] DbContext dbContext)
             => dbContext
-                .Set<Entities.ActiveCart>()
+                .Set<ActiveCart>()
                 .Include(x => x.CartItems)
                 .ToList()
                 .PipeTo(View);
@@ -49,7 +49,12 @@ namespace WebApplication.Features.Cart
                 .Set<ActiveCart>()
                 .FirstOrDefault();
 
-            cart.Order();
+            var cart2 = cart.Order();
+            cart2.Total = 100505;
+            dbContext.Entry(cart).State = EntityState.Detached;
+            dbContext.Attach(cart2);
+            dbContext.Entry(cart2).State = EntityState.Modified;
+            dbContext.SaveChanges();
             
             return RedirectToAction("Index");
         }
