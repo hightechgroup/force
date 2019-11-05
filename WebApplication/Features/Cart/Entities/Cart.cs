@@ -20,6 +20,7 @@ namespace WebApplication.Features.Cart.Entities
        {
            State = state;
        }
+       
 
        public override string ToString()
            => $"Cart {Id} {State}";

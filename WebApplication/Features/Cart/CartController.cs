@@ -32,7 +32,7 @@ namespace WebApplication.Features.Cart
                 dbContext.Add(cart);
             }
 
-            cart.Add(new Category.Product()
+            cart.Add(new Product()
             {
                 Name = "Product",
                 Price = 100500
@@ -63,6 +63,6 @@ namespace WebApplication.Features.Cart
 
     public class AddToCart
     {
-        public Id<Category.Product> ProductId { get; set; }
+        public Id<Product> ProductId { get; set; }
     }
 }

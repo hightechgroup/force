@@ -8,14 +8,14 @@ namespace WebApplication.Features.Cart.Entities
         {
         }
         
-        public CartItem(Cart cart, Category.Product product)
+        public CartItem(ActiveCart cart, Product product)
         {
             Cart = cart;
             Product = product;
         }
         
-        public Cart Cart { get; set; }
+        public ActiveCart Cart { get; set; }
         
-        public Category.Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

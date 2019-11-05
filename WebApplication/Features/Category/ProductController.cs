@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Features.Cart;
 
-namespace WebApplication.Features.Product
+namespace WebApplication.Features
 {
     public class ProductController: Controller
     {

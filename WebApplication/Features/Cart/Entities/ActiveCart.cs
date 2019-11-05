@@ -1,22 +1,29 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApplication.Features.Cart.Entities
 {
     public class ActiveCart: Cart
     {
-        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+        private List<CartItem> _cartItems = new List<CartItem>();
+
+        public IReadOnlyList<CartItem> CartItems => _cartItems;
+        
+        public void Add(Product product)
+        {
+            _cartItems.Add(new CartItem(this, product));
+        }
         
         public void Clear()
         {
-            throw new NotImplementedException();
+            _cartItems.Clear();
         }
 
         public OrderedCart Order()
         {
             var ordered = new OrderedCart()
             {
-                Id = this.Id
+                Id = Id
             };
 
             return ordered;
@@ -24,11 +31,6 @@ namespace WebApplication.Features.Cart.Entities
 
         public ActiveCart() : base(CartState.Active)
         {
-        }
-        
-        public void Add(Category.Product product)
-        {
-            CartItems.Add(new CartItem(this, product));
         }
 
         public override string ToString()

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Force.AspNetCore.Mvc.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{AA9B74D6-43B4-4464-9385-10617E71F68B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNext.DddWorkshop", "DotNext.DddWorkshop\DotNext.DddWorkshop.csproj", "{53B0229E-5437-43EA-8EFC-DF0B103AF430}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{AA9B74D6-43B4-4464-9385-10617E71F68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA9B74D6-43B4-4464-9385-10617E71F68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA9B74D6-43B4-4464-9385-10617E71F68B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B0229E-5437-43EA-8EFC-DF0B103AF430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B0229E-5437-43EA-8EFC-DF0B103AF430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B0229E-5437-43EA-8EFC-DF0B103AF430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B0229E-5437-43EA-8EFC-DF0B103AF430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
