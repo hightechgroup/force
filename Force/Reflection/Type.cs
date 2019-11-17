@@ -28,7 +28,7 @@ namespace Force.Reflection
             
             _properties = type
                 .GetProperties()
-                .Where(x => x.CanRead && x.CanWrite)
+                //.Where(x => x.CanRead && x.CanWrite)
                 .ToDictionary(x => x.Name, x => x);
 
             _methods = type.GetMethods()

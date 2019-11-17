@@ -11,12 +11,36 @@ namespace Force.Tests.Linq
         public PagingTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {
         }
+
+        [Fact]
+        public void Exception1()
+        {
+            var p = new Paging(1, 1)
+            {
+                Page = 0,
+                Take = 1
+            };
+        }
+        
+        [Fact]
+        public void Exception2()
+        {
+            var p = new Paging(1, 1)
+            {
+                Page = 1,
+                Take = 0
+            };
+        }
         
         [Fact]
         public void Total()
         {
             var paging = new Paging();
-            paging = new Paging(1, 1);
+            paging = new Paging(1, 1)
+            {
+                Page = 1,
+                Take = 1
+            };
             var res = DbContext
                 .Products
                 .OrderBy(x => x.Id)

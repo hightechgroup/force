@@ -63,7 +63,8 @@ namespace Force.Ddd
                 this Result<TSource, TFailure> result,
                 Func<TSource, Result<TIntermediate, TFailure>> inermidiateSelector,
                 Func<TSource, TIntermediate, TDestination> resultSelector)
-            => result.SelectMany<TFailure, TSource, TDestination>(s => inermidiateSelector(s)
+            => result
+                .SelectMany(s => inermidiateSelector(s)
                 .SelectMany<TFailure, TIntermediate, TDestination>(m => resultSelector(s, m)));
     }
 }

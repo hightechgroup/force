@@ -12,6 +12,9 @@ namespace Force.Tests.Ddd
         {
             var pr = new Product();
             pr.IsNew();
+
+            // ReSharper disable once RedundantCast
+            var obj =((IHasId) pr).Id;
         }
     }
 }

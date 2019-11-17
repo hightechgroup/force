@@ -18,6 +18,20 @@ namespace Force.Tests
     public class TypeTests
     {
         [Fact]
+        public void GetConstructorInfo()
+        {
+            Type<TypeTestObject>.GetConstructorInfo(new object[] {1, 2});
+            Type<TypeTestObject>.GetConstructorInfo(new object[] {"1", 2});
+        }
+        
+        [Fact]
+        public void TryGetValue()
+        {
+            var productFilter = new ProductFilter(){Name = "123"};
+            productFilter.TryGetValue("Name", out var val);
+        }
+        
+        [Fact]
         public void Create()
         {
             var vo = Type<SimpeValueObject>.CreateInstance("string");
@@ -33,8 +47,8 @@ namespace Force.Tests
         [Fact]
         public void PropertySetter()
         {
-            var setter = Type<string>.PropertySetter<int>("Length");
-            Assert.Null(setter);
+            var setter = Type<Product>.PropertySetter<string>("Name");
+            Assert.NotNull(setter);
         }
     }
 }

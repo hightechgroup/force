@@ -18,32 +18,26 @@ namespace Force.Ddd
     public static class SpecBuilder<TSubject, TPredicate>
     {
         // ReSharper disable once StaticMemberInGenericType
-        private static readonly List<PropertyInfo> SubjectPropertiesToFilter;
-        
-        static SpecBuilder()
-        {
-            SubjectPropertiesToFilter = Type<TSubject>
+        private static readonly List<PropertyInfo> SubjectPropertiesToFilter
+            = Type<TSubject>
                 .PublicProperties
                 .Where(x => Type<TPredicate>
                     .PublicProperties
                     .Keys
                     .Contains(x.Key))
                 .Select(x => x.Value)
-                .ToList();           
-        }
-
+                .ToList();
         
         public static Spec<TSubject> Build(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
         {
             var parameter = Expression.Parameter(typeof(TSubject));
-
+            var publicProperties = Type<TPredicate>.PublicProperties;
+            
             var props = SubjectPropertiesToFilter
                 .Select(x => new PropertyInfoAndValue
                 {
                     Property = x,
-                    Value = Type<TPredicate>
-                        .PublicProperties[x.Name]
-                        .GetValue(predicate)
+                    Value = publicProperties[x.Name].GetValue(predicate)
                 })
                 .Where(x => x.Value != null)
                 .Select(x => BuildExpression(parameter, x))

@@ -12,7 +12,7 @@ namespace Force.Linq
         public static FilterConventions Initialize(
             Action<Dictionary<Type, Func<MemberExpression, Expression, Expression>>> setConventions = null)
         {
-            if (Instance != null)
+            if (_instance != null)
             {
                 throw new InvalidOperationException("Filter conventions are already initialized");
             }
@@ -21,7 +21,9 @@ namespace Force.Linq
             {
                 [typeof(string)] = (p, v)
                     => Expression.Call(Expression.Call(p, ToLower), 
-                        p.Member.GetCustomAttribute<SearchAnywhereAttribute>() != null ? Contains : StartsWith, 
+                        p.Member.GetCustomAttribute<SearchByAttribute>()
+                            ?.SearchKind == SearchKind.Contains
+                            ? Contains : StartsWith, 
                         v)
             };
 

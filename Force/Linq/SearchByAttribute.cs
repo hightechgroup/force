@@ -10,9 +10,12 @@ namespace Force.Linq
     
     public class SearchByAttribute : Attribute
     {
-        public SearchByAttribute(object anywhere)
-        {
+        public SearchKind SearchKind { get; }
 
+        public SearchByAttribute(SearchKind searchKind = SearchKind.StartsWith)
+        {
+            SearchKind = searchKind;
         }
+        
     }
 }

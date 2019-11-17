@@ -1,4 +1,6 @@
+using System.Linq;
 using Force.Linq;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Linq
@@ -10,6 +12,14 @@ namespace Force.Tests.Linq
         {
             Sorter<string>.TryParse("Length", out var s);
             Sorter<string>.TryParse("W", out var s2);
+        }
+
+        [Fact]
+        public void Sort()
+        {
+            var p = new[] {new Product() {Name = "123"}};
+            var s = new Sorter<Product>("Name");
+            s.Sort(p.AsQueryable());
         }
     }
 }

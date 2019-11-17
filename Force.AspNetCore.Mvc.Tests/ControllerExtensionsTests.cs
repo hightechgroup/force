@@ -1,5 +1,4 @@
-using System;
-using Demo.WebApp.Features.Blog;
+
 using Xunit;
 
 namespace Force.AspNetCore.Mvc.Tests
@@ -9,9 +8,7 @@ namespace Force.AspNetCore.Mvc.Tests
         [Fact]
         public void Test1()
         {
-            var postController = new PostController();
-            var postQuery = new GetPostList();
-            var res = postController.Get(postQuery);
+
         }
     }
 }

@@ -23,11 +23,10 @@ namespace Force.Ddd
 
         public Id(int value, Func<int, T> loader) : base(value, loader)
         {
-            if(value <= 0)
-            {
-                throw new ArgumentException("Id must have value", nameof(value));
-            }
         }
+        
+        public static implicit operator Id<T>(T entity)
+            => new Id<T>(entity);
     }
     
     public class Id<TKey, T>
@@ -61,11 +60,11 @@ namespace Force.Ddd
             if (Equals(value, default(TKey)))
             {
                 id = null;
-                return true;
+                return false;
             }
             
             id = new Id<TKey, T>(value, loader);
-            return false;
+            return true;
         }
 
         private T _entity;
@@ -81,5 +80,8 @@ namespace Force.Ddd
 
         public static implicit operator T(Id<TKey, T> id)
             => id.Entity;
+        
+        public static implicit operator Id<TKey, T>(T entity)
+            => new Id<TKey, T>(entity);
     }
 }

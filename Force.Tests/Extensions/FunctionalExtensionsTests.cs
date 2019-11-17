@@ -17,6 +17,13 @@ namespace Force.Tests.Extensions
         }
 
         [Fact]
+        public void EnsureInvariant()
+        {
+            var a = "123";
+            a.EnsureInvariant();
+        }
+        
+        [Fact]
         public void EitherOr_Func()
         {
             var a = true;

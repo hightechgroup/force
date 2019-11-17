@@ -9,9 +9,9 @@ namespace Force.Cqrs
         , IPaging
     {
         [Range(1, int.MaxValue)]
-        public int Page { get; protected set; } = 1;
+        public int Page { get; set; } = 1;
         
         [Range(1, int.MaxValue)]
-        public int Take { get; protected set; } = 1;
+        public int Take { get; set; } = 1;
     }
 }

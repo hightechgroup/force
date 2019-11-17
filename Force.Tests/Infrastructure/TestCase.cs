@@ -22,7 +22,8 @@ namespace Force.Tests.Infrastructure
         
         public void Assert(TOut output)
         {
-            Xunit.Assert.True(_assertFunc(output), ErrorMessage);
+            var flag = _assertFunc(output);
+            Xunit.Assert.True(flag, ErrorMessage);
         }
 
     }

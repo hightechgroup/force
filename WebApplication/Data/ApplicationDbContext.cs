@@ -56,7 +56,8 @@ namespace WebApplication.Data
 //                .Property(b => b.CartItems)
 //                .HasField("_cartItems")
 //                .UsePropertyAccessMode(PropertyAccessMode.Field);
-            
+            // 1 Active
+            // 2 Ordered
             builder.Entity<Cart>().HasQueryFilter(
                 p => p is ActiveCart 
                     ? p.State == CartState.Active

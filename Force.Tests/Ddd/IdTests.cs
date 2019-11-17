@@ -8,6 +8,43 @@ namespace Force.Tests.Ddd
     public class IdTests
     {
         [Fact]
+        public void New()
+        {
+            var id = new Id<Product>(0, null);
+        }
+        
+        [Fact]
+        public void New2()
+        {
+            var id = new Id<Product>(1, null);
+        }
+        
+        [Fact]
+        public void IsNew_()
+        {
+            Id<Product> id = new Product();
+        }
+        
+        [Fact]
+        public void IsNew_2()
+        {
+            Id<int, Product> id = new Product();
+        }
+        
+
+        [Fact]
+        public void TryParse_3()
+        {
+            Id<int, Product>.TryParse(0, x => null, out var id);
+        }
+        
+        [Fact]
+        public void TryParse_2()
+        {
+            Id<Product>.TryParse(0, x => null, out var id);
+        }
+        
+        [Fact]
         public void TryParse_()
         {
             Id<Product>.TryParse(1, x => null, out var id);

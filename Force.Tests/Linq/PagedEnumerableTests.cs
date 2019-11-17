@@ -13,6 +13,7 @@ namespace Force.Tests.Linq
             var pe = new PagedEnumerable<string>(arr, arr.Length);
             var enm = pe.GetEnumerator();
             var enm2 = ((IEnumerable) pe).GetEnumerator();
+            var t = pe.Total;
         }
     }
 }

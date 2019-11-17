@@ -1,0 +1,9 @@
+﻿@model DotNext.DddWorkshop.Areas.Products.Domain.ChangePrice
+
+@if (ViewData["Message"] != null)
+{
+    <p>@ViewData["Message"]</p>
+}
+ProductId: @Model?.ProductId
+Price: @Model?.ProductPrice?.Price
+Discount %: @Model?.ProductPrice?.DiscountPercent

@@ -17,8 +17,7 @@ namespace Force.Ddd
 
             if (GetType() != obj.GetType())
             {
-                throw new ArgumentException(
-                    $"Invalid comparison of Value Objects of different types: {GetType()} and {obj.GetType()}");
+                return false;
             }
 
             var valueObject = (ValueObject)obj;

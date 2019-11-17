@@ -1,23 +1,19 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using System.Reflection
-
+@model System.Collections.IEnumerable
 @{
-    Type type = Model.GetType();
+    var type = Model.GetType();
     string dn = null;
     var ei = type
         .GetInterfaces()
         .FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-        
+
+    Type gt = null;
     if (ei != null)
     {
-        var gt = ei.GetGenericArguments().First();
+        gt = ei.GetGenericArguments().First();
         dn = gt.GetCustomAttribute<DisplayAttribute>()?.Name ?? gt.Name;
     }
-    
-    var value = this
-        ?.GetType()
-        .GetProperty("Id")
-        ?.GetValue(this);
 }
 @if (dn != null)
 {
@@ -31,7 +27,10 @@
             continue;
         }
         
-        object id = 0;
+        var id = gt
+            ?.GetProperty("Id")
+            ?.GetValue(m);
+    
         if (id != null)
         {
             <li>@Html.ActionLink((string) m.ToString(), "Display", new {Id = id})</li>

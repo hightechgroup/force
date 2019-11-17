@@ -1,5 +1,7 @@
 using System.Linq;
 using Force.Linq;
+using Force.Tests.Cqrs;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Linq
@@ -9,7 +11,49 @@ namespace Force.Tests.Linq
         private static readonly string[] Strings =  {"1", "2", "3"};
 
         public IQueryable<string> Queryable = Strings.AsQueryable();
+
+        public IQueryable<Product> ProductQueryable
+            = new[] {new Product()
+            {
+                Name = ""
+            }}.AsQueryable();
+
+
+        [Fact]
+        public void FilterByConventions()
+        {
+            ProductQueryable
+                .FilterByConventions(new PagedProductFilter());
+        }
         
+        [Fact]
+        public void Filter()
+        {
+            var f = new PagedProductFilter();
+            ProductQueryable
+                .Filter(f)
+                .FilterSortAndPaginate(f);
+        }
+
+        [Fact]
+        public void FirstOrDefaultById_Projection()
+        {
+            var a = ProductQueryable
+                .FirstOrDefaultById(0, x => new ProductListItem());
+        }
+
+        [Fact]
+        public void FirstOrDefaultById()
+        {
+            ProductQueryable
+                .WhereIf(false, x => true)
+                .WhereIf(false, x => true, x => true)
+                .WhereIfNotNull(null, x => true)
+                .OrderById()
+                .ById(0)
+                .FirstOrDefaultById(0);
+        }
+
         [Fact]
         public void LeftJoin()
         {
