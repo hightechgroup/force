@@ -143,9 +143,9 @@ namespace Force.Ddd
                     Expression value = Expression.Constant(x.Value);
 
                     value = Expression.Convert(value, property.Type);
-                    var body = Conventions.Filters[property.Type](property, value);
-                        
-                    return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
+                    var bodyExpr = Conventions.Filters[property.Type](property, value);
+
+                    return bodyExpr;
                 })
                 .ToArray();
 
@@ -154,9 +154,11 @@ namespace Force.Ddd
                 return query;
             }
 
-            var expr = composeKind == ComposeKind.And
-                ? props.Aggregate((c, n) => c.And(n))
-                : props.Aggregate((c, n) => c.Or(n));
+            var body = composeKind == ComposeKind.And
+                ? props.Aggregate((c, n) => Expression.AndAlso(c, n))
+                : props.Aggregate((c, n) => Expression.OrElse(c, n));
+
+            var expr = Expression.Lambda<Func<TSubject, bool>>(body, parameter);
 
             return query.Where(expr);
         }
