@@ -57,10 +57,12 @@ namespace Force.Tests.Linq
         [Fact]
         public void LeftJoin()
         {
-            Queryable.LeftJoin(Queryable, 
+            ProductQueryable
+                .LeftJoin(Queryable, 
+                x => x.Name, 
                 x => x, 
-                x => x, 
-                (x,y) => x);
+                (x,y) => x.Name + y)
+                .ToList();
         }
 
         [Fact]

@@ -47,6 +47,15 @@ namespace Force.Tests.Expressions
             testCase.Assert(res);
         }
 
+        [Fact]
+        public void FilterByConventions_ThrowsArgument()
+        {
+            DbContextFixture
+                .DbContext
+                .Products
+                .FilterByConventions(null);
+        }
+
         [Theory]
         [MemberData(nameof(FilterData))]
         public void FilterByConventions(TestCase<ProductFilter, List<Product>> testCase)
