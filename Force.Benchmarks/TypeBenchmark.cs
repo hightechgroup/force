@@ -22,32 +22,25 @@ namespace Force.Benchmarks
 
         private static object[] _pars = {"string"};
 
-        private ObjectActivator<SimpeValueObject> _activator =
-            Type<SimpeValueObject>.GetActivator(Type<SimpeValueObject>.GetConstructorInfo(_pars));
-        
         private long _signature = Type<SimpeValueObject>.GetSignature(_pars);
 
         private static ConcurrentDictionary<long, ObjectActivator<SimpeValueObject>> _activators
             = new ConcurrentDictionary<long, ObjectActivator<SimpeValueObject>>();
-        
-        [Benchmark]
-        public void ConcurrentDictionaryGetOrAdd()
-        {
-            _activators.GetOrAdd(_signature, x => _activator);
-        }
-        
 
         [Benchmark]
-        public void ActivatorInvoke()
+        public void PublicProperties_Type()
         {
-            _activator.Invoke("string");
+            var properties = typeof(string).GetProperties(BindingFlags.Public
+                                         | BindingFlags.GetProperty
+                                         | BindingFlags.SetProperty);
         }
-
+        
         [Benchmark]
-        public void GetSignature()
+        public void PublicProperties_TypeT()
         {
-            Type<SimpeValueObject>.GetSignature(_pars);
+            var properties = Type<string>.PublicProperties;
         }
+        
         
         [Benchmark]
         public void TypeCreate()
@@ -61,7 +54,7 @@ namespace Force.Benchmarks
             Activator.CreateInstance(typeof(SimpeValueObject), "string");
         }
 
-        [Benchmark]
+        //[Benchmark]
         public void Constructor()
         {
             new SimpeValueObject("string");

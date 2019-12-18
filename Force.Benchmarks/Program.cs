@@ -6,7 +6,7 @@ namespace Force.Benchmarks
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<InvariantBenchmarks>();
+            var summary = BenchmarkRunner.Run<TypeBenchmark>();
         }
     }
 }

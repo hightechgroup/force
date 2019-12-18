@@ -9,6 +9,10 @@ namespace Force.Reflection
 {
     public delegate T ObjectActivator<out T>(params object[] args);
 
+    /// <summary>
+    /// Type helper
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public static class Type<T>
     {
         private static Attribute[] _attributes;
@@ -61,7 +65,7 @@ namespace Force.Reflection
                 x => GetActivator(GetConstructorInfo(args)))
                     .Invoke(args);
 
-        public static long GetSignature(object[] args)
+        internal static long GetSignature(object[] args)
         {
             long hc = 0;
             unchecked
