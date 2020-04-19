@@ -7,6 +7,12 @@ namespace Force.Tests.Infrastructure.Context
         public const string FirstCategoryName = "C1";
 
         public const string FirstProductName = "P1";
+
+        public const string SecondProductName = "P2";
+
+        public const string LastProductName = "PL";
+
+        public const int LastProductId = 3;
         
         public TestsDbContext DbContext { get; }
 
@@ -20,6 +26,16 @@ namespace Force.Tests.Infrastructure.Context
             dbContext.Products.Add(new Product(category, FirstProductName)
             {
                 Id = 1,
+            });
+            
+            dbContext.Products.Add(new Product(category, SecondProductName)
+            {
+                Id = 2,
+            });
+            
+            dbContext.Products.Add(new Product(category, LastProductName)
+            {
+                Id = 3,
             });
 //            
 //            dbContext.Products.Add(new Product()
