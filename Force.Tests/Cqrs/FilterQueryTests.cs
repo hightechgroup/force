@@ -1,16 +1,15 @@
 using System.Linq;
+using Force.Tests.Infrastructure;
+using Force.Tests.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore.Internal;
 using Xunit;
 
 namespace Force.Tests.Cqrs
 {
-    public class FilterQueryTests: IClassFixture<ProductFixture>
+    public class FilterQueryTests: DbContextFixtureTestsBase
     {
-        private readonly ProductFixture _productFixture;
-
-        public FilterQueryTests(ProductFixture productFixture)
+        public FilterQueryTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {
-            _productFixture = productFixture;
         }
         
         [Fact]
@@ -22,12 +21,13 @@ namespace Force.Tests.Cqrs
                 Asc = false
             };
 
-            var sortedExpected = _productFixture.ProductQueryable
+            var sortedExpected = DbContext
+                .Products
                 .OrderBy(x => x.Name)
                 .ToArray();
             
             var sorted = productFilter
-                .Sort(_productFixture.ProductQueryable)
+                .Sort(DbContext.Products)
                 .ToArray();
             
             Assert.All(sorted, 
@@ -39,16 +39,18 @@ namespace Force.Tests.Cqrs
         {
             var productFilter = new PagedProductFilter()
             {
-                Search = ProductFixture.FirstProductName,
+                Search = DbContextFixture.FirstProductName,
                 Asc = false
             };
 
             var results = productFilter
-                .Filter(_productFixture.ProductQueryable)
+                .Filter(DbContext.Products)
                 .ToArray();
             
             Assert.Collection(results, 
-                x => Assert.Equal(ProductFixture.FirstProductName, x.Name));
+                x => Assert.Equal(DbContextFixture.FirstProductName, x.Name));
         }
+
+
     }
 }

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Force.Tests.Expressions
 {
-    public class SorterTests: DbFixtureTestsBase
+    public class SorterTests: DbContextFixtureTestsBase
     {
         public SorterTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {

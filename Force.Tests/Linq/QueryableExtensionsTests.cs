@@ -1,6 +1,7 @@
 using System.Linq;
 using Force.Linq;
 using Force.Tests.Cqrs;
+using Force.Tests.Infrastructure;
 using Force.Tests.Infrastructure.Context;
 using Xunit;
 

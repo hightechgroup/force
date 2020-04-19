@@ -10,11 +10,11 @@ namespace Force.Ddd
             if (value <= 0)
             {
                 id = null;
-                return true;
+                return false;
             }
             
             id = new Id<T>(value, loader);
-            return false;
+            return true;
         }
         
         public Id(T entity) : base(entity)

@@ -2,13 +2,13 @@ using Xunit;
 
 namespace Force.Tests.Infrastructure.Context
 {
-    public class DbFixtureTestsBase : IClassFixture<DbContextFixture>
+    public class DbContextFixtureTestsBase : IClassFixture<DbContextFixture>
     {
         protected DbContextFixture DbContextFixture;
 
         public TestsDbContext DbContext => DbContextFixture.DbContext;
 
-        public DbFixtureTestsBase(DbContextFixture dbContextFixture)
+        public DbContextFixtureTestsBase(DbContextFixture dbContextFixture)
         {
             DbContextFixture = dbContextFixture;
         }

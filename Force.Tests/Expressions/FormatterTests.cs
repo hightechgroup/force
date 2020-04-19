@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Force.Tests.Expressions
 {
-    public class FormatterTests: DbFixtureTestsBase
+    public class FormatterTests: DbContextFixtureTestsBase
     {
         public FormatterTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {

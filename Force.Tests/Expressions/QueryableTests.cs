@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Force.Tests.Expressions
 {
-    public class QueryableTests : DbFixtureTestsBase
+    public class QueryableTests : DbContextFixtureTestsBase
     {
         static QueryableTests()
         {

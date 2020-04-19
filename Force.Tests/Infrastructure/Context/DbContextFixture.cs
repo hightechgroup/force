@@ -4,6 +4,10 @@ namespace Force.Tests.Infrastructure.Context
 {
     public class DbContextFixture
     {
+        public const string FirstCategoryName = "C1";
+
+        public const string FirstProductName = "P1";
+        
         public TestsDbContext DbContext { get; }
 
         static DbContextFixture()
@@ -11,11 +15,12 @@ namespace Force.Tests.Infrastructure.Context
             var optionsBuilder = new DbContextOptionsBuilder<TestsDbContext>();
             optionsBuilder.UseInMemoryDatabase("Force");
             var dbContext = new TestsDbContext(optionsBuilder.Options);
-//            dbContext.Products.Add(new Product()
-//            {
-//                Id = 1,
-//                Name = "1"
-//            });
+            
+            var category = new Category(FirstCategoryName);
+            dbContext.Products.Add(new Product(category, FirstProductName)
+            {
+                Id = 1,
+            });
 //            
 //            dbContext.Products.Add(new Product()
 //            {

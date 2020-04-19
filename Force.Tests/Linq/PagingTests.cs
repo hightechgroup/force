@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Force.Tests.Linq
 {
-    public class PagingTests: DbFixtureTestsBase
+    public class PagingTests: DbContextFixtureTestsBase
     {
         public PagingTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {

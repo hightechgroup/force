@@ -1,66 +1,90 @@
+using System;
+using System.Linq;
 using Force.Ddd;
-using Force.Tests.Expressions;
+using Force.Linq;
 using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Ddd
 {
-    public class IdTests
+    public class IdTests: DbContextFixtureTestsBase
     {
-        [Fact]
-        public void New()
+        public IdTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {
-            var id = new Id<Product>(0, null);
         }
         
         [Fact]
-        public void New2()
+        public void New_LoaderIsNull_ThrowsArgumentNullException()
         {
-            var id = new Id<Product>(1, null);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var id = new Id<Product>(1, null);
+            });
+            
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var id = new Id<int, Product>(1, null);
+            });
         }
-        
-        [Fact]
-        public void IsNew_()
-        {
-//            Id<Product> id = new Product();
-        }
-        
-        [Fact]
-        public void IsNew_2()
-        {
-//            Id<int, Product> id = new Product();
-        }
-        
 
         [Fact]
-        public void TryParse_3()
+        public void New_ValueIsZero_ThrowsArgumentException()
         {
-            Id<int, Product>.TryParse(0, x => null, out var id);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var id = new Id<Product>(0, x => null);
+            });
+        }
+
+        [Fact]
+        public void New_ExistingEntity_CreatesNewInstance()
+        {
+            var id = new Id<Product>(DbContext.Products.First());
         }
         
         [Fact]
-        public void TryParse_2()
+        public void New_CorrectValueAndLoader_CreatesNewInstance()
         {
-            Id<Product>.TryParse(0, x => null, out var id);
+            var id = new Id<Product>(1, x => null);
         }
         
         [Fact]
-        public void TryParse_()
+        public void TryParse_ValueIsZeroReturnsFalseIdIsNull()
+        {
+            var res = Id<Product>.TryParse(0, x => null, out var id);
+            
+            Assert.False(res);
+            Assert.Null(id);
+        }
+        
+       
+        [Fact]
+        public void TryParse_ValueIsValid_EntityIsNotNull()
+        {
+            Id<Product>.TryParse(1, x => DbContext.Products.FirstOrDefaultById(x), out var id);
+            Assert.NotNull(id.Entity);
+        }
+
+        [Fact]
+        public void Implicit_KeyValue()
         {
             Id<Product>.TryParse(1, x => null, out var id);
-            int intid = id;
-            Assert.Null(id.Entity);
+            int intId = id;
+            Assert.Equal(1, intId);
             
             Id<int, Product>.TryParse(1, x => null, out var id2);
-            int intid2 = id2;
-            Assert.Null(id.Entity);
+            intId = id2;
+            Assert.Equal(1, intId);
+        }
 
-            Product p = id2;
+        [Fact]
+        public void Implicit_Entity()
+        {
+            var id = new Id<Product>(DbContext.Products.First());
+            Product entity = id;
+            id = entity;
             
-//            var id3 = new Id<int, Product>(new Product() {Id = 1});
-//            int intid3 = id3;
-//            
-//            var id4 = new Id<Product>(new Product() {Id = 1});
+            Assert.Equal(entity, id.Entity);
         }
     }
 }

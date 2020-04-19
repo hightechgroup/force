@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Force.Tests.Expressions
 {
-    public class SpecTests: DbFixtureTestsBase
+    public class SpecTests: DbContextFixtureTestsBase
     {
         private static readonly Spec<Product> spec1 = new Spec<Product>(x => x.Id > 0);
         private static readonly Spec<Product> spec2 = new Spec<Product>(x => x.Name.StartsWith("1"));
