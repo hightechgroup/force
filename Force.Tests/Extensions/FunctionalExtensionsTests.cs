@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Force.Ddd;
 using Force.Extensions;
+using Force.Tests.Infrastructure.Context;
 using Xunit;
 
 namespace Force.Tests.Extensions
@@ -19,39 +20,20 @@ namespace Force.Tests.Extensions
         [Fact]
         public void EnsureInvariant()
         {
-            var a = "123";
-            a.EnsureInvariant();
+            Assert.Throws<ValidationException>(() =>
+            {
+                var pr = new Product(null, null);
+            });
         }
         
         [Fact]
         public void EitherOr_Func()
         {
-            var a = true;
-            a.EitherOr(x => !x, x => !x);
-            a.EitherOr(x => !x, x => !x, x => !x);
-        }
-        
-        [Fact]
-        public void EitherOr_Value()
-        {
-            var a = true;
-            a.EitherOr(a, x => !x, x => x);
-            a.EitherOr(x => true, x => !x, x => x);
-            a.EitherOr(x => !x, x => x);
-        }
-
-        [Fact]
-        public void ValidationResultsExtensions()
-        {
-            IEnumerable<ValidationResult> results = new List<ValidationResult>();
-            var r = results.IsValid();
-            Assert.NotNull(r);
-        }
-        
-        [Fact]
-        public void Merge()
-        {
-            
+            Product product = null;
+            Assert.Equal("true", true.EitherOr(x => "true", x => "false"));
+            Assert.Equal("false", product.EitherOr(x => "true", x => "false"));
+            Assert.Equal("true", product.EitherOr(true, x => "true", x => "false"));
+            Assert.Equal("false", product.EitherOr(false, x => "true", x => "false"));
         }
     }
 }

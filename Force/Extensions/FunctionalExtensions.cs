@@ -19,6 +19,7 @@ namespace Force.Extensions
             this Task<TSource> source, Func<TSource, TResult> func)
             => func(await source);
         
+        
         public static TOutput EitherOr<TInput, TOutput>(this TInput o, Func<TInput, TOutput> ifTrue,
             Func<TInput, TOutput> ifFalse)
             => o.EitherOr(x => x != null, ifTrue, ifFalse);

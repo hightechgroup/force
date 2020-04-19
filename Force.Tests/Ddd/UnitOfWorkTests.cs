@@ -7,6 +7,7 @@ namespace Force.Tests.Ddd
         [Fact]
         public void Commit()
         {
+            // TODO: add MOQ
             var uow = new UnitOfWork(new DomainEventDispatcher());
             uow.Commit();
         }

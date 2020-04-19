@@ -16,8 +16,8 @@ namespace Force.Tests.Extensions
         [Fact]
         public void GetDisplayName()
         {
-            TestEnum.One.GetDisplayName();
-            TestEnum.Two.GetDisplayName();
+            Assert.Equal("One", TestEnum.One.GetDisplayName());
+            Assert.Equal("Three", TestEnum.Two.GetDisplayName());
         }
     }
 }
