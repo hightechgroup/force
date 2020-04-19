@@ -13,9 +13,8 @@ namespace Force.Tests.Linq
         public IQueryable<string> Queryable = Strings.AsQueryable();
 
         public IQueryable<Product> ProductQueryable
-            = new[] {new Product()
+            = new[] {new Product(null, "")
             {
-                Name = ""
             }}.AsQueryable();
 
 

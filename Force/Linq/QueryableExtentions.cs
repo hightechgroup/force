@@ -136,14 +136,35 @@ namespace Force.Linq
             where T : IHasId
             => queryable.OrderBy(x => x.Id);
 
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string orderPropertyName)
         {
-            return source.OrderBy(ToLambda<T>(propertyName));
+            try
+            {
+                return source.OrderBy(ToLambda<T>(orderPropertyName));
+            }
+            catch (ArgumentException e) when(e.Message.Contains("Instance property") 
+                                             && e.Message.Contains("is not defined for type"))
+            {
+                throw new ArgumentException(
+                    $"Order property '{orderPropertyName}' is not defined for type {typeof(T)}", 
+                    nameof(orderPropertyName), e);
+            }
+
         }
 
-        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string orderPropertyName)
         {
-            return source.OrderByDescending(ToLambda<T>(propertyName));
+            try
+            {
+                return source.OrderByDescending(ToLambda<T>(orderPropertyName));
+            }
+            catch (ArgumentException e) when (e.Message.Contains("Instance property")
+                                              && e.Message.Contains("is not defined for type"))
+            {
+                throw new ArgumentException(
+                    $"Order property '{orderPropertyName}' is not defined for type {typeof(T)}",
+                    nameof(orderPropertyName), e);
+            }
         }
 
         private static Expression<Func<T, object>> ToLambda<T>(string propertyName)
@@ -152,7 +173,7 @@ namespace Force.Linq
             var property = Expression.Property(parameter, propertyName);
             var propAsObject = Expression.Convert(property, typeof(object));
 
-            return Expression.Lambda<Func<T, object>>(propAsObject, parameter);            
+            return Expression.Lambda<Func<T, object>>(propAsObject, parameter);    
         }
         #endregion
         

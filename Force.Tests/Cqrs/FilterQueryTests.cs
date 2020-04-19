@@ -1,53 +1,37 @@
-using Force.Tests.Infrastructure.Context;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 using Xunit;
 
 namespace Force.Tests.Cqrs
 {
-    public class FilterQueryTests
+    public class FilterQueryTests: IClassFixture<ProductFixture>
     {
-        [Fact]
-        public void A()
+        private readonly ProductFixture _productFixture;
+
+        public FilterQueryTests(ProductFixture productFixture)
         {
-            var productFilter = new ProductFilter()
-            {
-                Search = "123",
-                Order = "132",
-                Asc = false
-            };
+            _productFixture = productFixture;
         }
         
-        [Fact]
-        public void B()
-        {
-            var productFilter = new PagedProductFilter()
-            {
-                Page = 1,
-                Take = 1,
-                Search = "123",
-                Order = "132",
-                Asc = false
-            };
-
-            var asc = productFilter.Asc;
-            var s = productFilter.Search;
-            var o = productFilter.Order;
-
-            var p = productFilter.Page;
-            var t = productFilter.Take;
-        }
-
         [Fact]
         public void Sort()
         {
             var productFilter = new PagedProductFilter()
             {
-                Search = "123",
-                Order = "132",
+                Order = "Name",
                 Asc = false
             };
+
+            var sortedExpected = _productFixture.ProductQueryable
+                .OrderBy(x => x.Name)
+                .ToArray();
             
+            var sorted = productFilter
+                .Sort(_productFixture.ProductQueryable)
+                .ToArray();
             
-            productFilter.Sort(null);
+            Assert.All(sorted, 
+                x => Assert.Equal(sorted.IndexOf(x), sortedExpected.IndexOf(x)));
         }
         
         [Fact]
@@ -55,13 +39,16 @@ namespace Force.Tests.Cqrs
         {
             var productFilter = new PagedProductFilter()
             {
-                Search = "123",
-                Order = "132",
+                Search = ProductFixture.FirstProductName,
                 Asc = false
             };
+
+            var results = productFilter
+                .Filter(_productFixture.ProductQueryable)
+                .ToArray();
             
-            
-            productFilter.Filter(null);
+            Assert.Collection(results, 
+                x => Assert.Equal(ProductFixture.FirstProductName, x.Name));
         }
     }
 }

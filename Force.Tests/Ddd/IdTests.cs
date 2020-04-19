@@ -22,13 +22,13 @@ namespace Force.Tests.Ddd
         [Fact]
         public void IsNew_()
         {
-            Id<Product> id = new Product();
+//            Id<Product> id = new Product();
         }
         
         [Fact]
         public void IsNew_2()
         {
-            Id<int, Product> id = new Product();
+//            Id<int, Product> id = new Product();
         }
         
 
@@ -57,10 +57,10 @@ namespace Force.Tests.Ddd
 
             Product p = id2;
             
-            var id3 = new Id<int, Product>(new Product() {Id = 1});
-            int intid3 = id3;
-            
-            var id4 = new Id<Product>(new Product() {Id = 1});
+//            var id3 = new Id<int, Product>(new Product() {Id = 1});
+//            int intid3 = id3;
+//            
+//            var id4 = new Id<Product>(new Product() {Id = 1});
         }
     }
 }

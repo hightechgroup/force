@@ -22,8 +22,6 @@ namespace Force.Benchmarks
 
         private static object[] _pars = {"string"};
 
-        private long _signature = Type<SimpeValueObject>.GetSignature(_pars);
-
         private static ConcurrentDictionary<long, ObjectActivator<SimpeValueObject>> _activators
             = new ConcurrentDictionary<long, ObjectActivator<SimpeValueObject>>();
 

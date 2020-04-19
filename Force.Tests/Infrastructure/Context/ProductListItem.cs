@@ -3,7 +3,7 @@ using Force.Ddd;
 
 namespace Force.Tests.Infrastructure.Context
 {
-    [Display(Name = "")]
+    [Display(Name = "Product List")]
     public class ProductListItem: HasIdBase
     {
     }

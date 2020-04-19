@@ -10,11 +10,11 @@ namespace Force.Tests.Ddd
         [Fact]
         public void IsNew()
         {
-            var pr = new Product();
-            pr.IsNew();
-
-            // ReSharper disable once RedundantCast
-            var obj =((IHasId) pr).Id;
+//            var pr = new Product();
+//            pr.IsNew();
+//
+//            // ReSharper disable once RedundantCast
+//            var obj =((IHasId) pr).Id;
         }
     }
 }

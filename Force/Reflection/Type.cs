@@ -35,7 +35,8 @@ namespace Force.Reflection
                 //.Where(x => x.CanRead && x.CanWrite)
                 .ToDictionary(x => x.Name, x => x);
 
-            _methods = type.GetMethods()
+            _methods = type
+                .GetMethods()
                 .Where(x => x.IsPublic && !x.IsAbstract)
                 .ToArray();
             
