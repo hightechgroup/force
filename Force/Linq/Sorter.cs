@@ -12,6 +12,8 @@ namespace Force.Linq
 
         private bool _asc;
 
+        public bool IsAsc => _asc;
+        
         public static bool TryParse(string str, out Sorter<T> sorter)
         {
             (string, bool) GetSorting(string prop)
@@ -21,12 +23,18 @@ namespace Force.Linq
                 if (arr.Length == 1)
                     return (arr[0], true);
                 var sort = arr[1];
+
                 if (string.Equals(sort, "ASC", StringComparison.CurrentCultureIgnoreCase))
+                {
                     return (arr[0], true);
+                }
+
                 if (string.Equals(sort, "DESC", StringComparison.CurrentCultureIgnoreCase))
+                {
                     return (arr[0], false);
-                
-                return (arr[0], true);
+                }
+
+                return ("", true);
             }
 
             var (name, asc) = GetSorting(str);

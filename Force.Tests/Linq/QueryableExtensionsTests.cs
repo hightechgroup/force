@@ -7,22 +7,21 @@ using Xunit;
 
 namespace Force.Tests.Linq
 {
-    public class QueryableExtensionsTests
+    public class QueryableExtensionsTests: DbContextFixtureTestsBase
     {
+        public QueryableExtensionsTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
+        {
+        }
+        
         private static readonly string[] Strings =  {"1", "2", "3"};
 
         public IQueryable<string> Queryable = Strings.AsQueryable();
 
-        public IQueryable<Product> ProductQueryable
-            = new[] {new Product(null, "")
-            {
-            }}.AsQueryable();
-
-
         [Fact]
         public void FilterByConventions()
         {
-            ProductQueryable
+            var res = DbContext
+                .Products
                 .FilterByConventions(new PagedProductFilter());
         }
         
@@ -30,7 +29,8 @@ namespace Force.Tests.Linq
         public void Filter()
         {
             var f = new PagedProductFilter();
-            ProductQueryable
+            DbContext
+                .Products
                 .Filter(f)
                 .FilterSortAndPaginate(f);
         }
@@ -38,14 +38,16 @@ namespace Force.Tests.Linq
         [Fact]
         public void FirstOrDefaultById_Projection()
         {
-            var a = ProductQueryable
+            var a = DbContext
+                .Products
                 .FirstOrDefaultById(0, x => new ProductListItem());
         }
 
         [Fact]
         public void FirstOrDefaultById()
         {
-            ProductQueryable
+            DbContext
+                .Products
                 .WhereIf(false, x => true)
                 .WhereIf(false, x => true, x => true)
                 .WhereIfNotNull(null, x => true)
@@ -57,7 +59,8 @@ namespace Force.Tests.Linq
         [Fact]
         public void LeftJoin()
         {
-            ProductQueryable
+            DbContext
+                .Products
                 .LeftJoin(Queryable, 
                 x => x.Name, 
                 x => x, 

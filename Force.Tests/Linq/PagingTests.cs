@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Force.Linq.Pagination;
 using Force.Tests.Expressions;
@@ -13,25 +14,31 @@ namespace Force.Tests.Linq
         }
 
         [Fact]
-        public void Exception1()
+        public void PageIsZero_ThrowsArgumentException()
         {
-            var p = new Paging(1, 1)
+            Assert.Throws<ArgumentException>(() =>
             {
-                Page = 0,
-                Take = 1
-            };
+                var p = new Paging(1, 1)
+                {
+                    Page = 0,
+                    Take = 1
+                };           
+            });
         }
-        
+
         [Fact]
-        public void Exception2()
+        public void TakeIsZero_ThrowsArgumentException()
         {
-            var p = new Paging(1, 1)
+            Assert.Throws<ArgumentException>(() =>
             {
-                Page = 1,
-                Take = 0
-            };
+                var p = new Paging(1, 1)
+                {
+                    Page = 1,
+                    Take = 0
+                };
+            });
         }
-        
+
         [Fact]
         public void Total()
         {
@@ -46,7 +53,7 @@ namespace Force.Tests.Linq
                 .OrderBy(x => x.Id)
                 .ToPagedEnumerable(paging);
             
-            Assert.Equal(1, res.Items.Count());
+            Assert.Single(res.Items);
             Assert.Equal(1, res.Total);
         }
     }

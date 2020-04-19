@@ -10,7 +10,8 @@ namespace Force.Tests.Linq
         {
             var i = FilterConventions.Instance;
             var i2 = FilterConventions.Instance;
-            FilterConventions.Initialize();
+           
+            Assert.Equal(i, i2);
         }
     }
 }

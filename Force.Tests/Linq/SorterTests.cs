@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Force.Linq;
 using Force.Tests.Infrastructure.Context;
@@ -5,33 +6,68 @@ using Xunit;
 
 namespace Force.Tests.Linq
 {
-    public class SorterTests
+    public class SorterTests: DbContextFixtureTestsBase
     {
-        [Fact]
-        public void Ctr()
+        public SorterTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {
-            var s = new Sorter<string>("Wrong");
         }
         
         [Fact]
-        public void TryParse()
+        public void New()
         {
-            Sorter<string>.TryParse("Length", out var s);
-            Sorter<string>.TryParse("W", out var s2);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var s = new Sorter<string>("Wrong");
+            });
+        }
+        
+        [Fact]
+        public void TryParse_PropertyExists_AscNotNull()
+        {
+            Assert.True(Sorter<string>.TryParse("Length", out var s));
+            Assert.NotNull(s);
+            Assert.True(s.IsAsc);
+        }
+        
+        [Fact]
+        public void TryParse_PropertyExists_DescNotNull()
+        {
+            Assert.True(Sorter<string>.TryParse("Length Desc", out var s));
+            Assert.NotNull(s);
+            Assert.False(s.IsAsc);
         }
 
-        [Fact]
-        public void TryParseW()
+
+        [Theory]
+        [InlineData("Length W")]
+        [InlineData("Abyrwalg")]
+        public void TryParse_PropertyDoesntExist_Null(string propertyName)
         {
-            Sorter<string>.TryParse("Length W", out var s2);
+            Assert.False(Sorter<string>.TryParse(propertyName, out var s));
+            Assert.Null(s);
         }
+        
 
         [Fact]
         public void Sort()
         {
-//            var p = new[] {new Product() {Name = "123"}};
-//            var s = new Sorter<Product>("Name");
-//            s.Sort(p.AsQueryable());
+            var s = new Sorter<Product>("Id", false);
+            var sorted = s
+                .Sort(DbContext.Products)
+                .ToList();
+
+            Assert.True(sorted.Count > 2);
+            var flag = true;
+            for (var i = 0; i < sorted.Count - 2; i++)
+            {
+                if (sorted[i].Id < sorted[i + 1].Id)
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            
+            Assert.True(flag);
         }
     }
 }
