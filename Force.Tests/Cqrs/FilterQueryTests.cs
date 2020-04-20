@@ -39,7 +39,7 @@ namespace Force.Tests.Cqrs
         {
             var productFilter = new PagedProductFilter()
             {
-                Search = DbContextFixture.FirstProductName,
+                Name = DbContextFixture.FirstProductName,
                 Asc = false
             };
 

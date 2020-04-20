@@ -5,11 +5,13 @@ namespace Force.Tests.Linq
 {
     public class SearchByTests
     {
-        [Fact]
-        public void A()
+        [Theory]
+        [InlineData(SearchKind.Contains)]
+        [InlineData(SearchKind.StartsWith)]
+        public void New(SearchKind searchKind)
         {
-            var sba = new SearchByAttribute(SearchKind.Contains);
-            var k = sba.SearchKind;
+            var sba = new SearchByAttribute(searchKind);
+            Assert.Equal(searchKind, sba.SearchKind);
         }
     }
 }

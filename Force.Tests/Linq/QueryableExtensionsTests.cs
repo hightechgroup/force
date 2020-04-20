@@ -18,29 +18,69 @@ namespace Force.Tests.Linq
         public IQueryable<string> Queryable = Strings.AsQueryable();
 
         [Fact]
-        public void FilterByConventions()
+        public void FilterByConventions_Empty()
         {
+            var totalCount = DbContext
+                .Products
+                .Count();
+        
             var res = DbContext
                 .Products
-                .FilterByConventions(new PagedProductFilter());
+                .FilterByConventions(new PagedProductFilter())
+                .Count();
+            
+            Assert.Equal(totalCount, res);
         }
         
         [Fact]
-        public void Filter()
+        public void FilterSortAndPaginate()
         {
-            var f = new PagedProductFilter();
-            DbContext
+            var f = new PagedProductFilter()
+            {
+                Asc = false,
+                Order = "Name",
+                Page = 1,
+                Take = 2
+            };
+                
+            var res = DbContext
                 .Products
                 .Filter(f)
                 .FilterSortAndPaginate(f);
+            
+            Assert.Equal(2, res.Count());
+            Assert.Equal(DbContext.Products.Count(), res.Total);
         }
 
-        [Fact]
-        public void FirstOrDefaultById_Projection()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void FirstOrDefaultById_Projection(int id)
         {
-            var a = DbContext
+            var actual = DbContext
                 .Products
-                .FirstOrDefaultById(0, x => new ProductListItem());
+                .FirstOrDefaultById(id, x => new ProductListItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CategoryName = x.Category.Name
+                });
+
+            var expected = DbContext
+                .Products
+                .Where(x => x.Id == id)
+                .Select(x => new ProductListItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    CategoryName = x.Category.Name
+                })
+                .FirstOrDefault();
+            
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(expected.CategoryName, actual.CategoryName);
         }
 
         [Fact]

@@ -20,7 +20,11 @@ namespace Force.Linq.Pagination
     }
     public class PagedEnumerable<T>: PagedEnumerable, IEnumerable<T>
     {
-        public new IEnumerable<T> Items { get; }
+        private IEnumerable<T> _items;
+
+        public new IEnumerable<T> Items => _items == null
+            ? (_items = base.Items.Cast<T>().ToArray())
+            : _items;
 
         public PagedEnumerable(IOrderedQueryable<T> queryable, IPaging paging)
             : base(queryable.Paginate(paging).ToList(), queryable.Count())
@@ -32,7 +36,7 @@ namespace Force.Linq.Pagination
             : base(items, total)
         {
             // ReSharper disable once PossibleMultipleEnumeration
-            Items = items;
+            _items = items;
         }
 
         public new IEnumerator<T> GetEnumerator()
