@@ -59,7 +59,8 @@ namespace Force.Ddd
             , PropertyInfoAndValue x)
         {
             var property = Expression.Property(parameter, (PropertyInfo) x.Property);
-            Expression value = Expression.Constant(x.Value);
+            var val = (x.Value as string)?.ToLower() ?? x.Value;
+            Expression value = Expression.Constant(val);
 
             value = Expression.Convert(value, property.Type);
             var body = FilterConventions.Instance[property.Type](property, value);

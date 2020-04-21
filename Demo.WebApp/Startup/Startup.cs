@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +42,7 @@ namespace Demo.WebApp.Startup
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Converters.Add(new PagedEnumerableJsonConverter());
+                    //options.SerializerSettings.Converters.Add(new PagedEnumerableJsonConverter());
                 });
             
             services.AddSwaggerGen(c =>
@@ -100,18 +98,18 @@ namespace Demo.WebApp.Startup
             //app.UseHttpsRedirection();
             app.UseMvc();
             
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+//            app.UseSpa(spa =>
+//            {
+//                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+//                // see https://go.microsoft.com/fwlink/?linkid=864501
+//
+//                spa.Options.SourcePath = "ClientApp";
+//
+//                if (env.IsDevelopment())
+//                {
+//                    spa.UseAngularCliServer(npmScript: "start");
+//                }
+//            });
         }
     }
 }

@@ -24,7 +24,8 @@ namespace Force.Cqrs
 
         public virtual IQueryable<T> Filter(IQueryable<T> queryable)
         {
-            var spec = SpecBuilder<T>.Build(this);
+            // dynamic is for setting Build<T> the right type
+            var spec = (Spec<T>)SpecBuilder<T>.Build((dynamic)this);
             return queryable.Where(spec);
         }
     }

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.1.0-alpha2</Version>
+    <Version>3.1.0-alpha1</Version>
     <Description>General-purpose .NET Library for rapid application development</Description>
     <PackageProjectUrl>http://github.com/hightechtoday/force</PackageProjectUrl>
     <Company>HighTech Group</Company>

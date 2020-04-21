@@ -1,4 +1,5 @@
 using System.Linq;
+using Force.Reflection;
 using Force.Tests.Infrastructure;
 using Force.Tests.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -13,7 +14,7 @@ namespace Force.Tests.Cqrs
         }
         
         [Fact]
-        public void Sort()
+        public void Sort_Asc()
         {
             var productFilter = new PagedProductFilter()
             {
@@ -23,11 +24,13 @@ namespace Force.Tests.Cqrs
 
             var sortedExpected = DbContext
                 .Products
-                .OrderBy(x => x.Name)
+                .OrderByDescending(x => x.Name)
+                .Select(x => x.Name)
                 .ToArray();
             
             var sorted = productFilter
                 .Sort(DbContext.Products)
+                .Select(x => x.Name)
                 .ToArray();
             
             Assert.All(sorted, 
@@ -37,15 +40,16 @@ namespace Force.Tests.Cqrs
         [Fact]
         public void Filter()
         {
+            var pp = Type<PagedProductFilter>.PublicProperties;
+            
             var productFilter = new PagedProductFilter()
             {
-                Name = DbContextFixture.FirstProductName,
-                Asc = false
+                Name = DbContextFixture.FirstProductName
             };
 
             var results = productFilter
                 .Filter(DbContext.Products)
-                .ToArray();
+                .ToList();
             
             Assert.Collection(results, 
                 x => Assert.Equal(DbContextFixture.FirstProductName, x.Name));

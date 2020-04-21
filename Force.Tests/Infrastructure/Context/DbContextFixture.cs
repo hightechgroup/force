@@ -12,7 +12,7 @@ namespace Force.Tests.Infrastructure.Context
 
         public const string LastProductName = "PL";
 
-        public const int LastProductId = 3;
+        public const int LastProductId = 10;
         
         public TestsDbContext DbContext { get; }
 
@@ -35,7 +35,7 @@ namespace Force.Tests.Infrastructure.Context
             
             dbContext.Products.Add(new Product(category, LastProductName)
             {
-                Id = 3,
+                Id = 10,
             });
 //            
 //            dbContext.Products.Add(new Product()
