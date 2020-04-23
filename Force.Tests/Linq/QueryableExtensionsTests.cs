@@ -96,17 +96,6 @@ namespace Force.Tests.Linq
                 .FirstOrDefaultById(0);
         }
 
-        [Fact]
-        public void LeftJoin()
-        {
-            DbContext
-                .Products
-                .LeftJoin(Queryable, 
-                x => x.Name, 
-                x => x, 
-                (x,y) => x.Name + y)
-                .ToList();
-        }
 
         [Fact]
         public void ById()

@@ -67,8 +67,7 @@ namespace Force.Tests.Ddd
         {
             Assert.All(list, x =>
             {
-                Assert.True(x.Name.StartsWith(DbContextFixture.FirstProductName)
-                            || x.Name.StartsWith(DbContextFixture.SecondProductName));
+                Assert.True(!x.Name.StartsWith(DbContextFixture.LastProductName));
             });
         }
         

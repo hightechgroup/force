@@ -48,13 +48,14 @@ namespace Force.Tests.Linq
                 Page = 1,
                 Take = 1
             };
+            
             var res = DbContext
                 .Products
                 .OrderBy(x => x.Id)
                 .ToPagedEnumerable(paging);
             
             Assert.Single(res.Items);
-            Assert.Equal(1, res.Total);
+            Assert.Equal(DbContext.Products.Count(), res.Total);
         }
     }
 }

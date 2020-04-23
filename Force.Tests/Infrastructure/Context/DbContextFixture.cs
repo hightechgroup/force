@@ -33,6 +33,11 @@ namespace Force.Tests.Infrastructure.Context
                 Id = 2,
             });
             
+            dbContext.Products.Add(new Product(category, "P3")
+            {
+                Id = 3,
+            });
+            
             dbContext.Products.Add(new Product(category, LastProductName)
             {
                 Id = 10,

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Force.Ddd;
 using Force.Reflection;
@@ -18,10 +19,19 @@ namespace Force.Tests
     public class TypeTests
     {
         [Fact]
-        public void GetConstructorInfo()
+        public void GetConstructorInfo_FindConstructor()
         {
-            Type<TypeTestObject>.GetConstructorInfo(new object[] {1, 2});
-            Type<TypeTestObject>.GetConstructorInfo(new object[] {"1", 2});
+            var ctr = Type<TypeTestObject>.GetConstructorInfo(new object[] {1, 2});
+            Assert.NotNull(ctr);
+        }
+
+        [Fact]
+        public void GetConstructorInfo_ThrowsInvalidOperation()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                Type<TypeTestObject>.GetConstructorInfo(new object[] {"1", 2});
+            });
         }
         
         [Fact]

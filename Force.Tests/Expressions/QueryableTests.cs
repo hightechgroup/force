@@ -10,11 +10,6 @@ namespace Force.Tests.Expressions
 {
     public class QueryableTests : DbContextFixtureTestsBase
     {
-        static QueryableTests()
-        {
-            FilterConventions.Initialize(x => { });
-        }
-        
         public QueryableTests(DbContextFixture dbContextFixture)
             :base(dbContextFixture)
         {
