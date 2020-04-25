@@ -1,4 +1,4 @@
-namespace Force.Ddd
+namespace Force.Ccc
 {
     public interface IHasUserFrendlyMessage
     {

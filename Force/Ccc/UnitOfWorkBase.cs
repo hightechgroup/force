@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Force.Cqrs;
+using Force.Ddd;
 using Force.Ddd.DomainEvents;
 
-namespace Force.Ddd
+namespace Force.Ccc
 {
     public abstract class UnitOfWorkBase : IUnitOfWork
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Force.Ddd
+namespace Force.Ccc
 {
     public class Result<TSuccess, TFailure>
     {

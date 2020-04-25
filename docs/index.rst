@@ -21,6 +21,7 @@ New to Force? Check out the :doc:`Getting-started` page first.
    :caption: Features
    
    CQRS-Vertical-Slices
+   Cross-Cutting-Concerns
    DDD
    Functional-Extensions
    Expressions

@@ -1,6 +1,7 @@
 ﻿using System;
+using Force.Ddd;
 
-namespace Force.Ddd
+namespace Force.Ccc
 {
     public interface IUnitOfWork : IDisposable
     {

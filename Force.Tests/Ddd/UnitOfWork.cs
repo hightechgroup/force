@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Force.Ccc;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
