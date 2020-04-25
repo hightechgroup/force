@@ -14,5 +14,10 @@ TODO: description
 ## ValueObjects
 
 ## Error Handling
-##IHasUserFrendlyMessage, Result
+## IHasUserFrendlyMessage
+## Result
+
+## Spec
+
+## IValidator
 
