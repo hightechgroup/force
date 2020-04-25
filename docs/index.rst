@@ -23,7 +23,7 @@ New to Force? Check out the :doc:`Getting-started` page first.
    CQRS-Vertical-Slices
    Cross-Cutting-Concerns
    DDD
-   Functional-Extensions
    Expressions
+   Functional-Extensions
    Reflection
    LINQ
