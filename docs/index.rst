@@ -8,38 +8,6 @@ Force supports the following platform: * `.NET Standard 3.1+ <https://docs.micro
 
 New to Force? Check out the :doc:`Getting-started` page first.
 
-.. _user-docs:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: User Documentation
-   
-   Getting-started
-
-.. _feature-docs:
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Features
-   
-   Configuration
-
-      
-Examples
-========
-
-The source code contains unit tests for all of the features listed above. Use the GitHub search to find relevant examples.
-
-Housekeeping
-============
-
-The latest builds can be found at
-
-The dev builds can be found at 
-
-
-
-General-purpose library for rapid .NET applications development?
 
 # CQRS, Vertical Slices
 Command, Query, Handlers
@@ -75,3 +43,19 @@ Pagination Support
 
 # Reflection
 Wrappers...
+
+.. _user-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: User Documentation
+   
+   Getting-started
+
+.. _feature-docs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Features
+   
+   Configuration
