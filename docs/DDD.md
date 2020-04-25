@@ -1,9 +1,7 @@
 # DDD
-
 ## Entities
 ### IHasId
 TODO: description
-
 
 ### HasIdBase
 TODO: description

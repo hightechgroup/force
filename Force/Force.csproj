@@ -9,4 +9,7 @@
     <Authors>HighTech Group</Authors>
     <RepositoryUrl>http://github.com/hightechtoday/force</RepositoryUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Ccc" />
+  </ItemGroup>
 </Project>
