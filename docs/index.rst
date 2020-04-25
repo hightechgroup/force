@@ -14,6 +14,7 @@ New to Force? Check out the :doc:`Getting-started` page first.
    
    Getting-started
 
+.. _feature-docs:
 
 .. toctree::
    :maxdepth: 2
