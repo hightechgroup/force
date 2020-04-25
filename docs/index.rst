@@ -2,8 +2,6 @@ Force
 ==========
 
 A general-purpose library for rapid .NET applications development?
-....
-
 Force supports the following platform: * `.NET Standard 3.1+ <https://docs.microsoft.com/en-us/dotnet/standard/net-standard>`_
 
 New to Force? Check out the :doc:`Getting-started` page first.
