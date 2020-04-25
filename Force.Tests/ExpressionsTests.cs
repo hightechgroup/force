@@ -1,30 +1,46 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
+using BenchmarkDotNet.Reports;
+using BenchmarkDotNet.Running;
 using Force.Expressions;
 using Force.Extensions;
+using Force.Tests.Expressions;
 using Xunit;
 
 namespace Force.Tests
 {
     public class ExpressionsTests
     {
+        public  const int CompileMeanPlusStdDev = 80000;
+        public  const int AsFuncMeanPlusStdDev = 25;
+
         [Fact]
         public void AsFunc_Caches()
         {
-            Expression<Func<string, bool>> expr = x => x.ToString().Length > 5;
-            var sw = new Stopwatch();
-            
-            sw.Start();
-            var func1 = expr.AsFunc();
-            var e1 = ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
-            sw.Restart();
-            
-            var func2 = expr.AsFunc();
-            var e2 = ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
+            var summary = BenchmarkRunner.Run<ExpressionCompilerBenchmark>();
 
-            Assert.Equal(func1, func2);
-            Assert.True(e2 < 50000 && e2 * 10 < e1, $"Compile: {e1} | Cache: {e2}");
+            AssertMean(summary, nameof(ExpressionCompilerBenchmark.Compile), CompileMeanPlusStdDev);
+            AssertMean(summary, nameof(ExpressionCompilerBenchmark.AsFunc), AsFuncMeanPlusStdDev);
+        }
+
+        private static void AssertMean(Summary summary, string benchmarkName, int mean)
+        {
+            var report = GetReportByName(summary, benchmarkName);
+            Assert.True(report.ResultStatistics.Mean < mean, 
+                $"Mean: {report.ResultStatistics.Mean}");
+        }
+
+        private static BenchmarkReport GetReportByName(Summary summary, string benchmarkName) =>
+            summary
+                .Reports
+                .First(x => x.BenchmarkCase.Descriptor.DisplayInfo ==
+                            nameof(ExpressionCompilerBenchmark) + "." + benchmarkName);
+
+        private static double ElapsedNanoSeconds(Stopwatch sw)
+        {
+            return ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
         }
     }
 }

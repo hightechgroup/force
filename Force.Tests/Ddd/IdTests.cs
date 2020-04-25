@@ -37,6 +37,15 @@ namespace Force.Tests.Ddd
         }
 
         [Fact]
+        public void New_IsNew_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var id = new Id<Product>(new Product(new Category("Name"), "Name"));
+            });
+        }
+
+        [Fact]
         public void New_ExistingEntity_CreatesNewInstance()
         {
             var id = new Id<Product>(DbContext.Products.First());
@@ -48,6 +57,7 @@ namespace Force.Tests.Ddd
             var id = new Id<Product>(1, x => null);
         }
         
+        
         [Fact]
         public void TryParse_ValueIsZeroReturnsFalseIdIsNull()
         {
@@ -55,6 +65,10 @@ namespace Force.Tests.Ddd
             
             Assert.False(res);
             Assert.Null(id);
+            
+            res = Id<int, Product>.TryParse(0, x => null, out var id2);
+            Assert.False(res);
+            Assert.Null(id);            
         }
         
        
@@ -83,8 +97,12 @@ namespace Force.Tests.Ddd
             var id = new Id<Product>(DbContext.Products.First());
             Product entity = id;
             id = entity;
-            
             Assert.Equal(entity, id.Entity);
+            
+            var id2 = new Id<int, Product>(DbContext.Products.First());
+            Product entity2 = id2;
+            id2 = entity2;
+            Assert.Equal(entity2, id2.Entity);
         }
     }
 }

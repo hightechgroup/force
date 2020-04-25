@@ -16,11 +16,31 @@ namespace Force.Tests.Expressions
         }
 
         [Fact]
-        public void WhereIfA()
+        public void WhereIf()
         {
             DbContext
                 .Products
                 .WhereIf(true, x => true);
+        }
+
+        [Fact]
+        public void OrderByAndOrderByDescending_PropertyDoesntExist_ThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                DbContext
+                    .Products
+                    .OrderBy("Weird Property")
+                    .ToList();
+            });
+            
+            Assert.Throws<ArgumentException>(() =>
+            {
+                DbContext
+                    .Products
+                    .OrderByDescending("Weird Property")
+                    .ToList();
+            });
         }
 
         [Fact]

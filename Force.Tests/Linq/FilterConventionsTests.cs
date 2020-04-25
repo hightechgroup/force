@@ -1,4 +1,5 @@
-﻿using Force.Linq;
+﻿using System;
+using Force.Linq;
 using Xunit;
 
 namespace Force.Tests.Linq
@@ -12,6 +13,16 @@ namespace Force.Tests.Linq
             var i2 = FilterConventions.Instance;
            
             Assert.Equal(i, i2);
+        }
+
+        [Fact]
+        public void DoubleInitialization_ThrowsInvalidArgumentException()
+        {
+            var i = FilterConventions.Instance;
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                FilterConventions.Initialize();
+            });
         }
     }
 }

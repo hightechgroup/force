@@ -57,8 +57,15 @@ namespace Force.Tests
         [Fact]
         public void PropertySetter()
         {
-            var setter = Type<Product>.PropertySetter<string>("Name");
+            var setter = Type<Product>.PropertySetter<string>(nameof(Product.Name));
             Assert.NotNull(setter);
+        }
+        
+        [Fact]
+        public void PropertyGetter()
+        {
+            var getter = Type<Product>.PropertyGetter<string>(nameof(Product.Name));
+            Assert.NotNull(getter);
         }
     }
 }

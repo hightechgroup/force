@@ -1,4 +1,5 @@
 using System.Linq;
+using Force.Linq;
 using Force.Reflection;
 using Force.Tests.Infrastructure;
 using Force.Tests.Infrastructure.Context;
@@ -11,6 +12,23 @@ namespace Force.Tests.Cqrs
     {
         public FilterQueryTests(DbContextFixture dbContextFixture) : base(dbContextFixture)
         {
+        }
+
+        [Fact]
+        public void Search()
+        {
+            var productFilter = new PagedProductFilter()
+            {
+                Search = DbContextFixture.FirstProductName
+            };
+
+            var results = DbContext
+                .Products
+                .Filter(productFilter)
+                .ToList();
+            
+            Assert.Collection(results, 
+                x => x.Name.StartsWith(DbContextFixture.FirstProductName));
         }
         
         [Fact]

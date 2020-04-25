@@ -11,14 +11,5 @@ namespace Force.Benchmarks.Data
         public DemoAppDbContext(DbContextOptions options) : base(options)
         {            
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.ConfigureWarnings(w =>
-            {
-                w.Throw(RelationalEventId.QueryClientEvaluationWarning);
-            });
-        }
     }
 }
