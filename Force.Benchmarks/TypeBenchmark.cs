@@ -16,6 +16,7 @@ namespace Force.Benchmarks
     }
     
     //[SimpleJob(RunStrategy.Monitoring, launchCount: 10, warmupCount: 3, targetCount: 100)]
+    [MemoryDiagnoser]
     public class TypeBenchmark
     {
         static string _val = Type<SimpeValueObject>.CreateInstance("string");
