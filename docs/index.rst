@@ -24,6 +24,6 @@ New to Force? Check out the :doc:`Getting-started` page first.
    Cross-Cutting-Concerns
    DDD
    Expressions
-   Functional-Extensions
-   Reflection
+   Extensions   
    LINQ
+   Reflection
