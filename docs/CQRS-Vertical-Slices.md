@@ -1,4 +1,5 @@
 # CQRS, Vertical Slices
+
 ## IHandler<TIn, TOut>
 Todo: add docs
 
