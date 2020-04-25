@@ -13,3 +13,15 @@ New to Force? Check out the :doc:`Getting-started` page first.
    :caption: User Documentation
    
    Getting-started
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Features
+   
+   CQRS-Vertical-Slices
+   DDD
+   Functional-Extensions
+   Expressions
+   Reflection
+   LINQ
