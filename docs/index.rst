@@ -1,8 +1,7 @@
 Force
 ==========
 
-A general-purpose library for rapid .NET applications development?
-Force supports the following platform: * `.NET Standard 3.1+ <https://docs.microsoft.com/en-us/dotnet/standard/net-standard>`_
+Force is a light-weight library that helps to build .NET business apps faster and writing less code. It’s open-source and supports .net core 3.1. The code has no platform-specific dependencies so feel free to compile it using .NET Framework if you need it. 	
 
 New to Force? Check out the :doc:`Getting-started` page first.
 
