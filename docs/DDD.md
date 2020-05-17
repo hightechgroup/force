@@ -1,6 +1,8 @@
 # DDD
-## Entities
 Domain-driven design (DDD) is the concept that the structure and language of your code (class names, class methods, class variables) should match the business domain. For example, if your software processes loan applications, it might have classes such as LoanApplication and Customer, and methods such as AcceptOffer and Withdraw. The term was coined by Eric Evans in his book of the same title.
+
+## Entities
+There is a category of objects which seem to have an identity, which remains the same throughout the states of the software. Such objects are called Entities.
 
 ### IHasId
 IHasId, IHasId<T>
