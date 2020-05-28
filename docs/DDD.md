@@ -4,6 +4,9 @@ Domain-driven design (DDD) is the concept that the structure and language of you
 ## Entities
 There is a category of objects which seem to have an identity, which remains the same throughout the states of the software. Such objects are called Entities.
 
+### Id<TKey, T>
+TODO: Doc
+
 ### IHasId
 IHasId, IHasId<T>
 Generic and non-generic versions of the IHasId attribute are used both for business objects and their projections (DTO’s). These interfaces are essential for some handy extension methods described in the “meta-programming” section of the documentation.
