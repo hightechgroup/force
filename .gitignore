@@ -26,6 +26,8 @@ bin/
 obj/
 TestResults/
 /.idea/
+**/.idea/
+**/.idea/*
 /.idea/*
 ###################
 # Web publish log #
