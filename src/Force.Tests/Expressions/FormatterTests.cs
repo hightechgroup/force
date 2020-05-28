@@ -14,7 +14,7 @@ namespace Force.Tests.Expressions
         }
         
         [Fact]
-        public void A()
+        public void Select_Format()
         {
             var formatter = new Formatter<Product>(x => "Product Name is: " + x.Name);
             var res = DbContext
