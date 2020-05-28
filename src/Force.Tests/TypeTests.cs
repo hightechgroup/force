@@ -40,6 +40,12 @@ namespace Force.Tests
             var productFilter = new ProductFilter(){Name = "123"};
             productFilter.TryGetValue("Name", out var val);
         }
+
+        [Fact]
+        public void TryGetValue_Null()
+        {
+            throw new NotImplementedException();
+        }
         
         [Fact]
         public void Create()
