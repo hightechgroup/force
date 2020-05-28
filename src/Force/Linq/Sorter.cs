@@ -24,12 +24,12 @@ namespace Force.Linq
                     return (arr[0], true);
                 var sort = arr[1];
 
-                if (string.Equals(sort, "ASC", StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(sort, "ASC", StringComparison.InvariantCulture))
                 {
                     return (arr[0], true);
                 }
 
-                if (string.Equals(sort, "DESC", StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(sort, "DESC", StringComparison.InvariantCulture))
                 {
                     return (arr[0], false);
                 }
