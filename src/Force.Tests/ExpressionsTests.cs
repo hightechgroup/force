@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Force.Tests
 {
-    [MemoryDiagnoser]
     public class ExpressionsTests
     {
         public  const int CompileMeanPlusStdDev = 80000;
@@ -47,10 +46,9 @@ namespace Force.Tests
                 .Reports
                 .First(x => x.BenchmarkCase.Descriptor.DisplayInfo ==
                             nameof(ExpressionCompilerBenchmark) + "." + benchmarkName);
-
         private static double ElapsedNanoSeconds(Stopwatch sw)
         {
-            return ((double)sw.ElapsedTicks / Stopwatch.Frequency) * 1000000000;
+            return (double)sw.ElapsedTicks / Stopwatch.Frequency * 1000000000;
         }
     }
 }

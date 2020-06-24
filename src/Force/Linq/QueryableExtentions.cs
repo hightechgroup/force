@@ -123,8 +123,5 @@ namespace Force.Linq
                 .FirstOrDefault(x => x.Id.Equals(id));
         
         #endregion
-        
     }
-
-
 }

@@ -85,7 +85,7 @@ namespace Force.Tests.Expressions
             
             testCase.Assert(res);
         }
-        
+       
         [Fact]
         public void FilterByConventions_ThrowsArgument()
         {

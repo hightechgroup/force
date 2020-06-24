@@ -1,5 +1,6 @@
 ﻿using System;
 using Force.Linq;
+using Force.Linq.Conventions;
 using Xunit;
 
 namespace Force.Tests.Linq
