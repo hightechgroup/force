@@ -15,11 +15,6 @@ namespace Force.Tests.Linq
         [Fact]
         public void Test_Filter()
         {
-            var predicate = new ProductListItemFilter()
-            {
-                CategoryName = new []{"C1"}
-            };
-
             var products = DbContext
                 .Products
                 .Select(x => new ProductListItem()
@@ -27,21 +22,24 @@ namespace Force.Tests.Linq
                     Name = x.Name,
                     CategoryName = x.Category.Name
                 });
+            var product = products.FirstOrDefault();
+            Assert.NotNull(product);
+            var categoryName = product.CategoryName;
             
+            var predicate = new ProductListItemFilter()
+            {
+                CategoryName = new []{categoryName}
+            };
+
             var actualFilteredProducts = products
                 .Filter(predicate)
                 .ToList();
 
-            var expectedFilteredProducts = products
-                .Where(x => x.CategoryName == "C1")
-                .ToList();
-
-            Assert.DoesNotContain(actualFilteredProducts, x => x.CategoryName != "C1");
-            Assert.Equal(actualFilteredProducts.Count, expectedFilteredProducts.Count);
+            Assert.All(actualFilteredProducts, x => Assert.Equal(categoryName, x.CategoryName));
         }
     }
 
-    internal class ProductListItemFilter : FilterQuery<ProductListItem>
+    public class ProductListItemFilter : FilterQuery<ProductListItem>
     {
         public string[] CategoryName { get; set; }
     }

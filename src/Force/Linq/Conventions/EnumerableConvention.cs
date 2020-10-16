@@ -11,8 +11,9 @@ namespace Force.Linq.Conventions
         private static MethodInfo Contains = typeof(Enumerable)
             .GetMethods()
             .First(x => x.Name == "Contains" && x.GetParameters().Length == 2);
+        
         public bool CanConvert(Type predicateType, Type targetType) => 
-            targetType.IsArray && targetType.GetElementType() == predicateType;
+            targetType.GetElementType() == predicateType;
 
         public Expression BuildFilterBody(MemberExpression propertyExpression, Expression valueExpression)
         {
