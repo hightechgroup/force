@@ -7,12 +7,15 @@ using Force.Linq;
 
 namespace Force.Cqrs
 {
-    public class FilterQuery<T> 
+    public class FilterQuery<T>
         : IQuery<IEnumerable<T>>
-        , IFilter<T>
-        , ISorter<T>
+            , IFilter<T>
+            , ISorter<T>
+            , ISearch<T>
     {
         public string Search { get; set; }
+
+        public string SearchBy { get; set; }
 
         public string Order { get; set; }
 
@@ -25,7 +28,16 @@ namespace Force.Cqrs
         public virtual IQueryable<T> Filter(IQueryable<T> queryable)
         {
             // dynamic is for setting Build<T> the right type
-            var spec = (Spec<T>)SpecBuilder<T>.Build((dynamic)this);
+            var spec = (Spec<T>) SpecBuilder<T>.Build((dynamic) this);
+            return queryable.Where(spec);
+        }
+
+        public virtual IQueryable<T> SearchItem(IQueryable<T> queryable)
+        {
+            var spec = (Spec<T>) (string.IsNullOrEmpty(SearchBy)
+                ? SpecBuilder<T>.BuildSearch((dynamic) this)
+                : SpecBuilder<T>.BuildSearchBy((dynamic) this));
+
             return queryable.Where(spec);
         }
     }

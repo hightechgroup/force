@@ -1,6 +1,7 @@
 ﻿using System;
 using Force.Linq;
 using Force.Linq.Conventions;
+using Force.Linq.Conventions.Filter;
 using Xunit;
 
 namespace Force.Tests.Linq

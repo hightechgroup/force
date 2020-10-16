@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Force.Linq.Conventions
+namespace Force.Linq.Conventions.Filter
 {
-    public class FilterConventions
+    public class FilterConventions : ConventionsBase<IFilterConvention>
     {
         private FilterConventions(IEnumerable<IFilterConvention> filterConventions = null)
         {
-            _filterConventions.AddRange(filterConventions ?? DefaultConventions);
+            Conventions.AddRange(filterConventions ?? DefaultConventions);
         }
 
         public static readonly IEnumerable<IFilterConvention> DefaultConventions =
@@ -45,12 +45,5 @@ namespace Force.Linq.Conventions
                 return _instance;
             }
         }
-        
-        private List<IFilterConvention> _filterConventions = new List<IFilterConvention>();
-
-        internal IFilterConvention GetConvention(Type targetType, Type valueType) =>
-            _filterConventions
-                .FirstOrDefault(x => 
-                    x.CanConvert(targetType, valueType));
     }
 }

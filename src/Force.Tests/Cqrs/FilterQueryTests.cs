@@ -72,7 +72,38 @@ namespace Force.Tests.Cqrs
             Assert.Collection(results, 
                 x => Assert.Equal(DbContextFixture.FirstProductName, x.Name));
         }
+        
+        [Fact]
+        public void SearchItem()
+        {
+            var query = new PagedProductFilter()
+            {
+                Search = DbContextFixture.FirstProductName
+            };
 
+            var results = query
+                .SearchItem(DbContext.Products)
+                .ToList();
+            
+            Assert.Collection(results, 
+                x => Assert.Equal(DbContextFixture.FirstProductName, x.Name));
+        }
 
+        [Fact]
+        public void SearchBy()
+        {
+            var query = new PagedProductFilter()
+            {
+                Search = DbContextFixture.FirstProductName.ToLower(),
+                SearchBy = "NaMe"
+            };
+
+            var results = query
+                .SearchItem(DbContext.Products)
+                .ToList();
+
+            Assert.Collection(results,
+                x => Assert.Equal(DbContextFixture.FirstProductName, x.Name));
+        }
     }
 }

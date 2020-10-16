@@ -23,6 +23,9 @@ namespace Force.Linq
 
         public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, IFilter<T> filter)
             => filter.Filter(queryable);
+
+        public static IQueryable<T> Search<T>(this IQueryable<T> queryable, ISearch<T> search)
+            => search.SearchItem(queryable);
         
         public static IOrderedQueryable<T> FilterAndSort<T, TQuery>(this IQueryable<T> queryable, TQuery query)
             where TQuery : IFilter<T>, ISorter<T>
@@ -30,11 +33,26 @@ namespace Force.Linq
                 .Filter(query)
                 .Sort(query);
 
+        public static IOrderedQueryable<T> FilterSortAndSearch<T, TQuery>(this IQueryable<T> queryable, TQuery query)
+            where TQuery : IFilter<T>, ISorter<T>, ISearch<T>
+            => queryable
+                .Filter(query)
+                .Search(query)
+                .Sort(query);
+
         public static PagedEnumerable<T> FilterSortAndPaginate<T, TQuery>(this IQueryable<T> queryable, TQuery query)
             where TQuery : IFilter<T>, ISorter<T>, IPaging
             => queryable
                 .FilterAndSort(query)
                 .ToPagedEnumerable(query);
+
+        public static PagedEnumerable<T> FilterSortSearchAndPaginate<T, TQuery>(this IQueryable<T> queryable,
+            TQuery query)
+            where TQuery : IFilter<T>, ISorter<T>, ISearch<T>, IPaging
+            => queryable
+                .FilterSortAndSearch(query)
+                .ToPagedEnumerable(query);
+        
 
         public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition,
             Expression<Func<T, bool>> predicate)
