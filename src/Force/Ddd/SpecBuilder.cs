@@ -64,7 +64,7 @@ namespace Force.Ddd
             var val = (x.Value as string)?.ToLower() ?? x.Value;
             Expression value = Expression.Constant(val);
 
-            value = Expression.Convert(value, property.Type);
+            //value = Expression.Convert(value, property.Type);
             var convention = FilterConventions.Instance.GetConvention(property.Type, x.Value.GetType());
             if (convention == null)
             {

@@ -14,7 +14,8 @@ namespace Force.Linq.Conventions
         public static readonly IEnumerable<IFilterConvention> DefaultConventions =
             new[]
             {
-                new StringConvention()
+                new StringConvention() as IFilterConvention, 
+                new EnumerableConvention()
             };
         
         public static FilterConventions InitializeWithDefaultConventions()
@@ -48,9 +49,9 @@ namespace Force.Linq.Conventions
         
         private List<IFilterConvention> _filterConventions = new List<IFilterConvention>();
 
-        internal IFilterConvention GetConvention(Type targetType, Type valueType) =>
+        internal IFilterConvention GetConvention(Type targetType, Type valueType) => 
             _filterConventions
-                .FirstOrDefault(x => 
-                    x.CanConvert(targetType, valueType));
+                .FirstOrDefault(x =>
+                   x.CanConvert(targetType, valueType));
     }
 }
