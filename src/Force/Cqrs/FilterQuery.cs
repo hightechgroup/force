@@ -34,7 +34,7 @@ namespace Force.Cqrs
 
         public virtual IQueryable<T> SearchItem(IQueryable<T> queryable)
         {
-            var spec = (Spec<T>) (string.IsNullOrEmpty(SearchBy)
+            var spec = (Spec<T>) (SearchBy.ToLower() == "all"
                 ? SpecBuilder<T>.BuildSearch((dynamic) this)
                 : SpecBuilder<T>.BuildSearchBy((dynamic) this));
 
