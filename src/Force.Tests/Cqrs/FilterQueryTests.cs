@@ -78,7 +78,8 @@ namespace Force.Tests.Cqrs
         {
             var query = new PagedProductFilter()
             {
-                Search = DbContextFixture.FirstProductName
+                Search = DbContextFixture.FirstProductName,
+                SearchBy = "all"
             };
 
             var results = query

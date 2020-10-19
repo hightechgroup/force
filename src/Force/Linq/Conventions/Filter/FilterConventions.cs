@@ -14,7 +14,8 @@ namespace Force.Linq.Conventions.Filter
         public static readonly IEnumerable<IFilterConvention> DefaultConventions =
             new[]
             {
-                new StringConvention()
+                new StringConvention() as IFilterConvention, 
+                new EnumerableConvention()
             };
         
         public static FilterConventions InitializeWithDefaultConventions()

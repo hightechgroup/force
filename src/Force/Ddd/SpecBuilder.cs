@@ -16,10 +16,10 @@ namespace Force.Ddd
     {
         public static Spec<TSubject> Build<TPredicate>(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
             => SpecBuilder<TSubject, TPredicate>.Build(predicate, composeKind);
-        
+
         public static Spec<TSubject> BuildSearch<TPredicate>(TPredicate predicate)
             => SpecBuilder<TSubject, TPredicate>.BuildSearch(predicate);
-        
+
         public static Spec<TSubject> BuildSearchBy<TPredicate>(TPredicate predicate)
             => SpecBuilder<TSubject, TPredicate>.BuildSearchBy(predicate);
     }
@@ -53,43 +53,16 @@ namespace Force.Ddd
                 .Where(x => x != null)
                 .ToList();
 
-            if (!props.Any())
-            {
-                return new Spec<TSubject>(x => true);
-            }
-
-            var expr = composeKind == ComposeKind.And
-                ? props.Aggregate((c, n) => c.And(n))
-                : props.Aggregate((c, n) => c.Or(n));
-
-            return new Spec<TSubject>(expr);
-        }
-
-        public static Spec<TSubject> BuildSearch(TPredicate predicate)
-        {
-            // var parameter = Expression.Parameter(typeof(TSubject));
-            // var publicProperties = Type<TPredicate>.PublicProperties;
-            //
-            //
-            // var expression = Type<TPredicate>
-            //     .PublicProperties
-            //     .Where(x => x.Key == "Search")
-            //     .Select(x => x.Value)
-            //     .Select(x=> new PropertyInfoAndValue
-            //     {
-            //         Property = x,
-            //         Value = publicProperties[x.Name].GetValue(predicate)
-            //     })
-            //     .Where(x => x.Value != null)
-            //     .Select(x=> BuildExpression(parameter, x, SearchConvensions.Instance))
-            //     .FirstOrDefault(x => x != null);
-            //
-            // return expression == null ? new Spec<TSubject>(_ => true) : new Spec<TSubject>(expression);
-            return new Spec<TSubject>(_ => true);
+            return !props.Any()
+                ? new Spec<TSubject>(x => true)
+                : new Spec<TSubject>(composeKind == ComposeKind.And
+                    ? props.Aggregate((c, n) => c.And(n))
+                    : props.Aggregate((c, n) => c.Or(n)));
         }
 
         public static Spec<TSubject> BuildSearchBy(TPredicate predicate)
         {
+            var parameter = Expression.Parameter(typeof(TSubject));
             var predicateType = predicate.GetType();
 
             var spec = new Spec<TSubject>(_ => true);
@@ -97,28 +70,46 @@ namespace Force.Ddd
             var searchValue = predicateType.GetProperty("Search")?.GetValue(predicate) as string;
             var searchByValue = predicateType.GetProperty("SearchBy")?.GetValue(predicate) as string;
 
-            if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrEmpty(searchByValue))
-            {
-                var parameter = Expression.Parameter(typeof(TSubject), "type");
-                var property = Expression.Call(Expression.Property(parameter, searchByValue),
-                    MethodInfos.ToUpper);
-                var methodToTake = typeof(TSubject).GetProperties()
-                    .FirstOrDefault(x => x.Name.ToUpper() == searchByValue.ToUpper())?
-                    .GetCustomAttribute<SearchByAttribute>().SearchKind == SearchKind.Contains
-                    ? MethodInfos.Contains
-                    : MethodInfos.StartsWith;
-                if (methodToTake != null)
+            var expression = SubjectPropertiesToFilter
+                .Where(x => x.Name.ToUpper() == searchByValue?.ToUpper())
+                .Select(x => new PropertyInfoAndValue
                 {
-                    var someValue = Expression.Constant(searchValue.ToUpper(), typeof(string));
-                    var containsExp = Expression.Call(property, methodToTake, someValue);
+                    Property = x,
+                    Value = searchValue?.ToLower()
+                })
+                .Where(x => x.Property.PropertyType == typeof(string)
+                            && x.Property.GetCustomAttribute<SearchByAttribute>() != null && x.Value != null)
+                .Select(x => BuildExpression(parameter, x, SearchConvensions.Instance))
+                .FirstOrDefault();
 
-                    spec = spec && new Spec<TSubject>(Expression.Lambda<Func<TSubject, bool>>(containsExp, parameter));
-                }
-            }
-
-            return spec;
+            return expression == null ? spec : new Spec<TSubject>(expression);
         }
-        
+
+        public static Spec<TSubject> BuildSearch(TPredicate predicate, ComposeKind composeKind = ComposeKind.Or)
+        {
+            var parameter = Expression.Parameter(typeof(TSubject));
+
+            var spec = new Spec<TSubject>(x => true);
+
+            var search = predicate.GetType().GetProperty("Search")?.GetValue(predicate) as string;
+            var expressions = SubjectPropertiesToFilter
+                .Select(x => new PropertyInfoAndValue
+                {
+                    Property = x,
+                    Value = search?.ToLower()
+                })
+                .Where(x => x.Property.PropertyType == typeof(string)
+                            && x.Property.GetCustomAttribute<SearchByAttribute>() != null && x.Value != null)
+                .Select(x => BuildExpression(parameter, x, SearchConvensions.Instance))
+                .ToArray();
+
+            return !expressions.Any()
+                ? spec
+                : new Spec<TSubject>(composeKind == ComposeKind.And
+                    ? expressions.Aggregate((c, n) => c.And(n))
+                    : expressions.Aggregate((c, n) => c.Or(n)));
+        }
+
         private static Expression<Func<TSubject, bool>> BuildExpression<T>(ParameterExpression parameter,
             PropertyInfoAndValue x, ConventionsBase<T> conventions) where T : IConvention
         {
@@ -126,7 +117,6 @@ namespace Force.Ddd
             var val = (x.Value as string)?.ToLower() ?? x.Value;
             Expression value = Expression.Constant(val);
 
-            value = Expression.Convert(value, property.Type);
             var convention = conventions.GetConvention(property.Type, x.Value.GetType());
             if (convention == null)
             {
