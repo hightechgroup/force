@@ -5,7 +5,7 @@ namespace Force.Cqrs
 {
     public class PagedFilterQueryBase<T> 
         : FilterQueryBase<T>
-            , IPaging
+        , IPaging
     {
         [Range(1, int.MaxValue)]
         public int Page { get; set; } = 1;

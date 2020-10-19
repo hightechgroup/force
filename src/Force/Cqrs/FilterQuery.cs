@@ -4,7 +4,7 @@ namespace Force.Cqrs
 {
     public class FilterQuery<T> 
         : FilterQueryBase<T>
-            , IQuery<IEnumerable<T>>
+        , IQuery<IEnumerable<T>>
 
     {
     }
