@@ -14,9 +14,11 @@ namespace Force.Cqrs
 
         public bool Asc { get; set; } = true;
 
-        public virtual IOrderedQueryable<T> Sort(IQueryable<T> queryable) => Asc
-            ? queryable.OrderBy(Order)
-            : queryable.OrderByDescending(Order);
+        public virtual IOrderedQueryable<T> Sort(IQueryable<T> queryable) => Order == null
+            ? queryable.OrderBy(_ => 0)
+            : Asc 
+                ? queryable.OrderBy(Order) 
+                : queryable.OrderByDescending(Order);
 
         public virtual IQueryable<T> Filter(IQueryable<T> queryable)
         {
