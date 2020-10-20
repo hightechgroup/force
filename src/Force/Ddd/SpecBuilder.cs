@@ -14,6 +14,9 @@ namespace Force.Ddd
     {
         public static Spec<TSubject> Build<TPredicate>(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
             => SpecBuilder<TSubject, TPredicate>.Build(predicate, composeKind);
+        
+        public static Spec<TSubject> BuildSearch<TPredicate>(TPredicate predicate, ComposeKind composeKind = ComposeKind.Or)
+            => SpecBuilder<TSubject, TPredicate>.BuildSearch(predicate, composeKind);
     }
     
     public static class SpecBuilder<TSubject, TPredicate>
@@ -31,7 +34,6 @@ namespace Force.Ddd
         
         public static Spec<TSubject> Build(TPredicate predicate, ComposeKind composeKind = ComposeKind.And)
         {
-            var parameter = Expression.Parameter(typeof(TSubject));
             var publicProperties = Type<TPredicate>.PublicProperties;
             
             var props = SubjectPropertiesToFilter
@@ -39,20 +41,44 @@ namespace Force.Ddd
                 {
                     Property = x,
                     Value = publicProperties[x.Name].GetValue(predicate)
-                })
+                });
+
+            return GetSpec(props, composeKind);
+        }
+
+        public static Spec<TSubject> BuildSearch(TPredicate predicate, ComposeKind composeKind = ComposeKind.Or)
+        {
+            var publicProperties = Type<TPredicate>.PublicProperties;
+
+            var props = SubjectPropertiesToFilter
+                .Select(x => new PropertyInfoAndValue
+                {
+                    Property = x,
+                    Value = publicProperties["Search"].GetValue(predicate)
+                });
+
+            return GetSpec(props, composeKind);
+        }
+
+        private static Spec<TSubject> GetSpec(IEnumerable<PropertyInfoAndValue> props,
+            ComposeKind composeKind)
+        {
+            var parameter = Expression.Parameter(typeof(TSubject));
+
+            var expressions = props
                 .Where(x => x.Value != null)
                 .Select(x => BuildExpression(parameter, x))
                 .Where(x => x != null)
                 .ToList();
 
-            if (!props.Any())
+            if (!expressions.Any())
             {
                 return new Spec<TSubject>(x => true);
             }
 
             var expr = composeKind == ComposeKind.And
-                ? props.Aggregate((c, n) => c.And(n))
-                : props.Aggregate((c, n) => c.Or(n));
+                ? expressions.Aggregate((c, n) => c.And(n))
+                : expressions.Aggregate((c, n) => c.Or(n));
 
             return new Spec<TSubject>(expr);
         }

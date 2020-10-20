@@ -24,7 +24,9 @@ namespace Force.Cqrs
         {
             // dynamic is for setting Build<T> the right type
             var spec = (Spec<T>)SpecBuilder<T>.Build((dynamic)this);
-            return queryable.Where(spec);
+            var searchSpec = (Spec<T>)SpecBuilder<T>.BuildSearch((dynamic) this);
+            return queryable.Where(spec)
+                .Where(searchSpec);
         }
     }
 }
