@@ -5,7 +5,7 @@ namespace Force.Cqrs
 {
     public class FilterQueryAsync<T> 
         : FilterQueryBase<T>
-            , IQuery<Task<IEnumerable<T>>>
+        , IQuery<Task<IEnumerable<T>>>
     {
     }
 }
