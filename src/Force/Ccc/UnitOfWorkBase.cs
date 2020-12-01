@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Transactions;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
@@ -26,7 +27,9 @@ namespace Force.Ccc
             where TEntity : class, IHasId;
 
         public abstract TEntity Find<TEntity>(params object[] id);
-
+        
+        public abstract Transaction BeginTransaction();
+        
         protected abstract void DoCommit();
         
         protected abstract IEnumerable<IDomainEvent> GetDomainEvents();

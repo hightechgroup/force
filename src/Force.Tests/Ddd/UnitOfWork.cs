@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Transactions;
 using Force.Ccc;
 using Force.Cqrs;
 using Force.Ddd;
@@ -33,6 +34,11 @@ namespace Force.Tests.Ddd
         }
 
         public override TEntity Find<TEntity>(params object[] id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Transaction BeginTransaction()
         {
             throw new System.NotImplementedException();
         }
