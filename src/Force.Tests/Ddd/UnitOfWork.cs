@@ -37,12 +37,7 @@ namespace Force.Tests.Ddd
         {
             throw new System.NotImplementedException();
         }
-
-        public override Transaction BeginTransaction()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         protected override void DoCommit()
         {
         }

@@ -14,8 +14,6 @@ namespace Force.Ccc
 
         TEntity Find<TEntity>(params object[] id);
 
-        Transaction BeginTransaction(); 
-        
         void Commit();
 
         void Rollback();

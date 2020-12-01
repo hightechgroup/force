@@ -28,8 +28,6 @@ namespace Force.Ccc
 
         public abstract TEntity Find<TEntity>(params object[] id);
         
-        public abstract Transaction BeginTransaction();
-        
         protected abstract void DoCommit();
         
         protected abstract IEnumerable<IDomainEvent> GetDomainEvents();
