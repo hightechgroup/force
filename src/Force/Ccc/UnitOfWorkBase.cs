@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Transactions;
 using Force.Cqrs;
 using Force.Ddd;
 using Force.Ddd.DomainEvents;
@@ -14,23 +13,16 @@ namespace Force.Ccc
         {
             _domainEventDispatcher = domainEventDispatcher;
         }
-        
+
         public abstract void Dispose();
 
         public abstract void Add<TEntity>(TEntity entity)
-            where TEntity : class, IHasId;
-
-        public abstract void Update<TEntity>(TEntity entity) 
             where TEntity : class, IHasId;
 
         public abstract void Remove<TEntity>(TEntity entity)
             where TEntity : class, IHasId;
 
         public abstract TEntity Find<TEntity>(params object[] id);
-        
-        protected abstract void DoCommit();
-        
-        protected abstract IEnumerable<IDomainEvent> GetDomainEvents();
 
         public void Commit()
         {
@@ -39,6 +31,13 @@ namespace Force.Ccc
             DoCommit();
         }
 
-        public abstract void Rollback();
+        public abstract IUnitOfWorkTransaction BeginTransaction();
+
+        public abstract void Update<TEntity>(TEntity entity)
+            where TEntity : class, IHasId;
+
+        protected abstract void DoCommit();
+
+        protected abstract IEnumerable<IDomainEvent> GetDomainEvents();
     }
 }

@@ -16,6 +16,6 @@ namespace Force.Ccc
 
         void Commit();
 
-        void Rollback();
+        IUnitOfWorkTransaction BeginTransaction();
     }
 }

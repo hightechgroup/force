@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.0-alpha2</Version>
+    <Version>2.0-alpha3</Version>
     <Description>General-purpose .NET Library for rapid application development</Description>
     <PackageProjectUrl>https://github.com/hightechgroup/force</PackageProjectUrl>
     <Company>HighTech Group</Company>

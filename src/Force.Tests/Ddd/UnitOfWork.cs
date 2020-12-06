@@ -28,11 +28,6 @@ namespace Force.Tests.Ddd
             throw new System.NotImplementedException();
         }
 
-        public override void Rollback()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override TEntity Find<TEntity>(params object[] id)
         {
             throw new System.NotImplementedException();
@@ -45,6 +40,11 @@ namespace Force.Tests.Ddd
         protected override IEnumerable<IDomainEvent> GetDomainEvents()
         {
             return new IDomainEvent[] { };
+        }
+
+        public override IUnitOfWorkTransaction BeginTransaction()
+        {
+            throw new System.NotImplementedException();
         }
 
         public override void Update<TEntity>(TEntity entity)

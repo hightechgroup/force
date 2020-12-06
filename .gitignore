@@ -93,3 +93,4 @@ project.lock.json
 /DemoApp.Web/wwwroot/bootstrap.css
 /DemoApp.Web/wwwroot/index.html
 /.idea
+.DS_Store
