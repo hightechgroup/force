@@ -1,22 +1,24 @@
-﻿using Force.Examples.Data;
+﻿using System;
+using Force.Examples.Data;
 using Force.Examples.Domain.Features;
+using MediatR;
 
 namespace Force.Tests.InfrastructureTests
 {
     public abstract class TestsWithServiceProviderBase
     {
-        private readonly IServiceFactory _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
-        protected IServiceFactory GetServiceProvider()
+        protected IServiceProvider GetServiceProvider()
         {
             return _serviceProvider;
         }
 
         protected TestsWithServiceProviderBase()
         {
-            _serviceProvider = new ServiceFactory(Services.BuildServiceProvider(
+            _serviceProvider = Services.BuildServiceProvider(
                 sp => new ExampleDbContext(),
-                typeof(ProductController).Assembly));
+                typeof(ProductController).Assembly);
         }
     }
 }

@@ -1,21 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+using System;
 using Force.Ccc;
 using Force.Validation;
 using Force.Workflow;
 
-namespace Force.Tests.InfrastructureTests
+namespace Force.Extensions
 {
-    public class HandlerWorkflowFactory<TRequest, TResult>: IWorkflow<TRequest, TResult>
+    public static class ServiceCollectionExtensions
     {
-        public Result<TResult, FailureInfo> Process(TRequest request, IServiceProvider sp)
-        {
-            var wf = CreateDefaultWorkflow<TRequest, TResult>(sp);
-            return wf.Process(request, sp);
-        }
-        
         public static HandlerWorkflow<TRequest, TResponse> CreateDefaultWorkflow<TRequest, TResponse>(
-            IServiceProvider sp)
+            this IServiceProvider sp)
         {
             var validator = (IValidator<TRequest>) sp.GetService(typeof(IValidator<TRequest>));
             var uow = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));
@@ -26,18 +19,9 @@ namespace Force.Tests.InfrastructureTests
                     new ValidateWorkflowStep<TRequest, TResponse>(validator),
                     new UnitOfWorkWorkflowStep<TRequest, TResponse>(uow));
         }
-    }
-    
-    public class HandlerAsyncWorkflowFactory<TRequest, TResult>: IAsyncWorkflow<TRequest, TResult>
-    {
-        public Task<Result<TResult, FailureInfo>> ProcessAsync(TRequest request, IServiceProvider sp)
-        {
-            var wf = CreateDefaultWorkflowAsync<TRequest, TResult>(sp);
-            return wf.ProcessAsync(request, sp);
-        }
-        
+
         public static AsyncHandlerWorkflow<TRequest, TResponse> CreateDefaultWorkflowAsync<TRequest, TResponse>(
-            IServiceProvider sp)
+            this IServiceProvider sp)
         {
             var validatorAsync = (IAsyncValidator<TRequest>) sp.GetService(typeof(IAsyncValidator<TRequest>));
             var uow = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));

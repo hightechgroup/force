@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Force.Cqrs;
@@ -7,22 +8,23 @@ using Force.Tests.InfrastructureTests.Mocks;
 using Force.Workflow;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Force.Tests.InfrastructureTests
 {
     //[SimpleJob(RunStrategy.Monitoring, launchCount: 10, warmupCount: 3, targetCount: 100)]
     public class WorkflowBenchmark
     {
-        private IServiceFactory _sp;
+        private IServiceProvider _sp;
         
         public WorkflowBenchmark()
         {
             var ob = new DbContextOptionsBuilder<ExampleDbContext>();
             ob.UseInMemoryDatabase("Infrastructure");
             
-            _sp = new Force.Tests.ServiceFactory(Services.BuildServiceProvider(
+            _sp = Services.BuildServiceProvider(
                 sp => new ExampleDbContext(),
-                typeof(CommandMock).Assembly));
+                typeof(CommandMock).Assembly);
         }
 
         [Benchmark]

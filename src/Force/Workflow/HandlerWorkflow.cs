@@ -15,13 +15,13 @@ namespace Force.Workflow
 
         private Func<TRequest, Result<TResult, FailureInfo>> GetWorkflowDispatch(
             object request,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IWorkflowStep<TRequest, TResult>[] steps) =>
             r => FailureInfo.ConfigurationError($"Workflow for type: \"{request.GetType()}\" is not supported");
 
         private Func<TRequest, Result<TResult, FailureInfo>> GetWorkflowDispatch(
             ICommand command,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IWorkflowStep<TRequest, TResult>[] steps)
         {
             var ht = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
@@ -31,7 +31,7 @@ namespace Force.Workflow
         
         private Func<TRequest, Result<TResult, FailureInfo>> GetWorkflowDispatch<TReturn>(
             ICommand<TReturn> command,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IWorkflowStep<TRequest, TResult>[] steps)
         {
             var ht = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
@@ -41,7 +41,7 @@ namespace Force.Workflow
 
         private Func<TRequest, Result<TResult, FailureInfo>> GetWorkflowDispatch<TReturn>(
             IQuery<TReturn> query,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IWorkflowStep<TRequest, TResult>[] steps)
         {
             var ht = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
@@ -50,7 +50,7 @@ namespace Force.Workflow
         }
 
         private static Func<TRequest, Result<TResult, FailureInfo>> GetVoidTerminalFunc(
-            IServiceFactory sp,
+            IServiceProvider sp,
             Type ht)
         {
             var h = (IHandler<TRequest>) sp.GetService(ht);
@@ -66,7 +66,7 @@ namespace Force.Workflow
 
             if (h is IHasUnitOfWork uowh)
             {
-                uowh.UnitOfWork = sp.GetService<IUnitOfWork>();
+                uowh.UnitOfWork = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));
             }
 
             return r =>
@@ -77,7 +77,7 @@ namespace Force.Workflow
         }
         
         private static Func<TRequest, Result<TResult, FailureInfo>> GetTerminalFunc(
-            IServiceFactory sp,
+            IServiceProvider sp,
             Type ht)
         {
             var h = (IHandler<TRequest, TResult>) sp.GetService(ht);
@@ -93,7 +93,7 @@ namespace Force.Workflow
             
             if (h is IHasUnitOfWork uowh)
             {
-                uowh.UnitOfWork = sp.GetService<IUnitOfWork>();
+                uowh.UnitOfWork = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));
             }
 
             return r =>
@@ -105,7 +105,7 @@ namespace Force.Workflow
 
         public Func<TRequest, Result<TResult, FailureInfo>> GetWorkflow(
             object request,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IWorkflowStep<TRequest, TResult>[] steps)
         {
             return GetWorkflowDispatch((dynamic) request, sp, steps);
@@ -126,7 +126,7 @@ namespace Force.Workflow
             return terminalFunc;
         }
 
-        public Result<TResult, FailureInfo> Process(TRequest request, IServiceFactory sp) =>
+        public Result<TResult, FailureInfo> Process(TRequest request, IServiceProvider sp) =>
             GetWorkflow(request, sp, _steps)(request);
     }
 }

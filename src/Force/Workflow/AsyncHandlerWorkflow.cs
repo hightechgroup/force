@@ -23,7 +23,7 @@ namespace Force.Workflow
 
         private Func<TRequest, Task<Result<TReturn, FailureInfo>>> GetAsyncWorkflowDispatch<TReturn>(
             ICommand<Task> command,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IAsyncWorkflowStep<TRequest, TReturn>[] steps)
         {
             var ht = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(Task));
@@ -33,7 +33,7 @@ namespace Force.Workflow
         
         private Func<TRequest, Task<Result<TReturn, FailureInfo>>> GetAsyncWorkflowDispatch<TReturn>(
             ICommand<Task<TReturn>> command,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IAsyncWorkflowStep<TRequest, TReturn>[] steps)
         {
             var ht = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(Task<TResult>));
@@ -43,7 +43,7 @@ namespace Force.Workflow
         
         private Func<TRequest, Task<Result<TReturn, FailureInfo>>> GetAsyncWorkflowDispatch<TReturn>(
             IQuery<Task<TReturn>> query,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IAsyncWorkflowStep<TRequest, TReturn>[] steps)
         {
             var ht = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(Task<TReturn>));
@@ -52,7 +52,7 @@ namespace Force.Workflow
         }
         
         private static Func<TRequest, Task<Result<TReturn, FailureInfo>>> GetAsyncTerminalFunc<TReturn>(
-            IServiceFactory sp,
+            IServiceProvider sp,
             Type ht)
         {
             dynamic h = sp.GetService(ht);
@@ -69,7 +69,7 @@ namespace Force.Workflow
             
             if (h is IHasUnitOfWork uowh)
             {
-                uowh.UnitOfWork = sp.GetService<IUnitOfWork>();
+                uowh.UnitOfWork = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));
             }
 
             return async r =>
@@ -80,7 +80,7 @@ namespace Force.Workflow
         }
         
         private static Func<TRequest, Task<Result<TReturn, FailureInfo>>> GetAsyncVoidTerminalFunc<TReturn>(
-            IServiceFactory sp,
+            IServiceProvider sp,
             Type ht)
         {
             dynamic h = sp.GetService(ht);
@@ -97,7 +97,7 @@ namespace Force.Workflow
             
             if (h is IHasUnitOfWork uowh)
             {
-                uowh.UnitOfWork = sp.GetService<IUnitOfWork>();
+                uowh.UnitOfWork = (IUnitOfWork) sp.GetService(typeof(IUnitOfWork));
             }
 
             return async r =>
@@ -109,7 +109,7 @@ namespace Force.Workflow
         
         private Func<TRequest, Task<Result<TResult, FailureInfo>>> GetAsyncWorkflow(
             object request,
-            IServiceFactory sp,
+            IServiceProvider sp,
             IAsyncWorkflowStep<TRequest, TResult>[] steps)
         {
             return GetAsyncWorkflowDispatch<TResult>((dynamic) request, sp, steps);
@@ -142,7 +142,7 @@ namespace Force.Workflow
         }
 
 
-        public async Task<Result<TResult, FailureInfo>> ProcessAsync(TRequest request, IServiceFactory sp)
+        public async Task<Result<TResult, FailureInfo>> ProcessAsync(TRequest request, IServiceProvider sp)
         {
             var res = await GetAsyncWorkflow(request, sp, _steps)(request);
             return res;
