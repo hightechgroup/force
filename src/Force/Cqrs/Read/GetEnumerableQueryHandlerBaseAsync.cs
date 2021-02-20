@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Force.Cqrs.Delegates;
 using Force.Ddd;
 using Force.Extensions;
+using Force.Helpers;
 using Force.Linq.Pagination;
 
 namespace Force.Cqrs.Read
@@ -35,13 +35,12 @@ namespace Force.Cqrs.Read
 
         protected virtual async Task<IEnumerable<TListItem>> Fetch(IOrderedQueryable<TListItem> sorted, TQuery query)
         {
-            var toListAsyncFunc =
-                (ToListAsyncDelegate<TListItem>) _serviceProvider.GetService(typeof(ToListAsyncDelegate<TListItem>)) ??
-                throw new InvalidOperationException(typeof(ToListAsyncDelegate<TListItem>).ToString());
+            var queryableHelper = (IQueryableHelper) _serviceProvider.GetService(typeof(IQueryableHelper)) ??
+                                  throw new InvalidOperationException(typeof(IQueryableHelper).ToString());
             return query switch
             {
                 IPaging paging => await Task.FromResult(sorted.ToPagedEnumerable(paging)),
-                _ => await toListAsyncFunc(sorted)
+                _ => await queryableHelper.ToListAsync(sorted)
             };
         }
     }

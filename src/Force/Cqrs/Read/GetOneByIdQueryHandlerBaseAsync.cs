@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Force.Cqrs.Delegates;
 using Force.Ddd;
+using Force.Helpers;
 
 namespace Force.Cqrs.Read
 {
@@ -31,11 +31,9 @@ namespace Force.Cqrs.Read
 
         public async Task<TDto> Handle(TQuery input)
         {
-            var firstOrDefaultAsyncFunc =
-                (FirstOrDefaultAsyncDelegate<TDto>) _serviceProvider.GetService(
-                    typeof(FirstOrDefaultAsyncDelegate<TDto>)) ??
-                throw new InvalidOperationException(typeof(FirstOrDefaultAsyncDelegate<TDto>).ToString());
-            return await firstOrDefaultAsyncFunc(Map(_queryable, input), (x => x.Id.Equals(input.Id)));
+            var queryableHelper = (IQueryableHelper) _serviceProvider.GetService(typeof(IQueryableHelper)) ??
+                                  throw new InvalidOperationException(typeof(IQueryableHelper).ToString());
+            return await queryableHelper.FirstOrDefaultAsync(Map(_queryable, input), (x => x.Id.Equals(input.Id)));
         }
     }
 }
