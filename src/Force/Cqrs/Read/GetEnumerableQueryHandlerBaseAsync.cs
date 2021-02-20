@@ -36,7 +36,7 @@ namespace Force.Cqrs.Read
         protected virtual async Task<IEnumerable<TListItem>> Fetch(IOrderedQueryable<TListItem> sorted, TQuery query)
         {
             var queryableHelper = (IQueryableHelper) _serviceProvider.GetService(typeof(IQueryableHelper)) ??
-                                  throw new InvalidOperationException(typeof(IQueryableHelper).ToString());
+                                  throw new InvalidOperationException(nameof(IQueryableHelper));
             return query switch
             {
                 IPaging paging => await Task.FromResult(sorted.ToPagedEnumerable(paging)),

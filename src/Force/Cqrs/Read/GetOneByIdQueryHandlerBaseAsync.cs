@@ -32,7 +32,7 @@ namespace Force.Cqrs.Read
         public async Task<TDto> Handle(TQuery input)
         {
             var queryableHelper = (IQueryableHelper) _serviceProvider.GetService(typeof(IQueryableHelper)) ??
-                                  throw new InvalidOperationException(typeof(IQueryableHelper).ToString());
+                                  throw new InvalidOperationException(nameof(IQueryableHelper));
             return await queryableHelper.FirstOrDefaultAsync(Map(_queryable, input), (x => x.Id.Equals(input.Id)));
         }
     }
