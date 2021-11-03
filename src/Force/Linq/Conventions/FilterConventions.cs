@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Force.Linq.Conventions
 {
     public class FilterConventions
     {
-        private FilterConventions(IEnumerable<IFilterConvention> filterConventions = null)
+        protected FilterConventions(IEnumerable<IFilterConvention> filterConventions = null)
         {
             _filterConventions.AddRange(filterConventions ?? DefaultConventions);
         }
@@ -20,33 +21,40 @@ namespace Force.Linq.Conventions
         
         public static FilterConventions InitializeWithDefaultConventions()
             => Initialize(DefaultConventions);
-        
-        public static FilterConventions Initialize(IEnumerable<IFilterConvention> conventions = null)
+
+        public static FilterConventions Initialize(IEnumerable<IFilterConvention> conventions = null,
+            bool throwOnAlreadyInitialized = true)
         {
             if (_instance != null)
             {
-                throw new InvalidOperationException("Filter conventions are already initialized");
+                if (throwOnAlreadyInitialized)
+                    throw new InvalidOperationException("Filter conventions are already initialized");
+                return _instance;
             }
 
-            _instance = new FilterConventions(conventions);
-            return Instance;
+            var instance = new FilterConventions(conventions);
+            var result = SetInstance(instance);
+            
+            if (instance != result)
+            {
+                if (throwOnAlreadyInitialized)
+                    throw new InvalidOperationException("Filter conventions are already initialized");
+            }
+
+            return result;
         }
 
         private static FilterConventions _instance;
-        
-        public static FilterConventions Instance
+
+        protected static FilterConventions SetInstance(FilterConventions instance)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    InitializeWithDefaultConventions();
-                }
-                
-                return _instance;
-            }
+            Interlocked.CompareExchange(ref _instance, instance, null);
+            return _instance;
         }
         
+        public static FilterConventions Instance
+            => _instance ?? Initialize(throwOnAlreadyInitialized: false);
+
         private List<IFilterConvention> _filterConventions = new List<IFilterConvention>();
 
         internal IFilterConvention GetConvention(Type targetType, Type valueType) => 
