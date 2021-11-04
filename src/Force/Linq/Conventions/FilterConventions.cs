@@ -48,8 +48,8 @@ namespace Force.Linq.Conventions
 
         protected static FilterConventions SetInstance(FilterConventions instance)
         {
-            Interlocked.CompareExchange(ref _instance, instance, null);
-            return _instance;
+            var prev = Interlocked.CompareExchange(ref _instance, instance, null);
+            return prev ?? instance;
         }
         
         public static FilterConventions Instance
