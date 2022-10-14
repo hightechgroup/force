@@ -33,7 +33,7 @@ namespace Force.Linq.Pagination
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentException("Page must be >= 0", nameof(value));
+                    throw new ArgumentException("Page must be > 0", nameof(value));
                 }
 
                 _page = value;
