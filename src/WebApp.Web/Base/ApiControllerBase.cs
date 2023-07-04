@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-
-namespace Force.Web.Base;
+namespace WebApp.Web.Base;
 
 [ApiController]
 [Route("api/[controller]")]

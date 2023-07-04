@@ -1,6 +1,4 @@
-﻿using Force.Web.Features.WeatherForecast;
-
-namespace Force.Web.Base;
+﻿namespace WebApp.Web.Base;
 
 [UsedImplicitly]
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

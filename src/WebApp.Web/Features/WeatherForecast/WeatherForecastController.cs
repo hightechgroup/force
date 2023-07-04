@@ -1,6 +1,6 @@
-using Force.Web.Features.WeatherForecast.GetWeatherForecast;
+using WebApp.Web.Base;
 
-namespace Force.Web.Features.WeatherForecast;
+namespace WebApp.Web.Features.WeatherForecast;
 
 public class WeatherForecastController : ApiControllerBase
 {

@@ -1,10 +1,27 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using WebApp.Web.Base;
 
-namespace Force.Web;
+namespace WebApp.Web;
 
 internal static class Settings
 {
+    public static WebApplicationBuilder AddDatabase<T>(this WebApplicationBuilder builder)
+        where T:DbContext
+    {
+        builder.Services.AddDbContext<T>(options =>
+            {
+                options.UseInMemoryDatabase("InMemory");
+                // options.UseNpgsql(
+                //     builder.Configuration.GetConnectionString("Default"),
+                //     x => x.MigrationsAssembly(typeof(T).Assembly.ToString()));
+            }
+        );
+
+        return builder;
+    }
+    
     public static WebApplicationBuilder AddHttpAccessor(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

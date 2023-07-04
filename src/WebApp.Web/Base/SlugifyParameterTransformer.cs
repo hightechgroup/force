@@ -1,6 +1,6 @@
 using static System.Text.RegularExpressions.Regex;
 
-namespace Force.Web.Base;
+namespace WebApp.Web.Base;
 
 public class SlugifyParameterTransformer : IOutboundParameterTransformer
 {
