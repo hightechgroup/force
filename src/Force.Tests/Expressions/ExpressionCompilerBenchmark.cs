@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Engines;
 using Force.Expressions;
 
 namespace Force.Tests.Expressions

@@ -1,59 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Force.Ddd;
-using Force.Linq.Pagination;
 
 namespace Force.Linq
 {
     public static class QueryableExtentions
     {
-        #region Filter
-
-        public static IQueryable<T> FilterByConventions<T>(this IQueryable<T> queryable, object filter, 
-            ComposeKind composeKind = ComposeKind.And)
-        {
-            if (filter == null) throw new ArgumentNullException(nameof(filter));
-            var spec = (Spec<T>)SpecBuilder<T>.Build((dynamic) filter, composeKind);
-            return spec != null
-                ? queryable.Where(spec)
-                : queryable;
-        }
-
-        public static IQueryable<T> Filter<T>(this IQueryable<T> queryable, IFilter<T> filter)
-            => filter.Filter(queryable);
-        
-        public static IOrderedQueryable<T> FilterAndSort<T, TQuery>(this IQueryable<T> queryable, TQuery query)
-            where TQuery : IFilter<T>, ISorter<T>
-            => queryable
-                .Filter(query)
-                .Sort(query);
-
-        public static PagedEnumerable<T> FilterSortAndPaginate<T, TQuery>(this IQueryable<T> queryable, TQuery query)
-            where TQuery : IFilter<T>, ISorter<T>, IPaging
-            => queryable
-                .FilterAndSort(query)
-                .ToPagedEnumerable(query);
-
-        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition,
-            Expression<Func<T, bool>> predicate)
-        {
-            return condition ? query.Where(predicate) : query;
-        }
-
-        public static IQueryable<T> WhereIf<T>(this IQueryable<T> query, bool condition,
-            Expression<Func<T, bool>> predicateIfTrue, Expression<Func<T, bool>> predicateIfFalse)
-            => condition
-                ? query.Where(predicateIfTrue)
-                : query.Where(predicateIfFalse);
-
-        public static IQueryable<T> WhereIfNotNull<T>(this IQueryable<T> query, object obj,
-            Expression<Func<T, bool>> predicateIfTrue)
-            => query.WhereIf(obj != null, predicateIfTrue);
-        
-        #endregion
-
         #region Order
 
         public static IOrderedQueryable<T> OrderById<T>(this IQueryable<T> queryable)

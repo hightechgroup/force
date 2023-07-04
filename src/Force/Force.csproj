@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>2.0-alpha3</Version>
+    <Version>2.0-alpha4</Version>
     <Description>General-purpose .NET Library for rapid application development</Description>
     <PackageProjectUrl>https://github.com/hightechgroup/force</PackageProjectUrl>
     <Company>HighTech Group</Company>
     <Authors>HighTech Group</Authors>
     <RepositoryUrl>https://github.com/hightechgroup/force</RepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
 </Project>

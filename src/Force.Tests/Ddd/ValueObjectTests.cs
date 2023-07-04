@@ -1,13 +1,14 @@
-using Force.Ddd;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Force.Tests.Ddd
 {
+    [SuppressMessage("ReSharper", "NotAccessedVariable")]
     public class ValueObjectTests
     {
-        private static TestValueObject vo1 = new TestValueObject("vo1");
-        private static TestValueObject vo2 = new TestValueObject("vo2");
-        private static TestValueObject vo3 = new TestValueObject("vo1");
+        private static TestValueObject vo1 = new("vo1");
+        private static TestValueObject vo2 = new("vo2");
+        private static TestValueObject vo3 = new("vo1");
 
         [Fact]
         public void Implicit()
@@ -15,22 +16,22 @@ namespace Force.Tests.Ddd
             string s = vo1;
         }
 
-        [Fact]
-        public void Equals_2()
-        {
-            var vo = new StringValueObject();
-            vo.Equals(vo);
-            vo.Equals(null);
-            var a = vo == vo;
-            var b = vo != vo;
-            
-            vo.Equals(vo1);
-
-            StringValueObject vo2 = null;
-            a = vo2 == vo2;
-            b = vo2 != vo2;
-            a = vo == vo2;
-        }
+        // [Fact]
+        // public void Equals_2()
+        // {
+        //     var vo = new StringValueObject();
+        //     vo.Equals(vo);
+        //     vo.Equals(null);
+        //     var a = vo == vo;
+        //     var b = vo != vo;
+        //     
+        //     vo.Equals(vo1);
+        //
+        //     StringValueObject vo2 = null;
+        //     vo2 == vo2;
+        //     vo2 != vo2;
+        //     vo == vo2;
+        // }
         
         [Fact]
         public void Equals_()

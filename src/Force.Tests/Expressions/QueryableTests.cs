@@ -16,14 +16,6 @@ namespace Force.Tests.Expressions
         }
 
         [Fact]
-        public void WhereIf()
-        {
-            DbContext
-                .Products
-                .WhereIf(true, x => true);
-        }
-
-        [Fact]
         public void OrderByAndOrderByDescending_PropertyDoesntExist_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() =>
@@ -81,54 +73,6 @@ namespace Force.Tests.Expressions
             var res = DbContext
                 .Products
                 .Sort(sorter) 
-                .ToList();
-            
-            testCase.Assert(res);
-        }
-       
-        [Fact]
-        public void FilterByConventions_ThrowsArgument()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                DbContextFixture
-                    .DbContext
-                    .Products
-                    .FilterByConventions(null);
-            });
-        }
-        
-        public static IEnumerable<object[]> FilterData => TestCaseBuilder
-            .For<ProductFilter, List<Product>>()
-            .Add(new ProductFilter(), x => x.Any())
-            .Add(new ProductFilter()
-            {
-                Id = 1,
-                Name = DbContextFixture.FirstProductName
-            }, x => x.Any() && x.All(y => y.Name.StartsWith(DbContextFixture.FirstProductName)))
-            .Add(new ProductFilter()
-            {
-                Id = 1,
-            }, x => x.Any() && x.All(y => y.Id == 1))
-            .Add(new ProductFilter()
-            {
-                Id = 2,
-                Name = "Not" + DbContextFixture.SecondProductName
-            }, x => !x.Any())
-            .Add(new ProductFilter()
-            {
-                Id = 2,
-            }, x => x.Any())
-        ;
-        
-        [Theory]
-        [MemberData(nameof(FilterData))]
-        public void FilterByConventions(TestCase<ProductFilter, List<Product>> testCase)
-        {
-            var res = DbContextFixture
-                .DbContext
-                .Products
-                .FilterByConventions(testCase.Input)
                 .ToList();
             
             testCase.Assert(res);

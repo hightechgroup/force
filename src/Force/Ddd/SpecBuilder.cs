@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Force.Expressions;
 using Force.Linq;
-using Force.Linq.Conventions;
 using Force.Reflection;
 
 namespace Force.Ddd
@@ -86,18 +85,19 @@ namespace Force.Ddd
         private static Expression<Func<TSubject, bool>> BuildExpression(ParameterExpression parameter, 
             PropertyInfoAndValue x)
         {
-            var property = Expression.Property(parameter, x.Property);
-            var val = (x.Value as string)?.ToLower() ?? x.Value;
-            Expression value = Expression.Constant(val);
-            
-            var convention = FilterConventions.Instance.GetConvention(property.Type, x.Value.GetType());
-            if (convention == null)
-            {
-                return null;
-            }
-            
-            var body = convention.BuildFilterBody(property, value);
-            return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
+            throw new NotImplementedException();
+            // var property = Expression.Property(parameter, x.Property);
+            // var val = (x.Value as string)?.ToLower() ?? x.Value;
+            // Expression value = Expression.Constant(val);
+            //
+            // var convention = FilterConventions.Instance.GetConvention(property.Type, x.Value.GetType());
+            // if (convention == null)
+            // {
+            //     return null;
+            // }
+            //
+            // var body = convention.BuildFilterBody(property, value);
+            // return Expression.Lambda<Func<TSubject, bool>>(body, parameter);
         }
     }
 

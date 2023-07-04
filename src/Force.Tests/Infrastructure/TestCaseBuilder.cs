@@ -7,14 +7,13 @@ namespace Force.Tests.Infrastructure
 {
     public static class TestCaseBuilder
     {
-        public static TestCaseBuilder<TIn, TOut> For<TIn, TOut>()
-            => new TestCaseBuilder<TIn,TOut>();
+        public static TestCaseBuilder<TIn, TOut> For<TIn, TOut>() => new();
             
     }
 
     public class TestCaseBuilder<TIn, TOut>: IEnumerable<object[]>
     {
-        List<TestCase<TIn, TOut>> testCases = new List<TestCase<TIn, TOut>>();
+        List<TestCase<TIn, TOut>> testCases = new();
 
         public TestCaseBuilder<TIn, TOut> Add(TIn input, Func<TOut, bool> assert, string errorMessage = null)
         {

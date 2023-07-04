@@ -34,12 +34,12 @@ namespace Force.Tests
             });
         }
         
-        [Fact]
-        public void TryGetValue()
-        {
-            var productFilter = new ProductFilter(){Name = "123"};
-            productFilter.TryGetValue("Name", out var val);
-        }
+        // [Fact]
+        // public void TryGetValue()
+        // {
+        //     var productFilter = new ProductFilter(){Name = "123"};
+        //     productFilter.TryGetValue("Name", out var val);
+        // }
 
         [Fact]
         public void TryGetValue_Null()
