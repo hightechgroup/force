@@ -23,10 +23,10 @@ public class GetWeatherForecastHandler: IRequestHandler<GetWeatherForecastQuery,
     public Task<IEnumerable<WeatherForecastListItem>> Handle(GetWeatherForecastQuery request,
         CancellationToken cancellationToken)
     {
-        _dbContext.Set<Data.WeatherForecast>().Add(new Data.WeatherForecast() { Summary = Summaries[0] });
+        _dbContext.Set<Domain.WeatherForecast>().Add(new Domain.WeatherForecast() { Summary = Summaries[0] });
         _dbContext.SaveChanges();
 
-        var fc = _dbContext.Set<Data.WeatherForecast>().ToList();
+        var fc = _dbContext.Set<Domain.WeatherForecast>().ToList();
         
         return Enumerable
             .Range(1, 5)
