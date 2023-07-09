@@ -3,7 +3,11 @@ using WebApp.Data;
 
 namespace WebApp.Web.Features.WeatherForecast;
 
-public record GetWeatherForecastQuery([Range(0,5)]int Skip): IRequest<IEnumerable<WeatherForecastListItem>>;
+public record GetWeatherForecastQuery([Range(0, 5)] int Skip) : IRequest<IEnumerable<WeatherForecastListItem>>
+{
+    // TODO: only to workaround bugs in the test library
+    public override string ToString() => Skip.ToString();
+}
 
 [UsedImplicitly]
 public class GetWeatherForecastHandler: IRequestHandler<GetWeatherForecastQuery, IEnumerable<WeatherForecastListItem>>

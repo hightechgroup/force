@@ -11,8 +11,9 @@ public abstract class WeatherForecastControllerTestsBase<T>: ControllerTestsBase
     [Fact]
     public async Task Test1()
     {
-        var client = CreateControllerClient(); // throws exception. Perhaps because of .NET 6/.NET 8 mismatch
-        var response = await client.SendAsync(c => c.Get(new GetWeatherForecastQuery(0)));
+        var client = CreateControllerClient();
+        var request = new GetWeatherForecastQuery(0);
+        var response = await client.SendAsync(c => c.Get(request));
         Assert.NotNull(response);
     }
 }

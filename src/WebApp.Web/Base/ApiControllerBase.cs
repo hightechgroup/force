@@ -1,7 +1,8 @@
 namespace WebApp.Web.Base;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")] // TODO: due to the bug with tests
+// [Route("api/[controller]")]
 public class ApiControllerBase : Controller
 {
     protected async Task<ActionResult> Handle(

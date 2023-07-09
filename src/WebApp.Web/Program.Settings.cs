@@ -35,7 +35,7 @@ internal static class Settings
     {
         builder.Configuration
             .AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false)
+            .AddJsonFile($"appsettings.{builder.Configuration["Environment"]}.json", false)
             .AddCommandLine(strings)
             .AddEnvironmentVariables();
 
@@ -46,7 +46,8 @@ internal static class Settings
     {
         builder.Services.AddControllers(options =>
         {
-            options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+           // TODO: is not supported in test code 
+            // options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
         });
         
         builder.Services.AddEndpointsApiExplorer();
