@@ -12,10 +12,10 @@ internal static class Settings
     {
         builder.Services.AddDbContext<T>(options =>
             {
-                options.UseInMemoryDatabase("InMemory");
-                // options.UseNpgsql(
-                //     builder.Configuration.GetConnectionString("Default"),
-                //     x => x.MigrationsAssembly(typeof(T).Assembly.ToString()));
+                //options.UseInMemoryDatabase("InMemory");
+                options.UseNpgsql(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly(typeof(T).Assembly.ToString()));
             }
         );
 
