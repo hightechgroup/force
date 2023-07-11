@@ -1,0 +1,20 @@
+version: '1.0'
+
+services:
+  
+  web:
+    environment:
+      - ASPNETCORE_URLS=http://+:8082
+      - "ASPNETCORE_ENVIRONMENT=Docker"
+    ports:
+      - target: 8082
+        published: 6001
+        protocol: tcp
+        mode: host
+
+  db:
+    ports:
+      - target: 5432
+        published: 6000
+        protocol: tcp
+        mode: host

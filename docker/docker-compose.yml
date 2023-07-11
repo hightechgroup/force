@@ -1,0 +1,37 @@
+version: '1.0'
+
+services:
+  
+  web:
+    image: force-web
+    build:
+      context: ../
+      dockerfile: ./src/WebApp.Web/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=http://+:8082
+      - "ASPNETCORE_ENVIRONMENT=Docker"
+    ports:
+      - target: 8082
+        published: 6001
+        protocol: tcp
+        mode: host
+    depends_on:
+      - db
+
+  db:
+    image: "postgres:15"
+    restart: on-failure
+    env_file:
+      - postgres.env
+    volumes:
+      - web-app-db:/var/lib/postgresql/data:rw
+    ports:
+      - target: 5432
+        published: 6000
+        protocol: tcp
+        mode: host
+
+
+volumes:
+  web-app-db: 
