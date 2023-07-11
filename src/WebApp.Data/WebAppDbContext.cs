@@ -9,9 +9,6 @@ public class WebAppDbContext: DbContext
 
     public WebAppDbContext(DbContextOptions<WebAppDbContext> options) : base(options)
     {
-        if (Database.EnsureCreated())
-        {
-            Console.WriteLine("log");
-        }
+        Database.EnsureCreated();
     }
 }
