@@ -1,5 +1,5 @@
+using Mapster;
 using WebApp.Data;
-using WebApp.Web.Features.WeatherSummary;
 
 namespace WebApp.Web.Features.WeatherForecast;
 
@@ -11,6 +11,8 @@ public record AddWeatherForecast(AddWeatherForecastModel Model): IRequest
 public class AddWeatherForecastHandler : IRequestHandler<AddWeatherForecast>
 {
     private readonly WebAppDbContext _dbContext;
+    
+    
 
     public AddWeatherForecastHandler(WebAppDbContext dbContext)
     {
@@ -19,17 +21,11 @@ public class AddWeatherForecastHandler : IRequestHandler<AddWeatherForecast>
 
     public async Task Handle(AddWeatherForecast request, CancellationToken cancellationToken)
     {
-        var forecastEntity = new Domain.WeatherForecast
-        {
-            Date = request.Model.Date,
-            TemperatureC = request.Model.TemperatureC,
-            AirHumidityPercent = request.Model.AirHumidityPercent,
-            WindSpeed = request.Model.WindSpeed,
-            TemperatureF = 32 + (int)(request.Model.TemperatureC / 0.5556),
-            SummaryId = request.Model.WeatherSummaryId,
-            Summary = null,
-        };
-
+        TypeAdapterConfig<AddWeatherForecastModel, Domain.WeatherForecast>.NewConfig()
+            .Map(x => x.SummaryId, y => y.WeatherSummaryId)
+            .Map(x=>x.TemperatureF, y => 32 + (int)(y.TemperatureC / 0.5556));
+        
+        var forecastEntity = request.Model.Adapt<Domain.WeatherForecast>();
         _dbContext.WeatherForecasts.Add(forecastEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }

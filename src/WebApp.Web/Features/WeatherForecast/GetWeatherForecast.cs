@@ -7,7 +7,7 @@ namespace WebApp.Web.Features.WeatherForecast;
 
 public record GetWeatherForecastQuery(WeatherForecastFilter? Filter) : IRequest<IEnumerable<WeatherForecastListItem>>
 {
-    public required WeatherForecastFilter Filter { get; init; } = Filter ?? new WeatherForecastFilter();
+    public WeatherForecastFilter? Filter { get; init; } = Filter ?? new WeatherForecastFilter();
 }
 
 

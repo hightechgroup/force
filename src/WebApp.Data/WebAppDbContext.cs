@@ -13,8 +13,4 @@ public class WebAppDbContext: DbContext
     {
         Database.EnsureCreated();
     }
-    
-    public WebAppDbContext() : base()
-    {
-    }
 }

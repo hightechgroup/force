@@ -1,3 +1,4 @@
+using Mapster;
 using WebApp.Data;
 
 namespace WebApp.Web.Features.WeatherSummary;
@@ -18,11 +19,7 @@ public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary>
 
     public async Task Handle(AddWeatherSummary request, CancellationToken cancellationToken)
     {
-        var summaryEntity = new Domain.WeatherSummary
-        {
-            Summary = request.model.Summary,
-        };
-
+        var summaryEntity = request.model.Adapt<Domain.WeatherSummary>();
         _dbContext.WeatherSummaries.Add(summaryEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
