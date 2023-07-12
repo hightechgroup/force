@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using AutoFilterer.Swagger;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApp.Web.Base;
@@ -12,10 +13,11 @@ internal static class Settings
     {
         builder.Services.AddDbContext<T>(options =>
             {
-                //options.UseInMemoryDatabase("InMemory");
-                options.UseNpgsql(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                    x => x.MigrationsAssembly(typeof(T).Assembly.ToString()));
+                options
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly(typeof(T).Assembly.ToString()));
             }
         );
 
@@ -49,8 +51,9 @@ internal static class Settings
            // TODO: is not supported in test code 
             // options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
         });
-        
         builder.Services.AddEndpointsApiExplorer();
+        
+        builder.Services.AddDateOnlyTimeOnlyStringConverters();
         builder.Services.AddSwaggerGen(c =>
         {
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -76,6 +79,8 @@ internal static class Settings
                     new string[] { }
                 }
             });
+            c.UseAutoFiltererParameters();
+            c.UseDateOnlyTimeOnlyStringConverters();
         });
         return builder;
     }
@@ -87,7 +92,7 @@ internal static class Settings
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         return builder;
     }
-    
+
     // ReSharper disable once UnusedMethodReturnValue.Global
     // ReSharper disable once InconsistentNaming
     public static WebApplication UseSwaggerAndSwaggerUI(this WebApplication app)
