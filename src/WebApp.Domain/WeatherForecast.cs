@@ -26,17 +26,4 @@ public class WeatherForecast
     public required int SummaryId { get; init; }
     
     public virtual required WeatherSummary Summary { get; init; }
-    
-    [SetsRequiredMembers]
-    public WeatherForecast(DateOnly date, int temperatureC, int windSpeed, int airHumidityPercent, int summaryId)
-    {
-        Date = date;
-        TemperatureC = temperatureC;
-        TemperatureF = 32 + (int)(temperatureC / 0.5556);
-        WindSpeed = windSpeed;
-        AirHumidityPercent = airHumidityPercent;
-        SummaryId = summaryId;
-    }
-
-    private WeatherForecast(){}
 }

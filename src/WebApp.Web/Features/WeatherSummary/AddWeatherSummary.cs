@@ -19,7 +19,10 @@ public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary, int>
 
     public async Task<int> Handle(AddWeatherSummary request, CancellationToken cancellationToken)
     {
-        var summaryEntity = new Domain.WeatherSummary(request.Summary);
+        var summaryEntity = new Domain.WeatherSummary()
+        {
+            Summary = request.Summary,
+        };
         _dbContext.WeatherSummaries.Add(summaryEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return summaryEntity.Id;

@@ -20,8 +20,16 @@ public class AddWeatherForecastHandler : IRequestHandler<AddWeatherForecast, int
 
     public async Task<int> Handle(AddWeatherForecast request, CancellationToken cancellationToken)
     {
-        var forecastEntity = new Domain.WeatherForecast(request.Date, request.TemperatureC, request.WindSpeed,
-            request.AirHumidityPercent, request.WeatherSummaryId);
+        var forecastEntity = new Domain.WeatherForecast()
+        {
+            Date = request.Date,
+            TemperatureC = request.TemperatureC,
+            TemperatureF = 32 + (int)(request.TemperatureC / 0.5556),
+            WindSpeed = request.WindSpeed,
+            AirHumidityPercent = request.AirHumidityPercent,
+            SummaryId = request.WeatherSummaryId,
+            Summary = null,
+        };
         _dbContext.WeatherForecasts.Add(forecastEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return forecastEntity.Id;

@@ -9,10 +9,4 @@ public class WeatherSummary
     
     [Required]
     public required string Summary { get; init; }
-
-    [SetsRequiredMembers]
-    public WeatherSummary(string summary)
-    {
-        Summary = summary;
-    }
 }
