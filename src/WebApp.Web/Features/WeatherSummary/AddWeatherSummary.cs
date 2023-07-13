@@ -3,12 +3,12 @@ using WebApp.Data;
 
 namespace WebApp.Web.Features.WeatherSummary;
 
-public record AddWeatherSummary(string Summary): IRequest
+public record AddWeatherSummary(string Summary): IRequest<int>
 {
     
 }
 
-public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary>
+public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary, int>
 {
     private readonly WebAppDbContext _dbContext;
 
@@ -17,10 +17,11 @@ public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary>
         _dbContext = dbContext;
     }
 
-    public async Task Handle(AddWeatherSummary request, CancellationToken cancellationToken)
+    public async Task<int> Handle(AddWeatherSummary request, CancellationToken cancellationToken)
     {
-        var summaryEntity = request.Adapt<Domain.WeatherSummary>();
+        var summaryEntity = new Domain.WeatherSummary(request.Summary);
         _dbContext.WeatherSummaries.Add(summaryEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        return summaryEntity.Id;
     }
 }
