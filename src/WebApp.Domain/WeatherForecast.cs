@@ -25,5 +25,6 @@ public class WeatherForecast
     [Required]
     public required int SummaryId { get; init; }
     
+    [Required]
     public virtual required WeatherSummary Summary { get; init; }
 }

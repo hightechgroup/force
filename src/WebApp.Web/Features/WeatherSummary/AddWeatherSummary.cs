@@ -1,14 +1,25 @@
-using Mapster;
+using FluentValidation;
 using WebApp.Data;
 
 namespace WebApp.Web.Features.WeatherSummary;
 
 public record AddWeatherSummary(string Summary): IRequest<int>
 {
-    
 }
 
-public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary, int>
+[UsedImplicitly]
+public class AddWeatherSummaryValidator : AbstractValidator<AddWeatherSummary>
+{
+    public AddWeatherSummaryValidator()
+    {
+        RuleFor(x => x.Summary)
+            .NotEmpty()
+            .MinimumLength(3);
+    }
+}
+
+[UsedImplicitly]
+public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary,int>
 {
     private readonly WebAppDbContext _dbContext;
 

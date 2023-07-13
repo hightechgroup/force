@@ -1,3 +1,4 @@
+using FluentValidation;
 using Mapster;
 using WebApp.Data;
 
@@ -8,6 +9,35 @@ public record AddWeatherForecast(DateOnly Date, int TemperatureC, int WindSpeed,
 {
 }
 
+[UsedImplicitly]
+public class AddWeatherForecastValidator : AbstractValidator<AddWeatherForecast>
+{
+    public AddWeatherForecastValidator()
+    {
+        RuleFor(x => x.TemperatureC)
+            .NotEmpty()
+            .GreaterThan(100)
+            .LessThan(100);
+
+        RuleFor(x => x.AirHumidityPercent)
+            .NotEmpty()
+            .GreaterThan(0)
+            .LessThan(100);
+        
+        RuleFor(x => x.WindSpeed)
+            .NotEmpty()
+            .GreaterThan(0)
+            .LessThan(50);
+
+        RuleFor(x => x.Date)
+            .NotEmpty();
+        
+        RuleFor(x => x.WeatherSummaryId)
+            .NotEmpty();
+    }
+}
+
+[UsedImplicitly]
 public class AddWeatherForecastHandler : IRequestHandler<AddWeatherForecast, int>
 {
     private readonly WebAppDbContext _dbContext;

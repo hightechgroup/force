@@ -11,6 +11,7 @@
     <ItemGroup>
         <PackageReference Include="AutoFilterer.Swagger" Version="2.13.0" />
         <PackageReference Include="DateOnlyTimeOnly.AspNet.Swashbuckle" Version="2.1.1" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
         <PackageReference Include="Mapster" Version="7.4.0-pre06" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-preview.5.23302.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.5.23280.1" />
