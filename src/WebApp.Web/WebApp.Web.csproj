@@ -9,9 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoFilterer.Swagger" Version="2.13.0" />
+        <PackageReference Include="DateOnlyTimeOnly.AspNet.Swashbuckle" Version="2.1.1" />
+        <PackageReference Include="Mapster" Version="7.4.0-pre06" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-preview.5.23302.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.5.23280.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.5.23280.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-preview.5.23280.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0-preview.5.23280.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />

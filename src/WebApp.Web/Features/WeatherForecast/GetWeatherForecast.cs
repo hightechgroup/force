@@ -1,22 +1,20 @@
+using AutoFilterer.Extensions;
+using AutoFilterer.Types;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
-
 namespace WebApp.Web.Features.WeatherForecast;
 
-public record GetWeatherForecastQuery([Range(0, 5)] int Skip) : IRequest<IEnumerable<WeatherForecastListItem>>
+public record GetWeatherForecastQuery(WeatherForecastFilter? Filter) : IRequest<IEnumerable<WeatherForecastListItem>>
 {
-    // TODO: only to workaround bugs in the test library
-    public override string ToString() => Skip.ToString();
+    public WeatherForecastFilter Filter { get; init; } = Filter ?? new WeatherForecastFilter();
 }
+
 
 [UsedImplicitly]
 public class GetWeatherForecastHandler: IRequestHandler<GetWeatherForecastQuery, IEnumerable<WeatherForecastListItem>>
 {
-    private readonly DbContext _dbContext;
-
-    private static readonly string[] Summaries = {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly WebAppDbContext _dbContext;
 
     public GetWeatherForecastHandler(WebAppDbContext dbContext)
     {
@@ -24,37 +22,46 @@ public class GetWeatherForecastHandler: IRequestHandler<GetWeatherForecastQuery,
     }
     
 
-    public Task<IEnumerable<WeatherForecastListItem>> Handle(GetWeatherForecastQuery request,
+    public async Task<IEnumerable<WeatherForecastListItem>> Handle(GetWeatherForecastQuery request,
         CancellationToken cancellationToken)
     {
-        _dbContext.Set<Domain.WeatherForecast>().Add(new Domain.WeatherForecast() { Summary = Summaries[0] });
-        _dbContext.SaveChanges();
-
-        var fc = _dbContext.Set<Domain.WeatherForecast>().ToList();
-        
-        return Enumerable
-            .Range(1, 5)
-            .Skip(request.Skip)
-            .Select(index => new WeatherForecastListItem
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray()
-            .Cast<WeatherForecastListItem>()
-            .PipeTo(Task.FromResult);
+        return await _dbContext.WeatherForecasts
+            .ApplyFilter(request.Filter)
+            .ProjectToType<WeatherForecastListItem>()
+            .ToListAsync(cancellationToken);
     }
 
 }
 
+[UsedImplicitly]
 public class WeatherForecastListItem
 {
+    static WeatherForecastListItem()
+    {
+        TypeAdapterConfig<Domain.WeatherForecast, WeatherForecastListItem>.NewConfig()
+            .Map(x => x.Summary, y=>y.Summary.Summary);
+    }
+    
+    public int Id { get; set; }
+    
     public DateOnly Date { get; set; }
 
     public int TemperatureC { get; set; }
 
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    public int TemperatureF { get; set; }
 
-    public string? Summary { get; set; }
+    public string Summary { get; set; }
+}
+
+public class WeatherForecastFilter : PaginationFilterBase
+{
+    public virtual int? Id { get; set; }
+    
+    public virtual DateOnly? Date { get; set; }
+    
+    public virtual Range<int>? TemperatureC { get; set; }
+    
+    public virtual Range<int>? TemperatureF { get; set; }
+    
+    public virtual string? Summary { get; set; }
 }

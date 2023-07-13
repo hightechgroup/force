@@ -7,6 +7,8 @@ public class WebAppDbContext: DbContext
 {
     public DbSet<WeatherForecast> WeatherForecasts => Set<WeatherForecast>();
 
+    public DbSet<WeatherSummary> WeatherSummaries => Set<WeatherSummary>();
+
     public WebAppDbContext(DbContextOptions<WebAppDbContext> options) : base(options)
     {
         Database.EnsureCreated();

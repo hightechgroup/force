@@ -12,7 +12,7 @@ public abstract class WeatherForecastControllerTestsBase<T>: ControllerTestsBase
     public async Task Test1()
     {
         var client = CreateControllerClient();
-        var request = new GetWeatherForecastQuery(0);
+        var request = new GetWeatherForecastQuery(Filter: null);
         var response = await client.SendAsync(c => c.Get(request));
         Assert.NotNull(response);
     }
