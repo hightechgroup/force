@@ -25,7 +25,7 @@ public class AddWeatherForecastValidator : AbstractValidator<AddWeatherForecast>
             .MustAsync(async (weatherSummaryId, ct) =>
             {
                 return await _dbContext.WeatherSummaries
-                    .AnyAsync(x => x.Id == weatherSummaryId, cancellationToken: ct).ConfigureAwait(false);
+                    .AnyAsync(x => x.Id == weatherSummaryId, cancellationToken: ct);
             })
             .WithMessage("Database doesn't contain entity with given id.");
 
