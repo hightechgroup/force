@@ -7,7 +7,8 @@ var builder = WebApplication
     .AddDatabase<WebAppDbContext>()
     .AddHttpAccessor()
     .AddControllersAndSwagger()
-    .AddMediatR();
+    .AddMediatR()
+    .AddFluentValidation();
 
 var app = builder.Build();
 app

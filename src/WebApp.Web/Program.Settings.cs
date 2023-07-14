@@ -1,15 +1,18 @@
 using AutoFilterer.Swagger;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApp.Web.Base;
+using WebApp.Web.Features.WeatherForecast;
 
 namespace WebApp.Web;
 
 internal static class Settings
 {
     public static WebApplicationBuilder AddDatabase<T>(this WebApplicationBuilder builder)
-        where T:DbContext
+        where T : DbContext
     {
         builder.Services.AddDbContext<T>(options =>
             {
@@ -23,16 +26,16 @@ internal static class Settings
 
         return builder;
     }
-    
+
     public static WebApplicationBuilder AddHttpAccessor(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddScoped(x => x.GetRequiredService<IHttpContextAccessor>().HttpContext?.User.Identity 
+        builder.Services.AddScoped(x => x.GetRequiredService<IHttpContextAccessor>().HttpContext?.User.Identity
                                         ?? throw new InvalidOperationException("HttpContext is null"));
 
         return builder;
     }
-    
+
     public static WebApplicationBuilder ConfigureAppConfiguration(this WebApplicationBuilder builder, string[] strings)
     {
         builder.Configuration
@@ -48,11 +51,11 @@ internal static class Settings
     {
         builder.Services.AddControllers(options =>
         {
-           // TODO: is not supported in test code 
+            // TODO: is not supported in test code 
             // options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
         });
         builder.Services.AddEndpointsApiExplorer();
-        
+
         builder.Services.AddDateOnlyTimeOnlyStringConverters();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -90,6 +93,13 @@ internal static class Settings
         var type = typeof(Settings);
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(type));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddFluentValidation(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         return builder;
     }
 
