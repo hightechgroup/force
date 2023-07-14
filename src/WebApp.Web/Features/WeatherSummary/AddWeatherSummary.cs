@@ -1,25 +1,35 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 
 namespace WebApp.Web.Features.WeatherSummary;
 
-public record AddWeatherSummary(string Summary): IRequest<int>
+public record AddWeatherSummary([Required, MinLength(3)] string Summary) : IRequest<int>
 {
 }
 
 [UsedImplicitly]
 public class AddWeatherSummaryValidator : AbstractValidator<AddWeatherSummary>
 {
-    public AddWeatherSummaryValidator()
+    private readonly WebAppDbContext _dbContext;
+
+    public AddWeatherSummaryValidator(WebAppDbContext dbContext)
     {
+        _dbContext = dbContext;
+
         RuleFor(x => x.Summary)
-            .NotEmpty()
-            .MinimumLength(3);
+            .MustAsync(async (summary, ct) =>
+            {
+                var weatherSummaryExists = await _dbContext.WeatherSummaries
+                    .AnyAsync(x => x.Summary.ToLower() == summary.ToLower(), cancellationToken: ct);
+                return !weatherSummaryExists;
+            })
+            .WithMessage("That weather summary already exists");
     }
 }
 
 [UsedImplicitly]
-public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary,int>
+public class AddWeatherSummaryHandler : IRequestHandler<AddWeatherSummary, int>
 {
     private readonly WebAppDbContext _dbContext;
 
