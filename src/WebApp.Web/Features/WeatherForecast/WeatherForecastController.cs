@@ -9,6 +9,6 @@ public class WeatherForecastController : ApiControllerBase
         [FromQuery] GetWeatherForecastQuery request) => await Handle(request);
     
     [HttpPost]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<int>> Create(
         [FromBody] AddWeatherForecast request) => await Handle(request);
 }
