@@ -1,5 +1,6 @@
 using WebApp.Data;
 using WebApp.Web;
+using WebApp.Web.Base;
 
 var builder = WebApplication
     .CreateBuilder(args)
@@ -8,11 +9,14 @@ var builder = WebApplication
     .AddHttpAccessor()
     .AddControllersAndSwagger()
     .AddMediatR()
-    .AddFluentValidation();
+    .AddFluentValidation()
+    .AddMiddlewares();
+
 
 var app = builder.Build();
 app
     .UseControllers()
-    .UseSwaggerAndSwaggerUI();
+    .UseSwaggerAndSwaggerUI()
+    .UseMiddlewares();
 
 app.Run();
