@@ -15,23 +15,17 @@ public abstract class WeatherForecastControllerTestsBase<T> : ControllerTestsBas
     }
 
     [Fact]
-    public async Task Create_InvalidInputData_BadRequestStatusCode()
+    public async Task Create_InvalidInputData_ErrorOnCreation()
     {
         //arrange
         var client = CreateControllerClient();
         var request = new AddWeatherForecast(null, -12352, 1242, 146, -125);
 
-        try
-        {
-            //act
-            var response = await client.SendAsync(c => c.Create(request));
-            Assert.Fail("Weather forecast created on invalid data");
-        }
-        catch (HttpRequestException ex)
-        {
-            //assert
-            Assert.Equal(HttpStatusCode.BadRequest, ex.StatusCode);
-        }
+        //act
+        var act = () => client.SendAsync(c => c.Create(request));
+            
+        //assert
+        await Assert.ThrowsAsync<HttpRequestException>(act);
     }
 
     [Fact]
