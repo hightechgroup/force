@@ -9,6 +9,6 @@ public class WeatherSummaryController: ApiControllerBase
         [FromQuery] GetWeatherSummaryQuery request) => await Handle(request);
     
     [HttpPost]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<int>> Create(
         [FromBody] AddWeatherSummary request) => await Handle(request);
 }
