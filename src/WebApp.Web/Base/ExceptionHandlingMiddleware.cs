@@ -24,15 +24,15 @@ public class ExceptionHandlingMiddleware: IMiddleware
     {
         var response = new
         {
-            type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+            type = "https://tools.ietf.org/html/rfc9110#section-15.5.21",
             title = "One or more validation errors occurred.",
-            status = StatusCodes.Status400BadRequest,
+            status = StatusCodes.Status422UnprocessableEntity,
             errors = exception.ValidationMessages,
             traceId = httpContext.TraceIdentifier,
         };
         
         httpContext.Response.ContentType = "application/json";
-        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+        httpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
         await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
     private static async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
