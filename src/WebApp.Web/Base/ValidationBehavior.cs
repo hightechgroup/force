@@ -1,4 +1,6 @@
 using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace WebApp.Web.Base;
@@ -9,7 +11,10 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators) => _validators = validators;
+        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+        {
+            _validators = validators;
+        }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
@@ -17,9 +22,26 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             {
                 var context = new ValidationContext<TRequest>(request);
                 var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
-                var failures = validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
-                if (failures.Count != 0)
-                    throw new ValidationException(failures);
+                var errorsDict = new Dictionary<string, List<string>>();
+                foreach (var result in validationResults)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        if (errorsDict.ContainsKey(error.PropertyName))
+                        {
+                            errorsDict[error.PropertyName].Add(error.ErrorMessage);
+                        }
+                        else
+                        {
+                            errorsDict.Add(error.PropertyName, new List<string> {error.ErrorMessage});
+                        }
+                    }
+                }
+
+                if (errorsDict.Any())
+                {
+                    throw new CustomValidationException(errorsDict);
+                }
             }
             return await next();
         }
