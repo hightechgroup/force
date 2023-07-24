@@ -22,8 +22,10 @@ services:
   db:
     image: "postgres:15"
     restart: on-failure
-    env_file:
-      - postgres.env
+    environment:
+      - POSTGRES_DB=force_db
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
     volumes:
       - web-app-db:/var/lib/postgresql/data:rw
     ports:

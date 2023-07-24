@@ -39,7 +39,8 @@ public class WeatherForecastListItem
     static WeatherForecastListItem()
     {
         TypeAdapterConfig<Domain.WeatherForecast, WeatherForecastListItem>.NewConfig()
-            .Map(x => x.Summary, y=>y.Summary.Summary);
+            .Map(x => x.Summary, y=>y.Summary.Summary)
+            .PreserveReference(true);
     }
     
     public int Id { get; set; }

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe -f docker-compose.yml -f docker-compose.override.yml -o ../k8s --volumes hostPath convert
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/docker-default: "true"
+    io.kompose.service: db
+  name: db
+  namespace: default
+spec:
+  containers:
+    - env:
+        - name: POSTGRES_DB
+          value: force_db
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_USER
+          value: postgres
+      image: postgres:15
+      name: db
+      ports:
+        - containerPort: 5432
+          hostPort: 6000
+          protocol: TCP
+      resources: {}
+      volumeMounts:
+        - mountPath: /data
+          name: web-app-db
+  restartPolicy: OnFailure
+  volumes:
+    - hostPath:
+        path: /host_mnt/c/Repository/force/k8s
+      name: web-app-db
+status: {}
