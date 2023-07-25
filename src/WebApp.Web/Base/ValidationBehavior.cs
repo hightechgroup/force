@@ -1,7 +1,4 @@
 using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using ValidationException = FluentValidation.ValidationException;
 
 namespace WebApp.Web.Base;
 
