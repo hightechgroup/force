@@ -2,6 +2,7 @@ using AutoFilterer.Swagger;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Mapster;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApp.Web.Base;
@@ -102,6 +103,13 @@ internal static class Settings
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         return builder;
     }
+    
+    public static WebApplicationBuilder AddMiddlewares(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<ExceptionHandlingMiddleware>();
+        return builder;
+    }
+    
 
     // ReSharper disable once UnusedMethodReturnValue.Global
     // ReSharper disable once InconsistentNaming
@@ -115,6 +123,13 @@ internal static class Settings
     public static WebApplication UseControllers(this WebApplication app)
     {
         app.MapControllers();
+
+        return app;
+    }
+
+    public static WebApplication UseMiddlewares(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         return app;
     }
