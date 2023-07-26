@@ -3,19 +3,20 @@ kind: Service
 metadata:
   annotations:
     kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe -f docker-compose.yml -f docker-compose.override.yml -o ../k8s --volumes hostPath convert
+    kompose.service.type: loadbalancer
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
-    io.kompose.service: web
-  name: web
+    io.kompose.service: mongo-tcp
+  name: mongo-tcp
   namespace: default
 spec:
   ports:
-    - name: "6001"
-      port: 6001
-      targetPort: 8082
+    - name: "27017"
+      port: 27017
+      targetPort: 27017
   selector:
-    io.kompose.service: web
+    io.kompose.service: mongo
   type: LoadBalancer
 status:
   loadBalancer: {}

@@ -7,7 +7,7 @@ services:
     build:
       context: ../
       dockerfile: ./src/WebApp.Web/Dockerfile
-    restart: always
+    restart: on-failure
     environment:
       - ASPNETCORE_URLS=http://+:8082
       - "ASPNETCORE_ENVIRONMENT=Docker"
@@ -18,6 +18,10 @@ services:
         mode: host
     depends_on:
       - db
+      - graylog
+    labels:
+      kompose.service.type: loadbalancer 
+      kompose.image-pull-policy: IfNotPresent
 
   db:
     image: "postgres:15"
@@ -33,11 +37,16 @@ services:
         published: 6000
         protocol: tcp
         mode: host
-  gray-log:
+    labels:
+      kompose.service.type: loadbalancer 
+  graylog:
     image: "graylog/graylog:5.1"
     environment:
     - GRAYLOG_PASSWORD_SECRET=979b216733674aadb0fee5e410c2c57d
     - GRAYLOG_ROOT_PASSWORD_SHA2=d9c8198bd0562d11363661d8a2c3d297a0a3bab88291c10ae2c26689209efba5
+    - GRAYLOG_MONGODB_URI=mongodb://host.docker.internal:27017/graylog
+    - GRAYLOG_HTTP_EXTERNAL_URI=http://host.docker.internal:9000/
+    - GRAYLOG_ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
     restart: on-failure
     depends_on:
     - mongo
@@ -45,11 +54,19 @@ services:
     ports:
     - 9000:9000
     - 1514:1514
-    - 1514:1514/udp
     - 12201:12201
-    - 12201:12201/udp
+    volumes:
+      - graylog-data:/var/lib/graylog/data:rw
+    labels:
+        kompose.service.type: loadbalancer 
   mongo:
     image: mongo:5.0.13
+    ports: 
+    - 27017:27017
+    volumes:
+      - mongo-db:/var/lib/mongo/data:rw
+    labels:
+      kompose.service.type: loadbalancer 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     environment:
@@ -57,7 +74,17 @@ services:
       - transport.host=localhost
       - network.host=0.0.0.0
       - "ES_JAVA_OPTS=-Dlog4j2.formatMsgNoLookups=true -Xms512m -Xmx512m"
+    ports: 
+    - 9200:9200
+    - 9300:9300
+    volumes:
+      - es-data:/var/lib/elasticsearch/data:rw
+    labels:
+      kompose.service.type: loadbalancer 
 
 
 volumes:
   web-app-db: 
+  mongo-db:
+  es-data:
+  graylog-data:
