@@ -1,12 +1,9 @@
 using AutoFilterer.Swagger;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using Mapster;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using WebApp.Web.Base;
-using WebApp.Web.Features.WeatherForecast;
 
 namespace WebApp.Web;
 
@@ -103,13 +100,20 @@ internal static class Settings
         builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
         return builder;
     }
-    
+
     public static WebApplicationBuilder AddMiddlewares(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<ExceptionHandlingMiddleware>();
         return builder;
     }
-    
+
+    public static WebApplicationBuilder ConfigureSeriLog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
+        return builder;
+    }
+
 
     // ReSharper disable once UnusedMethodReturnValue.Global
     // ReSharper disable once InconsistentNaming

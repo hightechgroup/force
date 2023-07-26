@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe -f docker-compose.yml -f docker-compose.override.yml -o ../k8s --volumes hostPath convert
+    kompose.service.type: loadbalancer
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.network/docker-default: "true"
+    io.kompose.service: graylog
+  name: graylog
+  namespace: default
+spec:
+  containers:
+    - env:
+        - name: GRAYLOG_ELASTICSEARCH_HOSTS
+          value: http://host.docker.internal:9200
+        - name: GRAYLOG_HTTP_EXTERNAL_URI
+          value: http://host.docker.internal:9000/
+        - name: GRAYLOG_MONGODB_URI
+          value: mongodb://host.docker.internal:27017/graylog
+        - name: GRAYLOG_PASSWORD_SECRET
+          value: 979b216733674aadb0fee5e410c2c57d
+        - name: GRAYLOG_ROOT_PASSWORD_SHA2
+          value: d9c8198bd0562d11363661d8a2c3d297a0a3bab88291c10ae2c26689209efba5
+      image: graylog/graylog:5.1
+      name: graylog
+      ports:
+        - containerPort: 9000
+          hostPort: 9000
+          protocol: TCP
+        - containerPort: 1514
+          hostPort: 1514
+          protocol: TCP
+        - containerPort: 12201
+          hostPort: 12201
+          protocol: TCP
+      resources: {}
+      volumeMounts:
+        - mountPath: /data/graylog
+          name: graylog-data
+  restartPolicy: OnFailure
+  volumes:
+    - hostPath:
+        path: /host_mnt/c/Repository/force/k8s
+      name: graylog-data
+status: {}

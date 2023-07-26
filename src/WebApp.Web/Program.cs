@@ -1,10 +1,10 @@
 using WebApp.Data;
 using WebApp.Web;
-using WebApp.Web.Base;
 
 var builder = WebApplication
     .CreateBuilder(args)
     .ConfigureAppConfiguration(args)
+    .ConfigureSeriLog()
     .AddDatabase<WebAppDbContext>()
     .AddHttpAccessor()
     .AddControllersAndSwagger()
