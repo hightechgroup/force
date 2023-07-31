@@ -1,11 +1,9 @@
 using AutoFilterer.Swagger;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using WebApp.Web.Base;
-using WebApp.Web.Features.WeatherForecast;
 
 namespace WebApp.Web;
 
@@ -103,6 +101,20 @@ internal static class Settings
         return builder;
     }
 
+    public static WebApplicationBuilder AddMiddlewares(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<ExceptionHandlingMiddleware>();
+        return builder;
+    }
+
+    public static WebApplicationBuilder ConfigureSeriLog(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
+        return builder;
+    }
+
+
     // ReSharper disable once UnusedMethodReturnValue.Global
     // ReSharper disable once InconsistentNaming
     public static WebApplication UseSwaggerAndSwaggerUI(this WebApplication app)
@@ -115,6 +127,13 @@ internal static class Settings
     public static WebApplication UseControllers(this WebApplication app)
     {
         app.MapControllers();
+
+        return app;
+    }
+
+    public static WebApplication UseMiddlewares(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         return app;
     }
